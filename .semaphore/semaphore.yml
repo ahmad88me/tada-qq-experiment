@@ -1,0 +1,65 @@
+version: v1.0
+name: Python
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+blocks:
+  - name: Automated Tests
+    task:
+      prologue:
+        commands:
+          - checkout
+          - mkdir .pip_cache
+          - cache restore
+          - python3 -m pip install wheel
+          - python3 -m pip install --upgrade pip
+          - python3 -m pip install --user --cache-dir .pip_cache -r requirements.txt
+          - cache store
+      jobs:
+        - name: unittest
+          commands:
+            - sem-version python $PYTHON_VERSION
+            - cache restore
+            - pip3 install -r requirements.txt --cache-dir .pip_cache
+            - sh scripts/run_tests.sh
+          matrix:
+            - env_var: PYTHON_VERSION
+              values:
+                - '3.6'
+                - '3.7'
+                - '3.8'
+      env_vars: []
+    dependencies:
+      - pip
+  - name: Coverage
+    task:
+      prologue:
+        commands:
+          - checkout
+          - mkdir .pip_cache
+          - cache restore
+          - python3 -m pip install wheel
+          - python3 -m pip install --upgrade pip
+          - python3 -m pip install --user --cache-dir .pip_cache -r requirements.txt
+          - cache store
+      jobs:
+        - name: Coverage
+          commands:
+            - 'export PATH=$PATH:/home/semaphore/.local/bin'
+            - coverage run -m unittest discover
+            - 'bash <(curl -s https://codecov.io/bash)'
+      secrets:
+        - name: tada-qq
+    dependencies:
+      - Automated Tests
+  - name: pip
+    dependencies: []
+    task:
+      jobs:
+        - name: install dependencies
+          commands:
+            - checkout
+            - cache restore
+            - pip3 download --cache-dir .pip_cache -r requirements.txt
+            - cache store
