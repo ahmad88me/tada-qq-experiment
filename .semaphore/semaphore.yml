@@ -50,6 +50,7 @@ blocks:
           commands:
             - 'export PATH=$PATH:/home/semaphore/.local/bin'
             - coverage run -m unittest discover
+            - coverage report -m
             - 'bash <(curl -s https://codecov.io/bash)'
       secrets:
         - name: tada-qq
