@@ -6,3 +6,4 @@ Pillow==8.4.0
 pyparsing==3.0.7
 seaborn==0.11.2
 tada-qq==2.0.2
+coverage==6.3.2
