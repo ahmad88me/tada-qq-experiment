@@ -7,6 +7,7 @@ from slabelexp import common
 from slabelexp.common import compute_scores, uri_to_fname, compute_scores_per_key
 from slabelexp.common import get_num_rows, compute_counts, compute_counts_per_err_meth, print_md_scores
 import pandas as pd
+from tadaqq.slabel import SLabel
 
 
 SPARQL_ENDPOINT = "https://en-dbpedia.oeg.fi.upm.es/sparql"
@@ -23,6 +24,7 @@ def annotate_t2dv2(endpoint, remove_outliers, err_meths, loose=False, estimate=[
     """
     err_meth_scores = dict()
     scores = []
+    sl = SLabel(endpoint=endpoint, min_num_objs=MIN_NUM_OBJ)
 
     for use_estimate in estimate:
         for err_meth in err_meths:
@@ -66,10 +68,9 @@ def annotate_t2dv2(endpoint, remove_outliers, err_meths, loose=False, estimate=[
                 trans_uris = [uri_to_fname(uri) for uri in uris]
                 csv_fname = row['filename'] + ".csv"
                 fdir = os.path.join(data_dir, csv_fname)
-                preds = annotate_file(fdir=fdir, class_uri=class_uri, remove_outliers=remove_outliers,
-                                      endpoint=endpoint,
-                                      data_dir="local_data", min_objs=MIN_NUM_OBJ, cols=[col_id], err_meth=err_meth,
-                                      estimate=use_estimate)
+                print("TEST class URI: %s" % class_uri)
+                preds = sl.annotate_file(fdir=fdir, class_uri=class_uri, remove_outliers=remove_outliers, cols=[col_id],
+                                         err_meth=err_meth, estimate=use_estimate)
                 pconcept = row['pconcept']
                 sub_kind = row['sub_kind']
                 if sub_kind in [None, np.nan, np.NaN]:
@@ -83,15 +84,15 @@ def annotate_t2dv2(endpoint, remove_outliers, err_meths, loose=False, estimate=[
                     eval_per_sub_kind[sub_kind] = []
                 nrows = get_num_rows(fdir)
                 diff_name = "%s-%s-%s" % (uri_to_fname(class_uri), uri_to_fname(uris[0]), fdir.split(os.sep)[-1])
-                diff_folder_path = os.path.join("experiments", "diffs", folder_name)
+                diff_folder_path = os.path.join("slabelexp", "diffs", folder_name)
                 if not os.path.exists(diff_folder_path):
                     os.mkdir(diff_folder_path)
                 for c in preds:
                     diff_path = os.path.join(diff_folder_path, diff_name)
                     if not diffs:
                         diff_path = None
-                    res = eval_column(preds[c], correct_uris=trans_uris, class_uri=class_uri, col_id=col_id, fdir=fdir,
-                                      diff_diagram=diff_path)
+                    res = sl.eval_column(preds[c], correct_uris=trans_uris, class_uri=class_uri, col_id=col_id,
+                                         fdir=fdir, diff_diagram=diff_path)
                     # print("\n\n\nres: ")
                     # print(res)
                     files_k[fdir.split(os.sep)[-1] + "-" + str(c)] = (res, nrows)

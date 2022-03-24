@@ -25,7 +25,7 @@ def annotate_olympic_games(endpoint, remove_outliers, meta_dir, err_meth, estima
     olympic_games_data_dir = os.path.join(data_dir, olympic_games_dir, 'data')
     f = open(meta_dir)
     eval_data = []
-    sl = SLabel(endpoint=endpoint, min_objs=MIN_NUM_OBJ)
+    sl = SLabel(endpoint=endpoint, min_num_objs=MIN_NUM_OBJ)
     for line in f.readlines():
         atts = line.split(',')
         if len(atts) > 1:
@@ -64,7 +64,7 @@ if __name__ == '__main__':
             for err_meth in ["mean_err", "mean_sq_err", "mean_sqroot_err"]:
                 prec, rec, f1 = annotate_olympic_games(endpoint='https://en-dbpedia.oeg.fi.upm.es/sparql',
                                                        remove_outliers=ro,
-                                                       meta_dir="experiments/olympic_meta.csv", estimate=est,
+                                                       meta_dir="slabelexp/olympic_meta.csv", estimate=est,
                                                        err_meth=err_meth)
                 score = {
                     'ro': ro,

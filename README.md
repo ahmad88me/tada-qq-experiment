@@ -79,7 +79,7 @@ python -m link.t2dv2 -c 0.02 0.04 0.06 0.08 0.1 0.12 0.14 0.16 0.18 0.2
 ### Olympic Games
 Command used:
 ```
-python -m experiments.olympic
+python -m slabelexp.olympic
 ```
 
 #### Results
@@ -116,11 +116,11 @@ optional arguments:
 Used:
 1. with outlier removal
 ```
-python -m experiments.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False
+python -m slabelexp.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False
 ```
 2. with outliers kept
 ```
-python -m experiments.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False
+python -m slabelexp.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False
 ```
 
 #### Results
