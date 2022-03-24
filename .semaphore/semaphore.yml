@@ -30,6 +30,8 @@ blocks:
                 - '3.7'
                 - '3.8'
       env_vars: []
+      secrets:
+        - name: tada-qq-experiment
     dependencies:
       - pip
   - name: Coverage
