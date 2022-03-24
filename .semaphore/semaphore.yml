@@ -53,7 +53,7 @@ blocks:
             - coverage report -m
             - 'bash <(curl -s https://codecov.io/bash)'
       secrets:
-        - name: tada-qq
+        - name: tada-qq-experiment
     dependencies:
       - Automated Tests
   - name: pip
