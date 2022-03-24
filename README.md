@@ -1,6 +1,7 @@
 
 # tada-qq-experiment
-[![Build Status](https://ahmad88me.semaphoreci.com/badges/tada-qq-experiment/branches/master.svg)](https://ahmad88me.semaphoreci.com/projects/tada-qq-experiment)
+[![Build Status](https://ahmad88me.semaphoreci.com/badges/tada-qq-experiment/branches/main.svg)](https://ahmad88me.semaphoreci.com/projects/tada-qq-experiment)
+[![codecov](https://codecov.io/gh/ahmad88me/tada-qq-experiment/branch/main/graph/badge.svg?token=EEMOL78RCW)](https://codecov.io/gh/ahmad88me/tada-qq-experiment)
 
 [![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
 [![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/release/python-370/)
