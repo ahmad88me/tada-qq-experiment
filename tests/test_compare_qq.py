@@ -1,9 +1,10 @@
 import unittest
 import os
 import numpy as np
-from qq.qqe import QQE
-from slabel.common import annotate_file, eval_column, uri_to_fname
-from slabel.t2dv2 import SPARQL_ENDPOINT, MIN_NUM_OBJ
+from tadaqq.qq.qqe import QQE
+from tadaqq.slabel import SLabel
+from tadaqq.slabel.util import uri_to_fname
+from slabelexp.t2dv2 import SPARQL_ENDPOINT, MIN_NUM_OBJ
 
 
 class CompareQQ(unittest.TestCase):
@@ -18,12 +19,14 @@ class CompareQQ(unittest.TestCase):
         # err_meth = "mean_err"
         data_dir = os.path.join('tests', 'test_files')
         fdir = os.path.join(data_dir, fname)+".csv"
-        preds = annotate_file(fdir=fdir, class_uri=class_uri, remove_outliers=remove_outliers,
-                              endpoint=SPARQL_ENDPOINT, data_dir="local_data", min_objs=MIN_NUM_OBJ,
-                              cols=[col_id], err_meth=err_meth)
+        sl = SLabel(endpoint=SPARQL_ENDPOINT, min_num_objs=MIN_NUM_OBJ, offline_data_dir="local_data")
+        preds = sl.annotate_file(fdir=fdir, class_uri=class_uri, cols=[col_id], err_meth=err_meth,
+                                 remove_outliers=remove_outliers)
+        # preds = sl.annotate_file(fdir=fdir, class_uri=class_uri, remove_outliers=remove_outliers, cols=[col_id],
+        #                       err_meth=err_meth, print_diff=True)
         trans_p = uri_to_fname(p)
-        res = eval_column(preds[col_id], correct_uris=[trans_p], class_uri=class_uri, col_id=col_id,
-                          fdir=fdir, diff_diagram=None)
+        res = sl.eval_column(preds[col_id], correct_uris=[trans_p], class_uri=class_uri, col_id=col_id, fdir=fdir,
+                             diff_diagram=None)
         self.assertEqual(trans_p, preds[3][0][1].split("/")[-1][:-4])
 
 

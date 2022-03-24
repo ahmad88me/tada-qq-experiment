@@ -1,5 +1,5 @@
-from slabel.t2dv2 import *
-from slabel.common import collect_numeric_data, get_columns_data
+from slabelexp.t2dv2 import *
+from slabelexp.common import collect_numeric_data, get_columns_data
 
 from qq.qqe import QQE
 from qq.dist import get_data

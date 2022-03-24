@@ -3,9 +3,9 @@ import os
 import argparse
 
 import numpy as np
-from slabel import common
-from slabel.common import annotate_file, eval_column, compute_scores, uri_to_fname, compute_scores_per_key
-from slabel.common import get_num_rows, compute_counts, compute_counts_per_err_meth, print_md_scores
+from slabelexp import common
+from slabelexp.common import compute_scores, uri_to_fname, compute_scores_per_key
+from slabelexp.common import get_num_rows, compute_counts, compute_counts_per_err_meth, print_md_scores
 import pandas as pd
 
 

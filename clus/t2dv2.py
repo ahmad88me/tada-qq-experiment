@@ -3,7 +3,8 @@ import os
 from collections import Counter
 from datetime import datetime
 import pandas as pd
-from slabel.common import is_numeric_dtype, uri_to_fname
+from slabelexp.common import is_numeric_dtype
+from tadaqq.slabel.util import uri_to_fname
 
 try:
     from clus import common

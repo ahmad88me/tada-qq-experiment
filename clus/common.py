@@ -1,7 +1,7 @@
 from collections import Counter
 import pandas as pd
 import seaborn as sns
-from qq.qqe import QQE
+from tadaqq.qq.qqe import QQE
 import matplotlib.pyplot as plt
 
 import os
