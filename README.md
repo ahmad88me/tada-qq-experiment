@@ -68,7 +68,7 @@ Matching similar columns. The main differences between the clustering and the se
 
 The command used: 
 ```
-python -m link.t2dv2 -c 0.02 0.04 0.06 0.08 0.1 0.12 0.14 0.16 0.18 0.2
+python -m clus.t2dv2 -c 0.02 0.04 0.06 0.08 0.1 0.12 0.14 0.16 0.18 0.2
 ```
 
 ### Clustering Results - T2Dv2
