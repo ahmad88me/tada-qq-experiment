@@ -15,6 +15,113 @@ SPARQL_ENDPOINT = "https://en-dbpedia.oeg.fi.upm.es/sparql"
 MIN_NUM_OBJ = 30
 SHOW_LOGS = False
 
+err_meth_fname_dict = {
+    "mean_err": "t2dv2-mean-err",
+    "mean_sq_err": "t2dv2-mean-sq-err",
+    "mean_sq1_err": "t2dv2-mean-sq1-err",
+    "mean_sqroot_err": "t2dv2-mean-sqroot-err"
+}
+
+
+def get_folder_name_from_params(err_meth, use_estimate, remove_outliers, loose):
+    if err_meth not in err_meth_fname_dict:
+        raise Exception("unknown err method")
+    folder_name = err_meth_fname_dict[err_meth]
+
+    if use_estimate:
+        folder_name += "-estimate"
+        est_txt = "estimate"
+    else:
+        folder_name += "-exact"
+        est_txt = "exact"
+    if loose:
+        folder_name += "-loose"
+    if not remove_outliers:
+        folder_name += "-raw"
+        remove_outliers_txt = "raw"
+    else:
+        remove_outliers_txt = "remove-outliers"
+    return folder_name, est_txt, remove_outliers_txt
+
+
+def annotate_t2dv2_single_column(row, sl, files_k, eval_per_prop, eval_per_sub_kind, err_meth, use_estimate,
+                                 remove_outliers, folder_name, eval_data):
+    class_uri = 'http://dbpedia.org/ontology/' + row['concept']
+    col_id = int(row['columnid'])
+    uris = row['property'].split(';')
+    trans_uris = [uri_to_fname(uri) for uri in uris]
+    csv_fname = row['filename'] + ".csv"
+    fdir = os.path.join(data_dir, csv_fname)
+    print("TEST class URI: %s" % class_uri)
+    preds = sl.annotate_file(fdir=fdir, class_uri=class_uri, remove_outliers=remove_outliers, cols=[col_id],
+                             err_meth=err_meth, estimate=use_estimate)
+    pconcept = row['pconcept']
+    sub_kind = row['sub_kind']
+    if sub_kind in [None, np.nan, np.NaN]:
+        sub_kind = row['kind']
+    if pconcept in [None, np.nan, np.NaN]:
+        print("is none")
+        print(row)
+    if pconcept not in eval_per_prop:
+        eval_per_prop[pconcept] = []
+    if sub_kind not in eval_per_sub_kind:
+        eval_per_sub_kind[sub_kind] = []
+    nrows = get_num_rows(fdir)
+    diff_name = "%s-%s-%s" % (uri_to_fname(class_uri), uri_to_fname(uris[0]), fdir.split(os.sep)[-1])
+    diff_folder_path = os.path.join("slabelexp", "diffs", folder_name)
+    if not os.path.exists(diff_folder_path):
+        os.mkdir(diff_folder_path)
+    for c in preds:
+        diff_path = os.path.join(diff_folder_path, diff_name)
+        if not diffs:
+            diff_path = None
+        res = sl.eval_column(preds[c], correct_uris=trans_uris, class_uri=class_uri, col_id=col_id,
+                             fdir=fdir, diff_diagram=diff_path)
+        files_k[fdir.split(os.sep)[-1] + "-" + str(c)] = (res, nrows)
+        eval_data.append(res)
+        eval_per_prop[pconcept].append(res)
+        eval_per_sub_kind[sub_kind].append(res)
+
+
+def annotate_t2dv2_single_param_set(endpoint, df, err_meth_scores, err_meth, use_estimate, remove_outliers, loose):
+    sl = SLabel(endpoint=endpoint, min_num_objs=MIN_NUM_OBJ)
+    eval_data = []
+    scores = []
+    folder_name, est_txt, remove_outliers_txt = get_folder_name_from_params(err_meth, use_estimate,
+                                                                            remove_outliers, loose)
+    files_k = dict()
+    eval_per_prop = dict()
+    eval_per_sub_kind = dict()
+    for idx, row in df.iterrows():
+        annotate_t2dv2_single_column(row, sl, files_k, eval_per_prop, eval_per_sub_kind, err_meth, use_estimate,
+                                     remove_outliers, folder_name, eval_data)
+    prec, rec, f1 = compute_scores(eval_data, k=1)
+    score = {
+        'ro': remove_outliers,
+        'est': use_estimate,
+        'err_meth': err_meth,
+        'prec': prec,
+        'rec': rec,
+        'f1': f1
+    }
+    scores.append(score)
+    folder_new_name = os.path.join('results', 'slabelling', folder_name)
+    print("\n\n================\n %s + %s + %s\n================\n" % (est_txt, err_meth, remove_outliers_txt))
+    compute_scores_per_key(eval_per_prop, folder_new_name)
+    if SHOW_LOGS:
+        print("\n\n================\n %s + %s + %s" % (est_txt, err_meth, remove_outliers_txt))
+    sub_folder_name = "sub_kind-%s" % (folder_name)
+    compute_scores_per_key(eval_per_sub_kind, os.path.join('results', 'slabelling', sub_folder_name),
+                           print_scores=True)
+    folder_new_datapoint_name = os.path.join('results', 'slabelling', "datapoints-%s" % (folder_name))
+    scores_df = compute_counts(files_k, folder_new_datapoint_name)
+
+    if est_txt not in err_meth_scores:
+        err_meth_scores[est_txt] = dict()
+
+    err_meth_scores[est_txt][err_meth] = scores_df
+    return scores
+
 
 def annotate_t2dv2(endpoint, remove_outliers, err_meths, loose=False, estimate=[True], diffs=False):
     """
@@ -24,112 +131,19 @@ def annotate_t2dv2(endpoint, remove_outliers, err_meths, loose=False, estimate=[
     """
     err_meth_scores = dict()
     scores = []
-    sl = SLabel(endpoint=endpoint, min_num_objs=MIN_NUM_OBJ)
+    df = pd.read_csv(meta_dir)
+    df = df[df.property.notnull()]
+    df = df[df["concept"].notnull()]
+    df = df[df["pconcept"].notnull()]
+
+    if not loose:
+        df = df[df["loose"] != "yes"]
 
     for use_estimate in estimate:
         for err_meth in err_meths:
-            eval_data = []
-            df = pd.read_csv(meta_dir)
-            df = df[df.property.notnull()]
-            df = df[df["concept"].notnull()]
-            df = df[df["pconcept"].notnull()]
-            if not loose:
-                df = df[df["loose"] != "yes"]
-            if err_meth == "mean_err":
-                folder_name = "t2dv2-mean-err"
-            elif err_meth == "mean_sq_err":
-                folder_name = "t2dv2-mean-sq-err"
-            elif err_meth == "mean_sq1_err":
-                folder_name = "t2dv2-mean-sq1-err"
-            elif err_meth == "mean_sqroot_err":
-                folder_name = "t2dv2-mean-sqroot-err"
-            else:
-                raise Exception("unknown err method")
-            if use_estimate:
-                folder_name += "-estimate"
-                est_txt = "estimate"
-            else:
-                folder_name += "-exact"
-                est_txt = "exact"
-            if loose:
-                folder_name += "-loose"
-            if not remove_outliers:
-                folder_name += "-raw"
-                remove_outliers_txt = "raw"
-            else:
-                remove_outliers_txt = "remove-outliers"
-            files_k = dict()
-            eval_per_prop = dict()
-            eval_per_sub_kind = dict()
-            for idx, row in df.iterrows():
-                class_uri = 'http://dbpedia.org/ontology/' + row['concept']
-                col_id = int(row['columnid'])
-                uris = row['property'].split(';')
-                trans_uris = [uri_to_fname(uri) for uri in uris]
-                csv_fname = row['filename'] + ".csv"
-                fdir = os.path.join(data_dir, csv_fname)
-                print("TEST class URI: %s" % class_uri)
-                preds = sl.annotate_file(fdir=fdir, class_uri=class_uri, remove_outliers=remove_outliers, cols=[col_id],
-                                         err_meth=err_meth, estimate=use_estimate)
-                pconcept = row['pconcept']
-                sub_kind = row['sub_kind']
-                if sub_kind in [None, np.nan, np.NaN]:
-                    sub_kind = row['kind']
-                if pconcept in [None, np.nan, np.NaN]:
-                    print("is none")
-                    print(row)
-                if pconcept not in eval_per_prop:
-                    eval_per_prop[pconcept] = []
-                if sub_kind not in eval_per_sub_kind:
-                    eval_per_sub_kind[sub_kind] = []
-                nrows = get_num_rows(fdir)
-                diff_name = "%s-%s-%s" % (uri_to_fname(class_uri), uri_to_fname(uris[0]), fdir.split(os.sep)[-1])
-                diff_folder_path = os.path.join("slabelexp", "diffs", folder_name)
-                if not os.path.exists(diff_folder_path):
-                    os.mkdir(diff_folder_path)
-                for c in preds:
-                    diff_path = os.path.join(diff_folder_path, diff_name)
-                    if not diffs:
-                        diff_path = None
-                    res = sl.eval_column(preds[c], correct_uris=trans_uris, class_uri=class_uri, col_id=col_id,
-                                         fdir=fdir, diff_diagram=diff_path)
-                    # print("\n\n\nres: ")
-                    # print(res)
-                    files_k[fdir.split(os.sep)[-1] + "-" + str(c)] = (res, nrows)
-                    eval_data.append(res)
-                    eval_per_prop[pconcept].append(res)
-                    eval_per_sub_kind[sub_kind].append(res)
-                # Testing
-                # if idx >= 2:
-                #     if test:
-                #         print("res: ")
-                #         print(res)
-                #         break
-            prec, rec, f1 = compute_scores(eval_data, k=1)
-            score = {
-                'ro': remove_outliers,
-                'est': use_estimate,
-                'err_meth': err_meth,
-                'prec': prec,
-                'rec': rec,
-                'f1': f1
-            }
-            scores.append(score)
-            folder_new_name = os.path.join('results', 'slabelling', folder_name)
-            print("\n\n================\n %s + %s + %s\n================\n" % (est_txt, err_meth, remove_outliers_txt))
-            compute_scores_per_key(eval_per_prop, folder_new_name)
-            if SHOW_LOGS:
-                print("\n\n================\n %s + %s + %s" % (est_txt, err_meth, remove_outliers_txt))
-            sub_folder_name = "sub_kind-%s" % (folder_name)
-            compute_scores_per_key(eval_per_sub_kind, os.path.join('results', 'slabelling', sub_folder_name),
-                                   print_scores=True)
-            folder_new_datapoint_name = os.path.join('results', 'slabelling', "datapoints-%s" % (folder_name))
-            scores_df = compute_counts(files_k, folder_new_datapoint_name)
-
-            if est_txt not in err_meth_scores:
-                err_meth_scores[est_txt] = dict()
-
-            err_meth_scores[est_txt][err_meth] = scores_df
+            scores_single = annotate_t2dv2_single_param_set(endpoint, df, err_meth_scores, err_meth, use_estimate,
+                                                            remove_outliers, loose)
+            scores += scores_single
 
     print_md_scores(scores)
     fname = "t2dv2-err-methods"
@@ -178,4 +192,3 @@ if __name__ == '__main__':
     b = datetime.now()
     # print("\n\nTime it took (in seconds): %f.1 seconds\n\n" % (b - a).total_seconds())
     print("\n\nTime it took: %.1f minutes\n\n" % ((b - a).total_seconds() / 60.0))
-
