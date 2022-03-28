@@ -25,8 +25,8 @@ meta_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_typology.csv')
 
 def get_col(fname, colid):
     fpath = os.path.join(data_dir, fname)
-    cols = get_columns_data(fpath, colid)
-    return cols[0]
+    cols = get_columns_data(fpath, [colid])
+    return cols[0][1]
 
 
 def get_class_property_groups(df):
@@ -61,7 +61,7 @@ def clustering_workflow(fetch_method, err_meth, err_cutoff, same_class):
     df = df[df["pconcept"].notnull()]
     df = df[df["loose"] != "yes"]
     cp_groups, counts = get_class_property_groups(df)
-    clusterer = Clusterer(save_memory=True)
+    clusterer = Clusterer(save_memory=False)
     for idx, row_and_i in enumerate(df.iterrows()):
         i, row = row_and_i
         # if idx >= 15:
