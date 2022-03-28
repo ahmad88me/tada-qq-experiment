@@ -3,7 +3,7 @@ import os
 import numpy as np
 from tadaqq.qq.qqe import QQE
 from tadaqq.slabel import SLabel
-from tadaqq.slabel.util import uri_to_fname
+from tadaqq.util import uri_to_fname
 from slabelexp.t2dv2 import SPARQL_ENDPOINT, MIN_NUM_OBJ
 
 

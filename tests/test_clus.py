@@ -18,7 +18,9 @@ class LinkTest(unittest.TestCase):
         for g in a:
             clus = [{'gs_clus': cl} for cl in g]
             groups.append(clus)
-        p, r, f1 = common.evaluate(groups, c)
+        clusterer = common.Clusterer()
+        clusterer.groups = groups
+        p, r, f1 = clusterer.evaluate(c)
         self.assertEqual(p, 2/3)
         self.assertEqual(r, 2.6/3)
 
@@ -40,9 +42,11 @@ class LinkTest(unittest.TestCase):
         err_cutoff = 0.3
         err_meth = "mean_err"
         fetch_method = "max"
+        clusterer = common.Clusterer()
+        clusterer.groups = groups
         for ele in eles:
             ele['num'] = len(ele['col'])
-            common.column_group_matching(groups, ele, fetch_method, err_meth, err_cutoff)
+            clusterer.column_group_matching(ele, fetch_method, err_meth, err_cutoff)
 
         # for g in groups:
         #     print(g)

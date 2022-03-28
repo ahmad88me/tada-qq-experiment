@@ -1,5 +1,4 @@
 import os
-import logging
 from datetime import datetime
 from slabelexp import common
 from slabelexp.common import compute_scores, print_md_scores
