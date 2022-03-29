@@ -123,6 +123,15 @@ def annotate_t2dv2_single_param_set(endpoint, df, err_meth_scores, err_meth, use
     return scores
 
 
+def fetch_t2dv2_data():
+    df = pd.read_csv(meta_dir)
+    df = df[df.property.notnull()]
+    df = df[df["concept"].notnull()]
+    df = df[df["pconcept"].notnull()]
+    df = df[df["loose"] != "yes"]
+    return df
+
+
 def annotate_t2dv2(endpoint, remove_outliers, err_meths, loose=False, estimate=[True], diffs=False):
     """
     endpoint:
@@ -131,13 +140,7 @@ def annotate_t2dv2(endpoint, remove_outliers, err_meths, loose=False, estimate=[
     """
     err_meth_scores = dict()
     scores = []
-    df = pd.read_csv(meta_dir)
-    df = df[df.property.notnull()]
-    df = df[df["concept"].notnull()]
-    df = df[df["pconcept"].notnull()]
-
-    if not loose:
-        df = df[df["loose"] != "yes"]
+    df = fetch_t2dv2_data()
 
     for use_estimate in estimate:
         for err_meth in err_meths:

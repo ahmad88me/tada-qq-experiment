@@ -46,7 +46,7 @@ class LinkTest(unittest.TestCase):
         clusterer.groups = groups
         for ele in eles:
             ele['num'] = len(ele['col'])
-            clusterer.column_group_matching(ele, fetch_method, err_meth, err_cutoff)
+            clusterer.column_group_matching(ele, fetch_method, err_meth, err_cutoff, False)
 
         # for g in groups:
         #     print(g)

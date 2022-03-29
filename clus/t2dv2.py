@@ -30,6 +30,15 @@ def get_col(fname, colid):
 
 
 def get_class_property_groups(df):
+    """
+    :param df:
+    :return: d, Counter
+        d: {
+            "<concept> <property>": "<concept>/<property_fname>",
+        },
+        Counter: number of rows for each concept/property combination
+            of "<concept>/<property_fname>"
+    """
     d = dict()
     counts = []
     for idx, row in df.iterrows():
@@ -54,14 +63,7 @@ def get_class_property_groups(df):
     return d, Counter(counts)
 
 
-def clustering_workflow(fetch_method, err_meth, err_cutoff, same_class):
-    df = pd.read_csv(meta_dir)
-    df = df[df.property.notnull()]
-    df = df[df["concept"].notnull()]
-    df = df[df["pconcept"].notnull()]
-    df = df[df["loose"] != "yes"]
-    cp_groups, counts = get_class_property_groups(df)
-    clusterer = Clusterer(save_memory=False)
+def cluster_t2dv2_df(df, clusterer, fetch_method, err_meth, err_cutoff, same_class):
     for idx, row_and_i in enumerate(df.iterrows()):
         i, row = row_and_i
         # if idx >= 15:
@@ -73,10 +75,37 @@ def clustering_workflow(fetch_method, err_meth, err_cutoff, same_class):
             'col': col,
             'num': len(col),
             'concept': row['concept'],
-            'property': row['property'].split(';')[0]
+            'property': row['property'].split(';')[0],
+            'properties': row['property'].split(';')
         }
 
         clusterer.column_group_matching(ele, fetch_method, err_meth, err_cutoff, same_class)
+
+
+def clustering_workflow(fetch_method, err_meth, err_cutoff, same_class):
+    df = pd.read_csv(meta_dir)
+    df = df[df.property.notnull()]
+    df = df[df["concept"].notnull()]
+    df = df[df["pconcept"].notnull()]
+    df = df[df["loose"] != "yes"]
+    cp_groups, counts = get_class_property_groups(df)
+    clusterer = Clusterer(save_memory=False)
+    cluster_t2dv2_df(df, clusterer, fetch_method, err_meth, err_cutoff, same_class)
+    # for idx, row_and_i in enumerate(df.iterrows()):
+    #     i, row = row_and_i
+    #     # if idx >= 15:
+    #     #     break
+    #     col = get_col(fname=row['filename']+".csv", colid=row['columnid'])
+    #     ele = {
+    #         'col_id': row['columnid'],
+    #         'fname': row['filename'],
+    #         'col': col,
+    #         'num': len(col),
+    #         'concept': row['concept'],
+    #         'property': row['property'].split(';')[0]
+    #     }
+    #
+    #     clusterer.column_group_matching(ele, fetch_method, err_meth, err_cutoff, same_class)
 
     for idx, g in enumerate(clusterer.groups):
         if SHOW_LOGS:
@@ -113,7 +142,7 @@ def parse_arguments():
                         help="Functions to computer errors.")
     parser.add_argument('-c', '--cutoffs', default=[0.1], nargs="+",
                         help="Error cutoff value.")
-    parser.add_argument('-s', '--sameclass', action="store_true")  # False by default
+    parser.add_argument('-m', '--sameclass', action="store_true")  # False by default
     args = parser.parse_args()
     print("same class: ")
     print(args.sameclass)
