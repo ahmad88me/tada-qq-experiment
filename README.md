@@ -402,3 +402,18 @@ mean square root + exact + outlier removed
 | ordinal | 0.33 | 1.00 | 0.50| 
 
 -->
+
+
+
+## Merged Experiment
+Clustering as a way to improve Semantic Labelling
+
+Used:
+1. with outlier removal
+```
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False
+```
+2. with outliers kept
+```
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False
+```

@@ -15,6 +15,14 @@ SPARQL_ENDPOINT = "https://en-dbpedia.oeg.fi.upm.es/sparql"
 MIN_NUM_OBJ = 30
 SHOW_LOGS = False
 
+if 't2dv2_dir' not in os.environ:
+    print("ERROR: t2dv2_dir no in os.environ")
+
+data_dir = os.path.join(os.environ['t2dv2_dir'], 'csv')
+meta_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_typology.csv')
+properties_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_properties.csv')
+
+
 err_meth_fname_dict = {
     "mean_err": "t2dv2-mean-err",
     "mean_sq_err": "t2dv2-mean-sq-err",
@@ -178,12 +186,12 @@ def parse_arguments():
 
 if __name__ == '__main__':
 
-    if 't2dv2_dir' not in os.environ:
-        print("ERROR: t2dv2_dir no in os.environ")
-
-    data_dir = os.path.join(os.environ['t2dv2_dir'], 'csv')
-    meta_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_typology.csv')
-    properties_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_properties.csv')
+    # if 't2dv2_dir' not in os.environ:
+    #     print("ERROR: t2dv2_dir no in os.environ")
+    #
+    # data_dir = os.path.join(os.environ['t2dv2_dir'], 'csv')
+    # meta_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_typology.csv')
+    # properties_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_properties.csv')
 
     common.PRINT_DIFF = SHOW_LOGS
     a = datetime.now()

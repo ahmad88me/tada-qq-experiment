@@ -70,6 +70,7 @@ def cluster_t2dv2_df(df, clusterer, fetch_method, err_meth, err_cutoff, same_cla
         #     break
         col = get_col(fname=row['filename']+".csv", colid=row['columnid'])
         ele = {
+            'class_uri': 'http://dbpedia.org/ontology/' + row['concept'],
             'col_id': row['columnid'],
             'fname': row['filename'],
             'col': col,
