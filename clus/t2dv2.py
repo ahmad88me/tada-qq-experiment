@@ -5,7 +5,7 @@ from datetime import datetime
 import pandas as pd
 from tadaqq.util import uri_to_fname
 from pandas.api.types import is_numeric_dtype
-from clus.common import Clusterer
+from clus.common import Clusterer, PMap
 from tadaqq.util import get_columns_data
 
 try:
@@ -64,8 +64,10 @@ def get_class_property_groups(df):
 
 
 def cluster_t2dv2_df(df, clusterer, fetch_method, err_meth, err_cutoff, same_class):
+    pmap = PMap()
     for idx, row_and_i in enumerate(df.iterrows()):
         i, row = row_and_i
+        pmap.add(row['property'].split(';'))
         # if idx >= 15:
         #     break
         col = get_col(fname=row['filename']+".csv", colid=row['columnid'])
@@ -76,10 +78,9 @@ def cluster_t2dv2_df(df, clusterer, fetch_method, err_meth, err_cutoff, same_cla
             'col': col,
             'num': len(col),
             'concept': row['concept'],
-            'property': row['property'].split(';')[0],
+            'property': pmap.get(row['property'].split(';')[0]),
             'properties': row['property'].split(';')
         }
-
         clusterer.column_group_matching(ele, fetch_method, err_meth, err_cutoff, same_class)
 
 

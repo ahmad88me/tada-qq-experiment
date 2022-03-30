@@ -409,11 +409,38 @@ mean square root + exact + outlier removed
 Clustering as a way to improve Semantic Labelling
 
 Used:
-1. with outlier removal
+### Cluster without class consideration
+1. with outlier removal and candidate fail back
 ```
-python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False --failback
 ```
-2. with outliers kept
+2. with outlier removal and without candidate fail back
 ```
-python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False 
+```
+3. with outliers kept and candidate fail back
+```
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False --failback
+```
+4. with outliers kept and candidate fail back
+```
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False 
+```
+
+### Force same class clustering
+5. with outlier removal and candidate fail back
+```
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False --failback --sameclass
+```
+6. with outlier removal and without candidate fail back
+```
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False --sameclass
+```
+7. with outliers kept and candidate fail back
+```
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False --failback --sameclass
+```
+8. with outliers kept and candidate fail back
+```
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False --sameclass
 ```

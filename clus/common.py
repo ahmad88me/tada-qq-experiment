@@ -151,3 +151,29 @@ def generate_clus_diagram(scores, fpath):
     ax.figure.savefig('%s.svg' % fpath, bbox_inches="tight")
     # plt.show()
     # ax.figure.clf()
+
+
+class PMap:
+
+    def __init__(self):
+        self.mappings = dict()
+
+    def add(self, props):
+        found = False
+        for p in props:
+            if p in self.mappings:
+                found = self.mappings[p]
+                break
+        if found is False:
+            found = props[0]
+            self.mappings[found] = found
+
+        for p in props[1:]:
+            self.mappings[p] = found
+
+    def get(self, prop):
+        if prop not in self.mappings:
+            print("PMap .. adding a new property: %s" % prop)
+            self.mappings[prop] = prop
+        return self.mappings[prop]
+

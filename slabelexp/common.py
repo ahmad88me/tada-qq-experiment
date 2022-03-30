@@ -37,6 +37,10 @@ def compute_scores(eval_data, k=1):
             notf += 1
         elif d <= k:
             corr += 1
+        elif d < 1:
+            err_msg = "Error: compute_scores> Invalid k <%s>" % str(d)
+            print(err_msg)
+            raise Exception(err_msg)
         else:
             incorr += 1
     if corr == 0:
@@ -47,6 +51,7 @@ def compute_scores(eval_data, k=1):
         prec = corr / (corr+incorr)
         rec = corr / (corr+notf)
         f1 = 2*prec*rec / (prec+rec)
+    # print("#corr: %d\t#incorr: %d\t#notf: %d" % (corr, incorr, notf))
     return prec, rec, f1
     # print("Precision: %.2f\nRecall: %.2f\nF1: %.2f" % (prec, rec, f1))
 

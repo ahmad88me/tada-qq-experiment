@@ -12,7 +12,8 @@ from merged.common import print_md_scores
 SPARQL_ENDPOINT = "https://en-dbpedia.oeg.fi.upm.es/sparql"
 
 
-def annotate_t2dv2_single_param_set(endpoint, remove_outliers, err_meth, estimate, err_cutoff, same_class, fetch_method):
+def annotate_t2dv2_single_param_set(endpoint, remove_outliers, err_meth, estimate, err_cutoff, same_class,
+                                    candidate_failback, fetch_method):
     err_meth_scores = dict()
     scores = []
     df = fetch_t2dv2_data()
@@ -20,14 +21,14 @@ def annotate_t2dv2_single_param_set(endpoint, remove_outliers, err_meth, estimat
     cluster_t2dv2_df(df, clusterer, fetch_method, err_meth, err_cutoff, same_class)
     cp_groups, counts = get_class_property_groups(df)
     slabmer = SLabMer(endpoint)
-    # TEST
-    print(clusterer.groups[0])
-    slabmer.annotate_clusters(clusterer.groups[:2], remove_outliers, estimate, err_meth, k=3)
+    slabmer.annotate_clusters(clusterer.groups, remove_outliers, estimate, err_meth,
+                              candidate_failback=candidate_failback, k=3)
     score = slabmer.evaluate_labelling(clusterer.groups)
     return score
 
 
-def annotate_t2dv2(endpoint, remove_outliers, err_meths, estimates, err_cutoffs, same_class, fetch_method):
+def annotate_t2dv2(endpoint, remove_outliers, err_meths, estimates, err_cutoffs, same_class, fetch_method,
+                   candidate_failback):
     res_path = os.path.join('results', 'merged')
     create_dir(res_path)
     # scores = dict()
@@ -40,7 +41,8 @@ def annotate_t2dv2(endpoint, remove_outliers, err_meths, estimates, err_cutoffs,
             for err_cutoff in err_cutoffs:
                 score = annotate_t2dv2_single_param_set(endpoint=endpoint, remove_outliers=remove_outliers,
                                                         fetch_method=fetch_method, err_meth=err_meth, estimate=estimate,
-                                                        same_class=same_class, err_cutoff=err_cutoff)
+                                                        same_class=same_class, err_cutoff=err_cutoff,
+                                                        candidate_failback=candidate_failback)
                 score['ro'] = remove_outliers
                 score['est'] = estimate
                 score['err_meth'] = err_meth
@@ -63,9 +65,11 @@ def parse_arguments():
     parser.add_argument('-c', '--cutoffs', default=[0.1], nargs="+",
                         help="Error cutoff value.")
     parser.add_argument('-m', '--sameclass', action="store_true")  # False by default
+    parser.add_argument('-f', '--failback', action="store_true")  # False by default
     args = parser.parse_args()
     estimates = [e.lower() == "true" for e in args.estimate]
-    return args.err_meths, args.outlier_removal == "true", estimates, [float(co) for co in args.cutoffs], args.sameclass
+    return args.err_meths, args.outlier_removal == "true", estimates, [float(co) for co in args.cutoffs], \
+           args.sameclass, args.failback
 
 
 if __name__ == '__main__':
@@ -77,11 +81,11 @@ if __name__ == '__main__':
     properties_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_properties.csv')
 
     a = datetime.now()
-    err_meths, outlier_removal, estimates, cutoffs, sameclass = parse_arguments()
+    err_meths, outlier_removal, estimates, cutoffs, sameclass, candidate_failback = parse_arguments()
 
     # ["mean_err", "mean_sq_err", "mean_sq1_err"]
     annotate_t2dv2(endpoint=SPARQL_ENDPOINT, remove_outliers=outlier_removal, err_meths=err_meths, fetch_method="max",
-                   estimates=estimates, err_cutoffs=cutoffs, same_class=sameclass)
+                   estimates=estimates, err_cutoffs=cutoffs, same_class=sameclass, candidate_failback=candidate_failback)
     b = datetime.now()
     # print("\n\nTime it took (in seconds): %f.1 seconds\n\n" % (b - a).total_seconds())
     print("\n\nTime it took: %.1f minutes\n\n" % ((b - a).total_seconds() / 60.0))
