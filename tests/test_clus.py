@@ -5,7 +5,7 @@ from clus import common
 from collections import Counter
 
 
-class LinkTest(unittest.TestCase):
+class ClusTest(unittest.TestCase):
 
     def setUp(self) -> None:
         pass

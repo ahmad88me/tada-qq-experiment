@@ -71,12 +71,13 @@ class Clusterer:
             raise Exception("add_col_to_group> Exception: unknown fetch method")
         return group
 
-    def evaluate(self, counts):
+    def evaluate(self, counts, print_eval=False):
         """
         groups: [[{}], [{}]]
         counts: Counter of cluster values. Each value = "idx-concept-shot_property"
         """
-        print("\n\nEVALUATE\n==============\n")
+        if print_eval:
+            print("\n\nEVALUATE\n==============\n")
         max_per_v = dict()
         groups = self.groups
         for idx, g in enumerate(groups):
@@ -102,7 +103,8 @@ class Clusterer:
         precs = []
         recs = []
         f1s = []
-        print("{:<35} {:<5} {:<5} {:<5} {:<5}".format("name", "prec", "rec", "f1", "clus"))
+        if print_eval:
+            print("{:<35} {:<5} {:<5} {:<5} {:<5}".format("name", "prec", "rec", "f1", "clus"))
         for k in max_per_v:
             prec = max_per_v[k]['prec']
             rec = max_per_v[k]['num'] / counts[k]
@@ -111,10 +113,12 @@ class Clusterer:
             precs.append(prec)
             recs.append(rec)
             f1s.append(f1)
-            print("{:<35} {:<5} {:<5} {:<5} {:<5}".format(k, round(prec, 3), round(rec, 3), round(f1, 3),
-                                                          max_per_v[k]['clus_id']))
+            if print_eval:
+                print("{:<35} {:<5} {:<5} {:<5} {:<5}".format(k, round(prec, 3), round(rec, 3), round(f1, 3),
+                                                              max_per_v[k]['clus_id']))
         p, r, f = sum(precs) / len(precs), sum(recs) / len(recs), sum(f1s) / len(f1s)
-        print("Average: Precision (%.3f), Recall (%.3f), F1 (%.3f)" % (p, r, f))
+        if print_eval:
+            print("Average: Precision (%.3f), Recall (%.3f), F1 (%.3f)" % (p, r, f))
         return p, r, f
 
 
@@ -168,11 +172,13 @@ class PMap:
             found = props[0]
             self.mappings[found] = found
 
-        for p in props[1:]:
+        for p in props:
             self.mappings[p] = found
 
     def get(self, prop):
         if prop not in self.mappings:
+            print("mappings: ")
+            print(self.mappings.keys())
             print("PMap .. adding a new property: %s" % prop)
             self.mappings[prop] = prop
         return self.mappings[prop]

@@ -68,6 +68,8 @@ def cluster_t2dv2_df(df, clusterer, fetch_method, err_meth, err_cutoff, same_cla
     for idx, row_and_i in enumerate(df.iterrows()):
         i, row = row_and_i
         pmap.add(row['property'].split(';'))
+        # print("\n\tproperties: ")
+        # print(row['property'].split(';'))
         # if idx >= 15:
         #     break
         col = get_col(fname=row['filename']+".csv", colid=row['columnid'])
