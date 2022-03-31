@@ -177,9 +177,13 @@ class PMap:
 
     def get(self, prop):
         if prop not in self.mappings:
-            print("mappings: ")
-            print(self.mappings.keys())
-            print("PMap .. adding a new property: %s" % prop)
-            self.mappings[prop] = prop
+            print(self.mappings)
+            raise Exception("The provided property <%s> was not added." % prop)
+        # if prop not in self.mappings:
+        #     print("mappings: ")
+        #     print(self.mappings.keys())
+        #     print("PMap .. adding a new property: %s" % prop)
+        #     print("This shouldn't be printed in general. Put it depends on the use case")
+        #     self.mappings[prop] = prop
         return self.mappings[prop]
 
