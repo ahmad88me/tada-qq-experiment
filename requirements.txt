@@ -5,5 +5,5 @@ pcake==0.0.3
 Pillow==8.4.0
 pyparsing==3.0.7
 seaborn==0.11.2
-tada-qq==2.0.2
+tada-qq==2.0.3
 coverage==6.2
