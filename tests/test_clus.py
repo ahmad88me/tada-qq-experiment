@@ -3,6 +3,7 @@ import os
 import pandas as pd
 from clus import common
 from collections import Counter
+from tadaqq.clus import Clusterer
 
 
 class ClusTest(unittest.TestCase):
@@ -18,7 +19,7 @@ class ClusTest(unittest.TestCase):
         for g in a:
             clus = [{'gs_clus': cl} for cl in g]
             groups.append(clus)
-        clusterer = common.Clusterer()
+        clusterer = Clusterer()
         clusterer.groups = groups
         p, r, f1 = clusterer.evaluate(c)
         self.assertEqual(p, 2/3)
@@ -42,7 +43,7 @@ class ClusTest(unittest.TestCase):
         err_cutoff = 0.3
         err_meth = "mean_err"
         fetch_method = "max"
-        clusterer = common.Clusterer()
+        clusterer = Clusterer()
         clusterer.groups = groups
         for ele in eles:
             ele['num'] = len(ele['col'])

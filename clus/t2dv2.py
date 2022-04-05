@@ -5,7 +5,7 @@ from datetime import datetime
 import pandas as pd
 from tadaqq.util import uri_to_fname
 from pandas.api.types import is_numeric_dtype
-from clus.common import Clusterer, PMap
+from tadaqq.clus import Clusterer, PMap
 from tadaqq.util import get_columns_data
 
 try:

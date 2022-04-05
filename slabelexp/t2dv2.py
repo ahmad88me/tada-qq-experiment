@@ -4,11 +4,11 @@ import argparse
 
 import numpy as np
 from slabelexp import common
-from slabelexp.common import compute_scores, compute_scores_per_key
+from slabelexp.common import compute_scores_per_key
 from slabelexp.common import get_num_rows, compute_counts, compute_counts_per_err_meth, print_md_scores
 import pandas as pd
 from tadaqq.slabel import SLabel
-from tadaqq.util import uri_to_fname
+from tadaqq.util import uri_to_fname, compute_scores
 
 SPARQL_ENDPOINT = "https://en-dbpedia.oeg.fi.upm.es/sparql"
 # The minimum number of objects for a numeric property

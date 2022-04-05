@@ -1,9 +1,10 @@
 import os
 from datetime import datetime
 from slabelexp import common
-from slabelexp.common import compute_scores, print_md_scores
+from tadaqq.util import compute_scores
+from slabelexp.common import print_md_scores
 
-from tadaqq.slabel.util import uri_to_fname
+from tadaqq.util import uri_to_fname
 from tadaqq.slabel import SLabel
 
 SHOW_LOGS = False

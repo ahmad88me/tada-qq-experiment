@@ -2,10 +2,10 @@ import os
 import argparse
 from datetime import datetime
 import pandas as pd
-from clus.common import Clusterer
+from tadaqq.clus import Clusterer
 from clus.t2dv2 import get_class_property_groups, get_col, cluster_t2dv2_df
 from slabelexp.t2dv2 import fetch_t2dv2_data, get_folder_name_from_params
-from merged.slabmer import SLabMer
+from tadaqq.slabmer import SLabMer
 from tadaqq.util import create_dir
 from merged.common import print_md_scores
 
@@ -54,7 +54,7 @@ def annotate_t2dv2(endpoint, remove_outliers, err_meths, estimates, err_cutoffs,
 
 def parse_arguments():
     """
-    Parse command line arguments
+        Parse command line arguments
     """
     parser = argparse.ArgumentParser(description='Parameters for the experiment')
     parser.add_argument('-e', '--err-meths', default=["mean_err"], nargs="+",
