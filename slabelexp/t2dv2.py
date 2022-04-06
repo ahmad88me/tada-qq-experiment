@@ -15,12 +15,7 @@ SPARQL_ENDPOINT = "https://en-dbpedia.oeg.fi.upm.es/sparql"
 MIN_NUM_OBJ = 30
 SHOW_LOGS = False
 
-if 't2dv2_dir' not in os.environ:
-    print("ERROR: t2dv2_dir no in os.environ")
 
-data_dir = os.path.join(os.environ['t2dv2_dir'], 'csv')
-meta_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_typology.csv')
-properties_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_properties.csv')
 
 
 err_meth_fname_dict = {
@@ -53,14 +48,14 @@ def get_folder_name_from_params(err_meth, use_estimate, remove_outliers, loose):
 
 
 def annotate_t2dv2_single_column(row, sl, files_k, eval_per_prop, eval_per_sub_kind, err_meth, use_estimate,
-                                 remove_outliers, folder_name, eval_data):
+                                 remove_outliers, folder_name, eval_data, data_dir, diffs=None):
     class_uri = 'http://dbpedia.org/ontology/' + row['concept']
     col_id = int(row['columnid'])
     uris = row['property'].split(';')
     trans_uris = [uri_to_fname(uri) for uri in uris]
     csv_fname = row['filename'] + ".csv"
     fdir = os.path.join(data_dir, csv_fname)
-    print("TEST class URI: %s" % class_uri)
+    # print("TEST class URI: %s" % class_uri)
     preds = sl.annotate_file(fdir=fdir, class_uri=class_uri, remove_outliers=remove_outliers, cols=[col_id],
                              err_meth=err_meth, estimate=use_estimate)
     pconcept = row['pconcept']
@@ -91,7 +86,8 @@ def annotate_t2dv2_single_column(row, sl, files_k, eval_per_prop, eval_per_sub_k
         eval_per_sub_kind[sub_kind].append(res)
 
 
-def annotate_t2dv2_single_param_set(endpoint, df, err_meth_scores, err_meth, use_estimate, remove_outliers, loose):
+def annotate_t2dv2_single_param_set(endpoint, df, err_meth_scores, err_meth, use_estimate, remove_outliers, loose,
+                                    data_dir, diffs=None, draw=False):
     sl = SLabel(endpoint=endpoint, min_num_objs=MIN_NUM_OBJ)
     eval_data = []
     scores = []
@@ -102,7 +98,9 @@ def annotate_t2dv2_single_param_set(endpoint, df, err_meth_scores, err_meth, use
     eval_per_sub_kind = dict()
     for idx, row in df.iterrows():
         annotate_t2dv2_single_column(row, sl, files_k, eval_per_prop, eval_per_sub_kind, err_meth, use_estimate,
-                                     remove_outliers, folder_name, eval_data)
+                                     remove_outliers, folder_name, eval_data, data_dir=data_dir, diffs=diffs)
+
+    # print(eval_data)
     prec, rec, f1 = compute_scores(eval_data, k=1)
     score = {
         'ro': remove_outliers,
@@ -114,20 +112,21 @@ def annotate_t2dv2_single_param_set(endpoint, df, err_meth_scores, err_meth, use
     }
     scores.append(score)
     folder_new_name = os.path.join('results', 'slabelling', folder_name)
-    print("\n\n================\n %s + %s + %s\n================\n" % (est_txt, err_meth, remove_outliers_txt))
-    compute_scores_per_key(eval_per_prop, folder_new_name)
-    if SHOW_LOGS:
-        print("\n\n================\n %s + %s + %s" % (est_txt, err_meth, remove_outliers_txt))
-    sub_folder_name = "sub_kind-%s" % (folder_name)
-    compute_scores_per_key(eval_per_sub_kind, os.path.join('results', 'slabelling', sub_folder_name),
-                           print_scores=True)
-    folder_new_datapoint_name = os.path.join('results', 'slabelling', "datapoints-%s" % (folder_name))
-    scores_df = compute_counts(files_k, folder_new_datapoint_name)
+    # print("\n\n================\n %s + %s + %s\n================\n" % (est_txt, err_meth, remove_outliers_txt))
+    if draw:
+        compute_scores_per_key(eval_per_prop, folder_new_name)
+        if SHOW_LOGS:
+            print("\n\n================\n %s + %s + %s" % (est_txt, err_meth, remove_outliers_txt))
+        sub_folder_name = "sub_kind-%s" % (folder_name)
+        compute_scores_per_key(eval_per_sub_kind, os.path.join('results', 'slabelling', sub_folder_name),
+                               print_scores=True)
+        folder_new_datapoint_name = os.path.join('results', 'slabelling', "datapoints-%s" % (folder_name))
+        scores_df = compute_counts(files_k, folder_new_datapoint_name)
 
-    if est_txt not in err_meth_scores:
-        err_meth_scores[est_txt] = dict()
+        if est_txt not in err_meth_scores:
+            err_meth_scores[est_txt] = dict()
 
-    err_meth_scores[est_txt][err_meth] = scores_df
+        err_meth_scores[est_txt][err_meth] = scores_df
     return scores
 
 
@@ -140,7 +139,7 @@ def fetch_t2dv2_data():
     return df
 
 
-def annotate_t2dv2(endpoint, remove_outliers, err_meths, loose=False, estimate=[True], diffs=False):
+def annotate_t2dv2(endpoint, remove_outliers, err_meths, data_dir, loose=False, estimate=[True], diffs=False):
     """
     endpoint:
     remove_outliers: bool
@@ -153,7 +152,7 @@ def annotate_t2dv2(endpoint, remove_outliers, err_meths, loose=False, estimate=[
     for use_estimate in estimate:
         for err_meth in err_meths:
             scores_single = annotate_t2dv2_single_param_set(endpoint, df, err_meth_scores, err_meth, use_estimate,
-                                                            remove_outliers, loose)
+                                                            remove_outliers, loose, data_dir, diffs=diffs, draw=True)
             scores += scores_single
 
     print_md_scores(scores)
@@ -186,12 +185,12 @@ def parse_arguments():
 
 if __name__ == '__main__':
 
-    # if 't2dv2_dir' not in os.environ:
-    #     print("ERROR: t2dv2_dir no in os.environ")
-    #
-    # data_dir = os.path.join(os.environ['t2dv2_dir'], 'csv')
-    # meta_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_typology.csv')
-    # properties_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_properties.csv')
+    if 't2dv2_dir' not in os.environ:
+        print("ERROR: t2dv2_dir no in os.environ")
+
+    data_dir = os.path.join(os.environ['t2dv2_dir'], 'csv')
+    meta_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_typology.csv')
+    properties_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_properties.csv')
 
     common.PRINT_DIFF = SHOW_LOGS
     a = datetime.now()
@@ -199,7 +198,7 @@ if __name__ == '__main__':
 
     # ["mean_err", "mean_sq_err", "mean_sq1_err"]
     annotate_t2dv2(endpoint=SPARQL_ENDPOINT, remove_outliers=outlier_removal, err_meths=err_meths,
-                   estimate=estimate, loose=loose, diffs=diffs)
+                   estimate=estimate, loose=loose, diffs=diffs, data_dir=data_dir)
     b = datetime.now()
     # print("\n\nTime it took (in seconds): %f.1 seconds\n\n" % (b - a).total_seconds())
     print("\n\nTime it took: %.1f minutes\n\n" % ((b - a).total_seconds() / 60.0))

@@ -1,0 +1,111 @@
+﻿filename,concept,column,property,columnid,kind,sub_kind,pconcept,loose
+1146722_1_7558140036342906956.tar.gz,Mountain,elevation in m,http://dbpedia.org/property/elevationM;http://dbpedia.org/ontology/elevation,6,ratio-interval,other,elevation,
+11688006_0_8123036130090004213.tar.gz,Country,population,http://dbpedia.org/ontology/populationTotal;http://dbpedia.org/property/populationEstimate;http://dbpedia.org/property/pop;http://dbpedia.org/property/populationCensus,2,ratio-interval,count,population,
+11688006_0_8123036130090004213.tar.gz,Country,area sq. km,http://dbpedia.org/property/areaKm;http://dbpedia.org/ontology/PopulatedPlace/areaTotal,3,ratio-interval,other,area,
+11688006_0_8123036130090004213.tar.gz,Country,area sq. mi,http://dbpedia.org/property/areaSqMi,5,ratio-interval,other,area,
+13395751_3_369722706637560735.tar.gz,Lake,height,http://dbpedia.org/property/height,3,ratio-interval,other,elevation,
+14311244_0_7604843865524657408.tar.gz,Mountain,elevation in m,http://dbpedia.org/property/elevationM;http://dbpedia.org/ontology/elevation,1,ratio-interval,other,elevation,
+15700884_0_8204220284166767221.tar.gz,Company,number of employees  ,http://dbpedia.org/property/employees,2,ratio-interval,count,number of employees,
+16767252_0_2409448375013995751.tar.gz,Film,release year,http://dbpedia.org/property/released;http://dbpedia.org/property/year,2,year,,year,
+20135078_0_7570343137119682530.tar.gz,Film,yes,http://dbpedia.org/property/released;http://dbpedia.org/ontology/activeYearsStartYear;http://dbpedia.org/property/year,2,year,,year,
+2066887_0_746204117268168398.tar.gz,Saint,death data,http://dbpedia.org/ontology/deathYear,4,year,,year,
+21329809_0_5526008408364682899.tar.gz,City,city population   ,http://dbpedia.org/ontology/populationUrban;http://dbpedia.org/ontology/populationMetro;http://dbpedia.org/property/populationEstimate,3,ratio-interval,count,population,yes
+21329809_0_5526008408364682899.tar.gz,City,population metro,http://dbpedia.org/ontology/populationUrban;http://dbpedia.org/ontology/populationMetro;http://dbpedia.org/property/populationEstimate,4,ratio-interval,count,population,yes
+21337553_0_8832378999628437599.tar.gz,Mountain,elevation in m,http://dbpedia.org/property/elevationM;http://dbpedia.org/ontology/elevation,2,ratio-interval,other,elevation,
+21362676_0_6854186738074119688.tar.gz,Film,released,http://dbpedia.org/property/released;http://dbpedia.org/property/year,2,year,,year,
+24036779_0_5608105867560183058.tar.gz,Country,area,http://dbpedia.org/property/areaKm;http://dbpedia.org/ontology/PopulatedPlace/areaTotal,1,ratio-interval,other,area,
+24036779_0_5608105867560183058.tar.gz,Country,population,http://dbpedia.org/ontology/populationTotal;http://dbpedia.org/property/populationEstimate;http://dbpedia.org/property/pop;http://dbpedia.org/property/populationCensus,4,ratio-interval,count,population,
+24417511_0_3058323105166963431.tar.gz,BaseballPlayer,hall of fame year,http://dbpedia.org/property/hofdate,0,year,,year,
+24850757_0_5978004733768297283.tar.gz,Country,population,http://dbpedia.org/ontology/populationTotal;http://dbpedia.org/property/populationEstimate;http://dbpedia.org/property/pop;http://dbpedia.org/property/populationCensus,1,ratio-interval,count,population,
+25404227_0_2240631045609013057.tar.gz,Film,release year,http://dbpedia.org/property/released,2,year,,year,
+26270372_1_3774607938887520564.tar.gz,Monarch,num of years,http://dbpedia.org/property/years;http://dbpedia.org/property/reign,2,ratio-interval,count,number of years,
+26310680_0_5150772059999313798.tar.gz,Currency,ios numeric code,http://dbpedia.org/property/isoNumber,3,nominal,random,iso number,
+27466715_0_3913547177671701530.tar.gz,VideoGame,released,http://dbpedia.org/property/release;http://dbpedia.org/property/released;http://dbpedia.org/property/yearOfInception,1,year,,year,
+28036255_0_5705563063166785494.tar.gz,Mountain,elevation in m,http://dbpedia.org/property/elevationM;http://dbpedia.org/ontology/elevation,1,ratio-interval,other,elevation,
+28154036_0_909001972154294543.tar.gz,PoliticalParty,number of seats,http://dbpedia.org/property/seats,3,ratio-interval,count,number of seats,
+28993628_1_6072768612274729703.tar.gz,Mountain,elevation in m,http://dbpedia.org/property/elevationM;http://dbpedia.org/ontology/elevation,2,ratio-interval,other,elevation,
+29414811_12_251152470253168163.tar.gz,VideoGame,released,http://dbpedia.org/property/release;http://dbpedia.org/property/released;http://dbpedia.org/property/yearOfInception,0,year,,year,
+29414811_13_8724394428539174350.tar.gz,VideoGame,released,http://dbpedia.org/property/release;http://dbpedia.org/property/released;http://dbpedia.org/property/yearOfInception,0,year,,year,
+29414811_2_4773219892816395776.tar.gz,VideoGame,released,http://dbpedia.org/property/release;http://dbpedia.org/property/released;http://dbpedia.org/property/yearOfInception,0,year,,year,
+29414811_6_8221428333921653560.tar.gz,VideoGame,released,http://dbpedia.org/property/release;http://dbpedia.org/property/released;http://dbpedia.org/property/yearOfInception,0,year,,year,
+29886325_0_1448173912684571475.tar.gz,City,city population   ,http://dbpedia.org/ontology/populationUrban;http://dbpedia.org/ontology/populationMetro;http://dbpedia.org/property/populationEstimate,3,ratio-interval,count,population,yes
+29886325_0_1448173912684571475.tar.gz,City,population metro,http://dbpedia.org/ontology/populationUrban;http://dbpedia.org/ontology/populationMetro;http://dbpedia.org/property/populationEstimate,4,ratio-interval,count,population,yes
+32812626_0_5428724146873158593.tar.gz,Hospital,number of beds,http://dbpedia.org/property/beds,2,ratio-interval,count,number of beds,
+3389822_6_374624044314151266.tar.gz,Mountain,elevation in m,http://dbpedia.org/property/elevationM;http://dbpedia.org/ontology/elevation,2,ratio-interval,other,elevation,
+34041816_1_4749054164534706977.tar.gz,Airport,number of passengers,http://dbpedia.org/ontology/passengersPerYear,4,ratio-interval,count,,
+35188621_0_6058553107571275232.tar.gz,Film,Release year,http://dbpedia.org/property/released;http://dbpedia.org/property/year,2,year,,year,
+36039980_4_4283009829602711082.tar.gz,Mountain,elevation in m,http://dbpedia.org/property/elevationM;http://dbpedia.org/ontology/elevation,2,ratio-interval,other,elevation,
+38428277_0_1311643810102462607.tar.gz,Film,year,http://dbpedia.org/property/released;http://dbpedia.org/property/established,2,year,,year,
+3887681_0_7938589465814037992.tar.gz,Lake,Building start year,http://dbpedia.org/ontology/buildingStartDate,3,year,,year,
+39107734_2_2329160387535788734.tar.gz,Airport,passengers,http://dbpedia.org/ontology/passengersPerYear,4,ratio-interval,count,,
+3917335_0_7791699395300625164.tar.gz,Country,area,http://dbpedia.org/property/areaKm;http://dbpedia.org/ontology/PopulatedPlace/areaTotal,2,ratio-interval,other,area,
+3917335_0_7791699395300625164.tar.gz,Country,population,http://dbpedia.org/ontology/populationTotal;http://dbpedia.org/property/populationEstimate;http://dbpedia.org/property/pop;http://dbpedia.org/property/populationCensus,3,ratio-interval,count,population,
+39173938_0_7916056990138658530.tar.gz,Film,released,http://dbpedia.org/property/released;http://dbpedia.org/property/established,2,year,,year,
+39759273_0_1427898308030295194.tar.gz,Film,publication year,http://dbpedia.org/property/released;http://dbpedia.org/property/pubDate;http://dbpedia.org/property/year;http://dbpedia.org/property/recorded,2,year,,year,
+39759273_0_1427898308030295194.tar.gz,Film,IMDB votes,http://dbpedia.org/property/imdb,5,ratio-interval,count,imdb votes,
+40844462_1_6230938203735169234.tar.gz,Film,release date,http://dbpedia.org/property/released;http://dbpedia.org/property/pubDate;http://dbpedia.org/property/year,2,year,,year,
+41194422_0_7231546114369966811.tar.gz,Country,rank,http://dbpedia.org/property/populationDensityRank,0,ordinal,,population density rank,
+41194422_0_7231546114369966811.tar.gz,Country,population,http://dbpedia.org/ontology/populationTotal;http://dbpedia.org/property/populationEstimate;http://dbpedia.org/property/pop;http://dbpedia.org/property/populationCensus,2,ratio-interval,count,population,
+41194422_1_1172256090552737974.tar.gz,Country,population estimate rank,http://dbpedia.org/property/populationEstimateRank,0,ordinal,,population estimate rank,
+41194422_1_1172256090552737974.tar.gz,Country,population,http://dbpedia.org/ontology/populationTotal;http://dbpedia.org/property/populationEstimate;http://dbpedia.org/property/pop;http://dbpedia.org/property/populationCensus,2,ratio-interval,count,population,
+43469354_0_6029017163991310319.tar.gz,City,city population   ,http://dbpedia.org/ontology/populationUrban;http://dbpedia.org/ontology/populationMetro;http://dbpedia.org/property/populationEstimate,3,ratio-interval,count,population,yes
+43469354_0_6029017163991310319.tar.gz,City,population metro,http://dbpedia.org/ontology/populationUrban;http://dbpedia.org/ontology/populationMetro;http://dbpedia.org/property/populationEstimate,4,ratio-interval,count,population,yes
+44206774_0_3810538885942465703.tar.gz,GolfPlayer,total of wins,http://dbpedia.org/property/jlpgawins,4,ratio-interval,count,number of wins,
+4444204_0_951426790527152756.tar.gz,City,city population   ,http://dbpedia.org/ontology/populationUrban;http://dbpedia.org/ontology/populationMetro;http://dbpedia.org/property/populationEstimate,3,ratio-interval,count,population,yes
+4444204_0_951426790527152756.tar.gz,City,population metro,http://dbpedia.org/ontology/populationUrban;http://dbpedia.org/ontology/populationMetro;http://dbpedia.org/property/populationEstimate,4,ratio-interval,count,population,yes
+49087820_0_461228320225084868.tar.gz,Currency,iso number,http://dbpedia.org/property/isoNumber,3,nominal,random,iso number,
+49772588_0_6549847739640234347.tar.gz,Country,population,http://dbpedia.org/ontology/populationTotal;http://dbpedia.org/property/populationEstimate;http://dbpedia.org/property/pop;http://dbpedia.org/property/populationCensus,2,ratio-interval,count,population,
+49801939_0_6964113429298874283.tar.gz,Mountain,elevation in ft,http://dbpedia.org/property/elevationFt,1,ratio-interval,other,elevation,
+50245608_0_871275842592178099.tar.gz,Film,year,http://dbpedia.org/property/released;http://dbpedia.org/ontology/foundingYear;http://dbpedia.org/property/recorded,1,year,,year,
+50245608_0_871275842592178099.tar.gz,Film,length,http://dbpedia.org/property/length,5,ratio-interval,other,film length,
+52299421_0_4473286348258170200.tar.gz,Country,population,http://dbpedia.org/ontology/populationTotal;http://dbpedia.org/property/populationEstimate;http://dbpedia.org/property/pop;http://dbpedia.org/property/populationCensus,6,ratio-interval,count,population,
+53822652_0_5767892317858575530.tar.gz,Film,released,http://dbpedia.org/property/released;http://dbpedia.org/property/relyear;http://dbpedia.org/property/years;http://dbpedia.org/property/recorded,2,year,,year,
+54719588_0_8417197176086756912.tar.gz,Film,release date,http://dbpedia.org/property/released;http://dbpedia.org/property/pubDate,6,year,,year,
+55961337_0_6548713781034932742.tar.gz,Currency,iso number ,http://dbpedia.org/property/isoNumber,3,nominal,random,iso number,
+57938705_0_8737506792349461963.tar.gz,VideoGame,released,http://dbpedia.org/property/release;http://dbpedia.org/property/released;http://dbpedia.org/property/yearOfInception,3,year,,year,
+58891288_0_1117541047012405958.tar.gz,Film,released,http://dbpedia.org/property/released,2,year,,year,
+5972322_0_3150366936082777235.tar.gz,Election,votes,http://dbpedia.org/property/votes;http://dbpedia.org/property/candidate3Votes,1,ratio-interval,count,number of votes,yes
+61069974_0_1894536874590565102.tar.gz,Currency,iso number ,http://dbpedia.org/property/isoNumber,3,nominal,random,iso number,
+66329615_0_3585856495110277641.tar.gz,VideoGame,released,http://dbpedia.org/property/recorded,0,year,,year,
+67865873_0_8259587610208037357.tar.gz,Country,population,http://dbpedia.org/ontology/populationTotal;http://dbpedia.org/property/populationEstimate;http://dbpedia.org/property/pop;http://dbpedia.org/property/populationCensus,2,ratio-interval,count,population,
+68779923_0_3859283110041832023.tar.gz,Country,founding/independence year,http://dbpedia.org/ontology/foundingYear;http://dbpedia.org/property/years;http://dbpedia.org/property/created;http://dbpedia.org/property/fromyr,1,year,,year,yes
+68779923_1_3240042497463101224.tar.gz,Country,independent year,http://dbpedia.org/ontology/foundingYear;http://dbpedia.org/property/years;http://dbpedia.org/property/created;http://dbpedia.org/property/fromyr,1,year,,year,yes
+68779923_2_1000046510804975562.tar.gz,Country,year of change,http://dbpedia.org/ontology/foundingYear;http://dbpedia.org/property/years;http://dbpedia.org/property/created;http://dbpedia.org/property/fromyr,1,year,,year,yes
+68779923_5_2067037721454758189.tar.gz,Country,declared/ deputy,http://dbpedia.org/ontology/foundingYear;http://dbpedia.org/property/years;http://dbpedia.org/property/created;http://dbpedia.org/property/fromyr,1,year,,year,yes
+69537082_0_7789694313271016902.tar.gz,Country,population rank,http://dbpedia.org/property/populationEstimateRank,0,ordinal,,population estimate rank,
+69537082_0_7789694313271016902.tar.gz,Country,population,http://dbpedia.org/ontology/populationTotal;http://dbpedia.org/property/populationEstimate;http://dbpedia.org/property/pop;http://dbpedia.org/property/populationCensus,2,ratio-interval,count,population,
+69881946_0_1105130426898457358.tar.gz,Film,years,http://dbpedia.org/property/released;http://dbpedia.org/property/year,2,year,,year,
+70404164_0_5498195978476333642.tar.gz,City,city population   ,http://dbpedia.org/ontology/populationUrban;http://dbpedia.org/ontology/populationMetro;http://dbpedia.org/property/populationEstimate,3,ratio-interval,count,population,yes
+70404164_0_5498195978476333642.tar.gz,City,population metro,http://dbpedia.org/ontology/populationUrban;http://dbpedia.org/ontology/populationMetro;http://dbpedia.org/property/populationEstimate,4,ratio-interval,count,population,yes
+72017594_0_7055198579167316152.tar.gz,Museum,number of visitors 2009,http://dbpedia.org/ontology/numberOfVisitors;http://dbpedia.org/property/visitors,2,ratio-interval,count,number of visitors,yes
+72017594_0_7055198579167316152.tar.gz,Museum,number of visitors 2010,http://dbpedia.org/ontology/numberOfVisitors;http://dbpedia.org/property/visitors,3,ratio-interval,count,number of visitors,yes
+73988811_0_2775758476756716904.tar.gz,Film,"release date, we considered first aired to be an accebtable guess ",http://dbpedia.org/property/released;http://dbpedia.org/property/firstAired;http://dbpedia.org/property/recorded;http://dbpedia.org/property/year,2,year,,year,
+75154185_0_1607627349983289012.tar.gz,City,city population   ,http://dbpedia.org/ontology/populationUrban;http://dbpedia.org/ontology/populationMetro;http://dbpedia.org/property/populationEstimate,3,ratio-interval,count,population,yes
+75154185_0_1607627349983289012.tar.gz,City,population metro,http://dbpedia.org/ontology/populationUrban;http://dbpedia.org/ontology/populationMetro;http://dbpedia.org/property/populationEstimate,4,ratio-interval,count,population,yes
+76275868_0_4528346580716713695.tar.gz,Country,population  ,http://dbpedia.org/ontology/populationTotal;http://dbpedia.org/property/populationEstimate;http://dbpedia.org/property/pop;http://dbpedia.org/property/populationCensus,1,ratio-interval,count,population,
+77632062_0_2292892375652659825.tar.gz,City,city population   ,http://dbpedia.org/ontology/populationUrban;http://dbpedia.org/ontology/populationMetro;http://dbpedia.org/property/populationEstimate,3,ratio-interval,count,population,yes
+77632062_0_2292892375652659825.tar.gz,City,population metro,http://dbpedia.org/ontology/populationUrban;http://dbpedia.org/ontology/populationMetro;http://dbpedia.org/property/populationEstimate,4,ratio-interval,count,population,yes
+77694908_0_6083291340991074532.tar.gz,Film,Release date,http://dbpedia.org/property/released;http://dbpedia.org/property/year,2,year,,year,
+78891639_0_3299957631631122948.tar.gz,City,city population   ,http://dbpedia.org/ontology/populationUrban;http://dbpedia.org/ontology/populationMetro;http://dbpedia.org/property/populationEstimate,3,ratio-interval,count,population,yes
+78891639_0_3299957631631122948.tar.gz,City,population metro,http://dbpedia.org/ontology/populationUrban;http://dbpedia.org/ontology/populationMetro;http://dbpedia.org/property/populationEstimate,4,ratio-interval,count,population,yes
+8009320_0_5507755752653817624.tar.gz,Country,population density,http://dbpedia.org/ontology/populationDensity,1,ratio-interval,other,population,
+8009320_0_5507755752653817624.tar.gz,Country,area,http://dbpedia.org/property/areaKm;http://dbpedia.org/ontology/PopulatedPlace/areaTotal,2,ratio-interval,other,area,
+8009320_0_5507755752653817624.tar.gz,Country,population,http://dbpedia.org/ontology/populationTotal;http://dbpedia.org/property/populationEstimate;http://dbpedia.org/property/pop;http://dbpedia.org/property/populationCensus,3,ratio-interval,count,population,
+84548468_0_5955155464119382182.tar.gz,Film,release date,http://dbpedia.org/property/released;http://dbpedia.org/property/year,2,year,,year,
+86297395_0_6919201319699354263.tar.gz,Country,area,http://dbpedia.org/property/areaKm;http://dbpedia.org/ontology/PopulatedPlace/areaTotal,1,ratio-interval,other,area,
+86297395_0_6919201319699354263.tar.gz,Country,population,http://dbpedia.org/ontology/populationTotal;http://dbpedia.org/property/populationEstimate;http://dbpedia.org/property/pop;http://dbpedia.org/property/populationCensus,4,ratio-interval,count,population,
+86627271_6_2239821927452848323.tar.gz,Lake,area in Km,http://dbpedia.org/property/areaKm,2,ratio-interval,other,area in Km,
+86627271_6_2239821927452848323.tar.gz,Lake,altitude/ elevation,http://dbpedia.org/property/height;http://dbpedia.org/property/elevationM,3,ratio-interval,other,elevation,
+88353875_0_4876234304797064286.tar.gz,Mountain,elevation in ft,http://dbpedia.org/property/elevationFt,2,ratio-interval,other,elevation,
+88732174_0_7321365014357502211.tar.gz,BaseballPlayer,year  ,http://dbpedia.org/property/year;http://dbpedia.org/property/hofdate,0,year,,year,
+90593344_0_8311455501234425088.tar.gz,Mountain,elevation in ft,http://dbpedia.org/property/elevationFt,3,ratio-interval,other,elevation,
+91474256_0_964747655387573523.tar.gz,City,city population   ,http://dbpedia.org/ontology/populationUrban;http://dbpedia.org/ontology/populationMetro;http://dbpedia.org/property/populationEstimate,3,ratio-interval,count,population,yes
+91474256_0_964747655387573523.tar.gz,City,population metro,http://dbpedia.org/ontology/populationUrban;http://dbpedia.org/ontology/populationMetro;http://dbpedia.org/property/populationEstimate,4,ratio-interval,count,population,yes
+9206866_1_8114610355671172497.tar.gz,Country,population,http://dbpedia.org/ontology/populationTotal;http://dbpedia.org/property/populationEstimate;http://dbpedia.org/property/pop;http://dbpedia.org/property/populationCensus,4,ratio-interval,count,population,
+9475172_1_1023126399856690702.tar.gz,TelevisionShow,series,http://dbpedia.org/property/numSeries,2,nominal,random,series number,
+97941125_0_8220652154649529701.tar.gz,Currency,iso number,http://dbpedia.org/property/isoNumber,3,nominal,random,iso number,
+99070098_0_2074872741302696997.tar.gz,Mountain,elevation in ft,http://dbpedia.org/property/elevationFt,2,ratio-interval,other,elevation,
+1146722_1_7558140036342906956.tar.gz,Mountain,elevation in ft,http://dbpedia.org/property/elevationFt,5,ratio-interval,other,elevation,
+88353875_0_4876234304797064286.tar.gz,Mountain,elevation in m,http://dbpedia.org/property/elevationM;http://dbpedia.org/ontology/elevation,1,ratio-interval,other,elevation,
+90593344_0_8311455501234425088.tar.gz,Mountain,elevation in m,http://dbpedia.org/property/elevationM;http://dbpedia.org/ontology/elevation,2,ratio-interval,other,elevation,
+99070098_0_2074872741302696997.tar.gz,Mountain,elevation in m,http://dbpedia.org/property/elevationM;http://dbpedia.org/ontology/elevation,3,ratio-interval,other,elevation,

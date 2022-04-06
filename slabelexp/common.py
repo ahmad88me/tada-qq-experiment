@@ -4,7 +4,7 @@ from easysparql import easysparqlclass
 import seaborn as sns
 import matplotlib.pyplot as plt
 from pandas.api.types import CategoricalDtype
-
+from tadaqq.util import compute_scores
 
 PRINT_DIFF = True
 
@@ -346,8 +346,8 @@ def compute_counts_per_err_meth(scores_dict, fname):
 
 
 def print_md_scores(scores):
-    print("\n\n| %15s | %9s | %15s | %9s | %9s | %5s |" % (
-    "remove outlier", "estimate", "error method", "Precision", "Recall", "F1"))
+    print("\n\n| %15s | %9s | %15s | %9s | %9s | %5s |" % ("remove outlier", "estimate", "error method", "Precision",
+                                                           "Recall", "F1"))
     print("|:%s:|:%s:|:%s:|:%s:|:%s:|:%s:|" % ("-" * 15, "-" * 9, "-" * 15, "-" * 9, "-" * 9, "-" * 5))
     for sc in scores:
         ro, est, err_meth, prec, rec, f1 = sc['ro'], sc['est'], sc['err_meth'], sc['prec'], sc['rec'], sc['f1']

@@ -14,16 +14,16 @@ except:
     import common
 
 SHOW_LOGS = False
-
-if 't2dv2_dir' not in os.environ:
-    print("ERROR: t2dv2_dir no in os.environ")
-
 SPARQL_ENDPOINT = "https://en-dbpedia.oeg.fi.upm.es/sparql"
-data_dir = os.path.join(os.environ['t2dv2_dir'], 'csv')
-meta_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_typology.csv')
+
+# if 't2dv2_dir' not in os.environ:
+#     print("ERROR: t2dv2_dir no in os.environ")
+#
+# data_dir = os.path.join(os.environ['t2dv2_dir'], 'csv')
+# meta_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_typology.csv')
 
 
-def get_col(fname, colid):
+def get_col(data_dir, fname, colid):
     fpath = os.path.join(data_dir, fname)
     cols = get_columns_data(fpath, [colid])
     return cols[0][1]
@@ -63,7 +63,7 @@ def get_class_property_groups(df):
     return d, Counter(counts)
 
 
-def cluster_t2dv2_df(df, clusterer, fetch_method, err_meth, err_cutoff, same_class):
+def cluster_t2dv2_df(df, data_dir, clusterer, fetch_method, err_meth, err_cutoff, same_class):
     pmap = PMap()
     for idx, row_and_i in enumerate(df.iterrows()):
         i, row = row_and_i
@@ -72,7 +72,7 @@ def cluster_t2dv2_df(df, clusterer, fetch_method, err_meth, err_cutoff, same_cla
         # print(row['property'].split(';'))
         # if idx >= 15:
         #     break
-        col = get_col(fname=row['filename']+".csv", colid=row['columnid'])
+        col = get_col(data_dir=data_dir, fname=row['filename']+".csv", colid=row['columnid'])
         ele = {
             'class_uri': 'http://dbpedia.org/ontology/' + row['concept'],
             'col_id': row['columnid'],
@@ -86,7 +86,7 @@ def cluster_t2dv2_df(df, clusterer, fetch_method, err_meth, err_cutoff, same_cla
         clusterer.column_group_matching(ele, fetch_method, err_meth, err_cutoff, same_class)
 
 
-def clustering_workflow(fetch_method, err_meth, err_cutoff, same_class):
+def clustering_workflow(data_dir, fetch_method, err_meth, err_cutoff, same_class):
     df = pd.read_csv(meta_dir)
     df = df[df.property.notnull()]
     df = df[df["concept"].notnull()]
@@ -94,7 +94,7 @@ def clustering_workflow(fetch_method, err_meth, err_cutoff, same_class):
     df = df[df["loose"] != "yes"]
     cp_groups, counts = get_class_property_groups(df)
     clusterer = Clusterer(save_memory=False)
-    cluster_t2dv2_df(df, clusterer, fetch_method, err_meth, err_cutoff, same_class)
+    cluster_t2dv2_df(df, data_dir, clusterer, fetch_method, err_meth, err_cutoff, same_class)
     # for idx, row_and_i in enumerate(df.iterrows()):
     #     i, row = row_and_i
     #     # if idx >= 15:
@@ -124,10 +124,10 @@ def clustering_workflow(fetch_method, err_meth, err_cutoff, same_class):
     return clusterer.evaluate(counts)
 
 
-def workflow(fetch_method, err_meth, err_cutoffs, same_class):
+def workflow(data_dir, fetch_method, err_meth, err_cutoffs, same_class):
     scores = dict()
     for co in err_cutoffs:
-        scores[co] = clustering_workflow(fetch_method=fetch_method, err_meth=err_meth, err_cutoff=co,
+        scores[co] = clustering_workflow(data_dir, fetch_method=fetch_method, err_meth=err_meth, err_cutoff=co,
                                          same_class=same_class)
     if len(err_cutoffs) > 1:
         fpath = os.path.join('results', 'clustering', 't2dv2')
@@ -155,9 +155,15 @@ def parse_arguments():
 
 if __name__ == '__main__':
     a = datetime.now()
+    if 't2dv2_dir' not in os.environ:
+        print("ERROR: t2dv2_dir no in os.environ")
+
+    data_dir = os.path.join(os.environ['t2dv2_dir'], 'csv')
+    meta_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_typology.csv')
+
     err_meths, cutoffs, same_class = parse_arguments()
     for err_m in err_meths:
-        workflow(fetch_method="max", err_meth=err_m, err_cutoffs=cutoffs, same_class=same_class)
+        workflow(data_dir, fetch_method="max", err_meth=err_m, err_cutoffs=cutoffs, same_class=same_class)
     # ["mean_err", "mean_sq_err", "mean_sq1_err"]
     b = datetime.now()
     print("Time it took")
