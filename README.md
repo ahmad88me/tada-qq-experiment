@@ -214,196 +214,6 @@ mean square root + exact + outlier removed
 
 ![](results/slabelling/datapoints-t2dv2-mean-sqroot-err-exact.svg)
 
-<!--
-### Performance and Typology
-
-#### Raw
-
-##### estimate + mean_err + raw
-
-![](sub_kind-t2dv2-mean-err-estimate-raw.svg)
-
-|Key | Precision | Recall | F1 |
-|:-----:|:-----:|:-----:|:-----:|
-| other | 0.23 | 1.00 | 0.38| 
-| count | 0.70 | 1.00 | 0.82| 
-| year | 0.76 | 0.70 | 0.73| 
-| random | 0.50 | 1.00 | 0.67| 
-| ordinal | 0.33 | 1.00 | 0.50| 
-
-
-
-
-
-##### estimate + mean_sq_err + raw
-
-![](sub_kind-t2dv2-mean-sq-err-estimate-raw.svg)
-
-|Key | Precision | Recall | F1 |
-|:-----:|:-----:|:-----:|:-----:|
-| other | 0.23 | 1.00 | 0.38| 
-| count | 0.70 | 1.00 | 0.82| 
-| year | 0.76 | 0.70 | 0.73| 
-| random | 0.50 | 1.00 | 0.67| 
-| ordinal | 0.33 | 1.00 | 0.50| 
-
-
-
-##### estimate + mean_sqroot_err + raw
-
-![](sub_kind-t2dv2-mean-sqroot-err-estimate-raw.svg)
-
-
-| Key | Precision | Recall | F1 |
-|:-----:|:-----:|:-----:|:-----:|
-| other | 0.23 | 1.00 | 0.38| 
-| count | 0.70 | 1.00 | 0.82| 
-| year | 0.76 | 0.70 | 0.73| 
-| random | 0.50 | 1.00 | 0.67| 
-| ordinal | 0.33 | 1.00 | 0.50| 
-
-
-
-
-
-##### exact + mean_err + raw
-
-![](sub_kind-t2dv2-mean-err-exact-raw.svg)
-
-|Key | Precision | Recall | F1 |
-|:-----:|:-----:|:-----:|:-----:|
-| other | 0.23 | 1.00 | 0.38| 
-| count | 0.70 | 1.00 | 0.82| 
-| year | 0.76 | 0.70 | 0.73| 
-| random | 0.50 | 1.00 | 0.67| 
-| ordinal | 0.33 | 1.00 | 0.50| 
-
-
-
-
-
- ##### exact + mean_sq_err + raw
-
-![](sub_kind-t2dv2-mean-sq-err-exact-raw.svg)
-
-
-|Key | Precision | Recall | F1 |
-|:-----:|:-----:|:-----:|:-----:|
-| other | 0.23 | 1.00 | 0.38| 
-| count | 0.70 | 1.00 | 0.82| 
-| year | 0.76 | 0.70 | 0.73| 
-| random | 0.50 | 1.00 | 0.67| 
-| ordinal | 0.33 | 1.00 | 0.50| 
-
-
-
-
-
- ##### exact + mean_sqroot_err + raw
-
-![](sub_kind-t2dv2-mean-sqroot-err-exact-raw.svg)
-
-|Key | Precision | Recall | F1 |
-|:-----:|:-----:|:-----:|:-----:|
-| other | 0.19 | 1.00 | 0.32| 
-| count | 0.65 | 1.00 | 0.79| 
-| year | 0.76 | 0.70 | 0.73| 
-| random | 0.50 | 1.00 | 0.67| 
-| ordinal | 0.33 | 1.00 | 0.50| 
-
-
-#### Outlier Removal
-
-##### estimate + mean_err + remove-outliers
-
-![](sub_kind-t2dv2-mean-err-estimate.svg)
-
-|Key | Precision | Recall | F1 |
-|:-----:|:-----:|:-----:|:-----:|
-| other | 0.23 | 1.00 | 0.38| 
-| count | 0.50 | 1.00 | 0.67| 
-| year | 0.76 | 0.70 | 0.73| 
-| random | 0.67 | 1.00 | 0.80| 
-| ordinal | 0.33 | 1.00 | 0.50| 
-
-
-
- ##### estimate + mean_sq_err + remove-outliers
-
-![](sub_kind-t2dv2-mean-sq-err-estimate.svg)
-
-|Key | Precision | Recall | F1 |
-|:-----:|:-----:|:-----:|:-----:|
-| other | 0.23 | 1.00 | 0.38| 
-| count | 0.60 | 1.00 | 0.75| 
-| year | 0.76 | 0.70 | 0.73| 
-| random | 0.50 | 1.00 | 0.67| 
-| ordinal | 0.33 | 1.00 | 0.50| 
-
-
-
-
- ##### estimate + mean_sqroot_err + remove-outliers
-
-![](sub_kind-t2dv2-mean-sqroot-err-estimate.svg)
-
-|Key | Precision | Recall | F1 |
-|:-----:|:-----:|:-----:|:-----:|
-| other | 0.23 | 1.00 | 0.38| 
-| count | 0.55 | 1.00 | 0.71| 
-| year | 0.81 | 0.71 | 0.76| 
-| random | 0.67 | 1.00 | 0.80| 
-| ordinal | 0.33 | 1.00 | 0.50| 
-
-
-
-
- ##### exact + mean_err + remove-outliers
-
-![](sub_kind-t2dv2-mean-err-exact.svg)
-
-|Key | Precision | Recall | F1 |
-|:-----:|:-----:|:-----:|:-----:|
-| other | 0.19 | 1.00 | 0.32| 
-| count | 0.40 | 1.00 | 0.57| 
-| year | 0.81 | 0.71 | 0.76| 
-| random | 0.50 | 1.00 | 0.67| 
-| ordinal | 0.33 | 1.00 | 0.50| 
-
-
-
- ##### exact + mean_sq_err + remove-outliers
-
-![](sub_kind-t2dv2-mean-sq-err-exact.svg)
-
-|Key | Precision | Recall | F1 |
-|:-----:|:-----:|:-----:|:-----:|
-| other | 0.23 | 1.00 | 0.38| 
-| count | 0.50 | 1.00 | 0.67| 
-| year | 0.81 | 0.71 | 0.76| 
-| random | 0.50 | 1.00 | 0.67| 
-| ordinal | 0.33 | 1.00 | 0.50| 
-
-
-
-
-
-##### exact + mean_sqroot_err + remove-outliers
-
-
-![](sub_kind-t2dv2-mean-sqroot-err-exact.svg)
-
-|Key | Precision | Recall | F1 |
-|:-----:|:-----:|:-----:|:-----:|
-| other | 0.12 | 1.00 | 0.21| 
-| count | 0.35 | 1.00 | 0.52| 
-| year | 0.81 | 0.71 | 0.76| 
-| random | 0.33 | 1.00 | 0.50| 
-| ordinal | 0.33 | 1.00 | 0.50| 
-
--->
-
-
 
 ## Merged Experiment
 Clustering as a way to improve Semantic Labelling
@@ -412,35 +222,70 @@ Used:
 ### Cluster without class consideration
 1. with outlier removal and candidate fail back
 ```
-python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False --failback
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False --failback -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
 ```
+
+Estimate
+![](results/merged/t2dv2_mer_estimate_reo_ca_cf.svg)
+
+Exact
+![](results/merged/t2dv2_mer_exact_reo_ca_cf.svg)
+
+
 2. with outlier removal and without candidate fail back
 ```
-python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False 
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
 ```
+
+Estimate
+![](results/merged/t2dv2_mer_estimate_reo_ca_nc.svg)
+
+Exact
+![](results/merged/t2dv2_mer_exact_reo_ca_nc.svg)
+
 3. with outliers kept and candidate fail back
 ```
-python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False --failback
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False --failback -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
 ```
-4. with outliers kept and candidate fail back
+
+Estimate
+![](results/merged/t2dv2_mer_estimate_raw_ca_cf.svg)
+
+Exact
+![](results/merged/t2dv2_mer_exact_raw_ca_cf.svg)
+
+
+4. with outliers kept and without candidate fail back
 ```
-python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False 
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
 ```
+
+Estimate
+![](results/merged/t2dv2_mer_estimate_raw_ca_nc.svg)
+
+Exact
+![](results/merged/t2dv2_mer_exact_raw_ca_nc.svg)
+
 
 ### Force same class clustering
 5. with outlier removal and candidate fail back
 ```
-python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False --failback --sameclass
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False --failback --sameclass -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
 ```
 6. with outlier removal and without candidate fail back
 ```
-python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False --sameclass
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False --sameclass -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
 ```
 7. with outliers kept and candidate fail back
 ```
-python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False --failback --sameclass
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False --failback --sameclass -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
 ```
 8. with outliers kept and candidate fail back
 ```
-python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False --sameclass
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False --sameclass -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
 ```
+
+
+### Results
+
+

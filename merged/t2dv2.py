@@ -4,10 +4,12 @@ from datetime import datetime
 import pandas as pd
 from tadaqq.clus import Clusterer
 from clus.t2dv2 import get_class_property_groups, get_col, cluster_t2dv2_df
-from slabelexp.t2dv2 import fetch_t2dv2_data, get_folder_name_from_params
+from slabelexp.t2dv2 import get_folder_name_from_params
 from tadaqq.slabmer import SLabMer
 from tadaqq.util import create_dir
-from merged.common import print_md_scores
+from merged.common import print_md_scores, draw_per_meth
+from util.t2dv2 import fetch_t2dv2_data
+
 
 SPARQL_ENDPOINT = "https://en-dbpedia.oeg.fi.upm.es/sparql"
 
@@ -32,13 +34,50 @@ def annotate_t2dv2_single_param_set(endpoint, df, data_dir, remove_outliers, err
     return score
 
 
+def update_scores_params_dict(d, score, cutoff, err_meth):
+    if err_meth not in d:
+        d[err_meth] = dict()
+
+    if cutoff not in d[err_meth]:
+        d[err_meth][cutoff] = score
+
+
+def get_fname(remove_outliers, estimate, same_class, candidate_failback):
+
+    if estimate:
+        est_txt = 'estimate'
+    else:
+        est_txt = 'exact'
+
+    if remove_outliers:
+        ro_txt = "reo"
+    else:
+        ro_txt = 'raw'
+
+    if same_class:
+        sc_txt = 'sc'
+    else:
+        sc_txt = 'ca'  # class agnostic
+
+    if candidate_failback:
+        cf_txt = 'cf'
+    else:
+        cf_txt = 'nc' # no candidate feedback
+
+    fname = 't2dv2_mer_%s_%s_%s_%s' % (est_txt, ro_txt, sc_txt, cf_txt)
+    fpath = os.path.join('results', 'merged', fname)
+    return fpath
+
+
 def annotate_t2dv2(endpoint, data_dir, remove_outliers, err_meths, estimates, err_cutoffs, same_class, fetch_method,
                    candidate_failback):
     res_path = os.path.join('results', 'merged')
     create_dir(res_path)
     scores = []
-    for err_meth in err_meths:
-        for estimate in estimates:
+
+    for estimate in estimates:
+        scores_per_param = dict()
+        for err_meth in err_meths:
             folder_name = get_folder_name_from_params(err_meth, estimate, remove_outliers, loose=False)
             for err_cutoff in err_cutoffs:
                 score = annotate_t2dv2_single_param_set(endpoint=endpoint, data_dir=data_dir, df=fetch_t2dv2_data(),
@@ -51,6 +90,9 @@ def annotate_t2dv2(endpoint, data_dir, remove_outliers, err_meths, estimates, er
                 score['same_class'] = same_class
                 score['cutoff'] = err_cutoff
                 scores.append(score)
+                update_scores_params_dict(scores_per_param, score, err_meth=err_meth, cutoff=err_cutoff)
+        draw_per_meth(scores_per_param, get_fname(remove_outliers=remove_outliers, estimate=estimate,
+                                                  same_class=same_class, candidate_failback=candidate_failback))
     print_md_scores(scores)
 
 

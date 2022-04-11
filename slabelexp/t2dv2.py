@@ -9,13 +9,13 @@ from slabelexp.common import get_num_rows, compute_counts, compute_counts_per_er
 import pandas as pd
 from tadaqq.slabel import SLabel
 from tadaqq.util import uri_to_fname, compute_scores
+from util.t2dv2 import get_dirs, fetch_t2dv2_data
+
 
 SPARQL_ENDPOINT = "https://en-dbpedia.oeg.fi.upm.es/sparql"
 # The minimum number of objects for a numeric property
 MIN_NUM_OBJ = 30
 SHOW_LOGS = False
-
-
 
 
 err_meth_fname_dict = {
@@ -130,15 +130,6 @@ def annotate_t2dv2_single_param_set(endpoint, df, err_meth_scores, err_meth, use
     return scores
 
 
-def fetch_t2dv2_data():
-    df = pd.read_csv(meta_dir)
-    df = df[df.property.notnull()]
-    df = df[df["concept"].notnull()]
-    df = df[df["pconcept"].notnull()]
-    df = df[df["loose"] != "yes"]
-    return df
-
-
 def annotate_t2dv2(endpoint, remove_outliers, err_meths, data_dir, loose=False, estimate=[True], diffs=False):
     """
     endpoint:
@@ -185,12 +176,13 @@ def parse_arguments():
 
 if __name__ == '__main__':
 
-    if 't2dv2_dir' not in os.environ:
-        print("ERROR: t2dv2_dir no in os.environ")
+    # if 't2dv2_dir' not in os.environ:
+    #     print("ERROR: t2dv2_dir no in os.environ")
 
-    data_dir = os.path.join(os.environ['t2dv2_dir'], 'csv')
-    meta_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_typology.csv')
-    properties_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_properties.csv')
+    # data_dir = os.path.join(os.environ['t2dv2_dir'], 'csv')
+    # meta_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_typology.csv')
+    # properties_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_properties.csv')
+    data_dir, meta_dir, properties_dir = get_dirs()
 
     common.PRINT_DIFF = SHOW_LOGS
     a = datetime.now()

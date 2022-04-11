@@ -1,3 +1,51 @@
+import seaborn as sns
+import matplotlib.pyplot as plt
+import pandas as pd
+
+
+def draw_per_meth(scores_dict, fname):
+    """
+    scores_dict: dict
+    {
+        'mean_sq_err': {
+            0.1: {'prec': 1.0, 'rec': 1.0, 'f1': 1.0}}, // cutoff
+            0.2: df,
+        },
+        'mean_err': {}
+    }
+
+    """
+
+    rows = []
+    for m in scores_dict:
+        for c in scores_dict[m]:
+            for metric in scores_dict[m][c]:
+                row = [m, c, metric, scores_dict[m][c][metric]]
+                rows.append(row)
+
+    df = pd.DataFrame(rows, columns=['err_meth', 'cutoff', 'metric', 'performance'])
+    df = df[df.metric == "f1"]
+
+    print("df: ")
+    print(df)
+    colors = ["#F26B38", "#2F9599", "#A7226E", "#EC2049", "#F7DB4F"]
+    # colors = ["#F26B38", "#2F9599"]
+    p = sns.color_palette(palette=colors, n_colors=len(colors), desat=None, as_cmap=True)
+
+    ax = sns.scatterplot(x="cutoff", y="performance", data=df,
+                         style='err_meth', hue="err_meth", palette=colors[:len(scores_dict)])
+
+    linestyles = ["--", ":", "dashdot", "solid"]
+    for idx, m in enumerate(scores_dict):
+        sns.lineplot(data=df[df.err_meth == m], x='cutoff', y='performance', dashes=True, ax=ax,
+                     linestyle=linestyles[idx], linewidth=2, color=colors[idx%len(colors)])
+
+    # ax.legend(loc=2, fontsize='x-small')
+    ax.legend(fontsize='x-small')
+
+    ax.figure.savefig('%s.svg' % fname, bbox_inches="tight")
+    # plt.show()
+    ax.figure.clf()
 
 
 def print_md_scores(scores):
@@ -8,7 +56,7 @@ def print_md_scores(scores):
                                                          "-" * 9, "-" * 5))
     for sc in scores:
         ro, est, err_meth, same_class, cutoff, prec, rec, f1 = sc['ro'], sc['est'], sc['err_meth'], sc['same_class'], \
-                                                       sc['cutoff'], sc['prec'], sc['rec'], sc['f1']
+                                                               sc['cutoff'], sc['prec'], sc['rec'], sc['f1']
         if est:
             est_txt = "estimate"
         else:
@@ -18,4 +66,3 @@ def print_md_scores(scores):
         print("| %15s | %9s | %15s | %10s | %15.2f | %15.2f | %9.2f | %5.2f |" % (ro_txt, est_txt, err_meth,
                                                                                   same_class_txt, cutoff, prec,
                                                                                   rec, f1))
-
