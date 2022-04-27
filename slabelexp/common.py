@@ -267,18 +267,20 @@ def compute_counts_per_err_meth(scores_dict, fname):
     """
     # df = pd.DataFrame()
     dfs = []
+    print("scores dict: ")
+    print(scores_dict)
     for e in scores_dict:
         for m in scores_dict[e]:
             df1 = scores_dict[e][m]
             df1['pred'] = [e] * len(df1.index)
             df1['method'] = [m] * len(df1.index)
-            # print("==============")
-            # print(e)
-            # print(m)
-            # print(df1)
-            # print("\n")
+            print("==============")
+            print(e)
+            print(m)
+            print(df1)
+            print("\n")
             dfs.append(df1)
-
+    print("len dfs: %d" % len(dfs))
     df = pd.concat(dfs, ignore_index=True)
     df = df[df.metric == "f1"]
 

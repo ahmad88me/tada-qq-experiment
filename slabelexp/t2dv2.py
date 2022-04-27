@@ -130,7 +130,8 @@ def annotate_t2dv2_single_param_set(endpoint, df, err_meth_scores, err_meth, use
     return scores
 
 
-def annotate_t2dv2(endpoint, remove_outliers, err_meths, data_dir, loose=False, estimate=[True], diffs=False):
+def annotate_t2dv2(endpoint, remove_outliers, err_meths, data_dir, loose=False, estimate=[True], diffs=False,
+                   draw=False):
     """
     endpoint:
     remove_outliers: bool
@@ -139,19 +140,25 @@ def annotate_t2dv2(endpoint, remove_outliers, err_meths, data_dir, loose=False, 
     err_meth_scores = dict()
     scores = []
     df = fetch_t2dv2_data()
-
+    # df = df.iloc[:10] # only the first 10
+    print(df)
     for use_estimate in estimate:
         for err_meth in err_meths:
             scores_single = annotate_t2dv2_single_param_set(endpoint, df, err_meth_scores, err_meth, use_estimate,
-                                                            remove_outliers, loose, data_dir, diffs=diffs, draw=True)
+                                                            remove_outliers, loose, data_dir, diffs=diffs, draw=draw)
             scores += scores_single
 
+    print("err meth scores:")
+    print(err_meth_scores)
+
     print_md_scores(scores)
+
     fname = "t2dv2-err-methods"
     if not remove_outliers:
         fname += "-raw"
     new_fname = os.path.join('results', 'slabelling', fname)
-    compute_counts_per_err_meth(err_meth_scores, new_fname)
+    if draw:
+        compute_counts_per_err_meth(err_meth_scores, new_fname)
     # print(final_scores_txt)
 
 
@@ -167,11 +174,12 @@ def parse_arguments():
     parser.add_argument('-l', '--loose', action='store_true')
     parser.add_argument('-d', '--diff', action='store_true', help="Store the diffs")
     parser.add_argument('-s', '--estimate', default=["True"], nargs="+")
+    parser.add_argument('-w', '--draw', action='store_true', help="Whether to generate diagrams")
     args = parser.parse_args()
     # parser.print_help()
     # raise Exception("")
     estimates = [e.lower() == "true" for e in args.estimate]
-    return args.err_meths, args.outlier_removal == "true", args.loose, estimates, args.diff
+    return args.err_meths, args.outlier_removal == "true", args.loose, estimates, args.diff, args.draw
 
 
 if __name__ == '__main__':
@@ -186,11 +194,11 @@ if __name__ == '__main__':
 
     common.PRINT_DIFF = SHOW_LOGS
     a = datetime.now()
-    err_meths, outlier_removal, loose, estimate, diffs = parse_arguments()
+    err_meths, outlier_removal, loose, estimate, diffs, to_draw = parse_arguments()
 
     # ["mean_err", "mean_sq_err", "mean_sq1_err"]
     annotate_t2dv2(endpoint=SPARQL_ENDPOINT, remove_outliers=outlier_removal, err_meths=err_meths,
-                   estimate=estimate, loose=loose, diffs=diffs, data_dir=data_dir)
+                   estimate=estimate, loose=loose, diffs=diffs, data_dir=data_dir, draw=to_draw)
     b = datetime.now()
     # print("\n\nTime it took (in seconds): %f.1 seconds\n\n" % (b - a).total_seconds())
     print("\n\nTime it took: %.1f minutes\n\n" % ((b - a).total_seconds() / 60.0))

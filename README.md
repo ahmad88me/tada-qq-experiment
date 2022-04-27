@@ -123,11 +123,11 @@ optional arguments:
 Used:
 1. with outlier removal
 ```
-python -m slabelexp.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False
+python -m slabelexp.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False --draw
 ```
 2. with outliers kept
 ```
-python -m slabelexp.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False
+python -m slabelexp.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False --draw
 ```
 
 #### Results
