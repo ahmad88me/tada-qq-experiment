@@ -117,7 +117,6 @@ optional arguments:
   -e {mean_err,mean_sq_err}, --err-meth {mean_err,mean_sq_err}
                         Functions to computer errors.
   -o {true,false}, --outlier-removal {true,false}
-                        Whether to remove outliers or not
 ```
 
 Used:
@@ -215,10 +214,10 @@ mean square root + exact + outlier removed
 ![](results/slabelling/datapoints-t2dv2-mean-sqroot-err-exact.svg)
 
 
-## Merged Experiment
+## Merged Experiment (Slab Preference)
 Clustering as a way to improve Semantic Labelling
 
-Used:
+
 ### Cluster without class consideration
 1. with outlier removal and candidate fail back
 ```
@@ -287,10 +286,10 @@ python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimat
 
 
 Estimate
-![](results/merged/t2dv2_mer_estimate_reo_sc_cf.svg)
+![](results/merged/t2dv2_mer_estimate_reo_sc_nc.svg)
 
 Exact
-![](results/merged/t2dv2_mer_exact_reo_sc_cf.svg)
+![](results/merged/t2dv2_mer_exact_reo_sc_nc.svg)
 
 7. with outliers kept and candidate fail back
 ```
@@ -319,3 +318,92 @@ Exact
 
 [merged results](results/merged/README.md)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Merged Experiment (Clus Preference)
+Clustering as a way to improve Semantic Labelling
+
+*Note that candidate failback has no effects with clus preference*
+
+1. with outlier removal
+```
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False -p clus -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
+```
+
+Estimate
+![](results/merged-clus/t2dv2_mer_estimate_reo_ca_nc.svg)
+
+Exact
+![](results/merged-clus/t2dv2_mer_exact_reo_ca_nc.svg)
+
+
+2. with outliers kept
+```
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False -p clus -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
+```
+
+Estimate
+![](results/merged-clus/t2dv2_mer_estimate_raw_ca_nc.svg)
+
+Exact
+![](results/merged-clus/t2dv2_mer_exact_raw_ca_nc.svg)
+
+
+### Force same class clustering
+
+3. with outlier removal 
+```
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False -p clus --sameclass -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
+```
+
+
+Estimate
+![](results/merged-clus/t2dv2_mer_estimate_reo_sc_nc.svg)
+
+Exact
+![](results/merged-clus/t2dv2_mer_exact_reo_sc_nc.svg)
+
+4. with outliers kept
+```
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False -p clus --sameclass -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
+```
+
+Estimate
+![](results/merged-clus/t2dv2_mer_estimate_raw_sc_nc.svg)
+
+Exact
+![](results/merged-clus/t2dv2_mer_exact_raw_sc_nc.svg)
+
+### Results
+
+[merged results](results/merged/README.md)
