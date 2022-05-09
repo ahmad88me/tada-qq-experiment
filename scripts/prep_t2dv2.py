@@ -55,11 +55,10 @@ def json_to_csv(fname, overwrite=False):
     f.close()
     table = zip(*j["relation"])
 
-    with open(csv_dest, 'wb') as csvfile:
+    with open(csv_dest, 'w') as csvfile:
         writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
         for row in table:
-            brow = str.encode(row)
-            writer.writerow(brow)
+            writer.writerow(row)
 
     logger.debug("generate csv %s" % csv_dest)
 
