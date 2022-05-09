@@ -127,5 +127,6 @@ if __name__ == "__main__":
         DATA_DIR = sys.argv[1]
         DEST_DIR = os.path.join(DATA_DIR, "csv")
         export_files_to_csv()
+        download_typology()
     else:
         print("Specify the destination directory")
