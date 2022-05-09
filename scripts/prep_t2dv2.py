@@ -20,8 +20,8 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-DATA_DIR = "data"
-DEST_DIR = os.path.join(DATA_DIR, "T2Dv2")
+# DATA_DIR = "data"
+# DEST_DIR = os.path.join(DATA_DIR, "T2Dv2")
 ARC_FNAME = "extended_instance_goldstandard.tar.gz"
 
 
@@ -107,8 +107,9 @@ def extract_archive():
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 2:
-        DEST_DIR = sys.argv[2]
-
-    export_files_to_csv()
-    
+    if len(sys.argv) > 1:
+        DATA_DIR = sys.argv[1]
+        DEST_DIR = os.path.join(DATA_DIR, "T2Dv2")
+        export_files_to_csv()
+    else:
+        print("Specify the destination directory")
