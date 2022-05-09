@@ -48,7 +48,7 @@ You can run it as follows:```sh scripts/olympic-download.sh```
 
 ### T2Dv2
 #### Automatic
-1. `pip install requests unicodecsv chardet`
+1. `pip install requests chardet`
 2. To download and transform the data automatically, you can use [this](scripts/prep_t2dv2.py)
 script.
 3. Make sure to use the Updated typology CSV file [T2Dv2_typology.csv](https://zenodo.org/record/6334120).

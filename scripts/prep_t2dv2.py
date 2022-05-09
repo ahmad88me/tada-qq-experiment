@@ -4,7 +4,7 @@ and was adjusted for Python 3
 
 To install the reqs:
 
-pip install requests unicodecsv chardet
+pip install requests chardet
 """
 import sys
 import os
