@@ -107,4 +107,8 @@ def extract_archive():
 
 
 if __name__ == "__main__":
+    if len(sys.argv) > 2:
+        DEST_DIR = sys.argv[2]
+
     export_files_to_csv()
+    
