@@ -58,7 +58,8 @@ def json_to_csv(fname, overwrite=False):
     with open(csv_dest, 'wb') as csvfile:
         writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
         for row in table:
-            writer.writerow(row)
+            brow = str.encode(row)
+            writer.writerow(brow)
 
     logger.debug("generate csv %s" % csv_dest)
 
