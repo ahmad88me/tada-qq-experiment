@@ -19,6 +19,7 @@ import shutil
 
 
 level = logging.DEBUG
+level = logging.INFO
 logging.basicConfig(level=level)
 logger = logging.getLogger(__name__)
 formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
