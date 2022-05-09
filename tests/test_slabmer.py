@@ -1,7 +1,7 @@
 import unittest
 import os
 import pandas as pd
-from merged.t2dv2 import annotate_t2dv2_single_param_set, SPARQL_ENDPOINT
+from merged.t2dv2 import annotate_t2dv2_single_param_set, SPARQL_ENDPOINT, SLabMer
 
 
 class SLabMerTest(unittest.TestCase):
@@ -16,7 +16,7 @@ class SLabMerTest(unittest.TestCase):
         scores_single = annotate_t2dv2_single_param_set(SPARQL_ENDPOINT, df, remove_outliers=remove_outliers,
                                                         err_meth=err_meth, estimate=use_estimate, same_class=False,
                                                         candidate_failback=True, fetch_method="max", data_dir=data_dir,
-                                                        err_cutoff=0.3)
+                                                        err_cutoff=0.3, pref=SLabMer.SLAB_PREF)
         # print(scores_single)
         self.assertEqual(scores_single['prec'], 1.0)
         self.assertEqual(scores_single['rec'], 1.0)
