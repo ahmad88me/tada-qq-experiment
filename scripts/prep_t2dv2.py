@@ -16,8 +16,14 @@ import requests
 import tarfile
 import shutil
 
-logging.basicConfig(level=logging.INFO)
+
+level = logging.DEBUG
+logging.basicConfig(level=level)
 logger = logging.getLogger(__name__)
+formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
+handler = logging.StreamHandler()
+handler.setFormatter(formatter)
+logger.setLevel(level)
 
 
 # DATA_DIR = "data"
