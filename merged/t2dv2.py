@@ -117,7 +117,10 @@ def annotate_t2dv2(endpoint, data_dir, remove_outliers, err_meths, estimates, er
                           candidate_failback=candidate_failback)
         fpath = os.path.join(res_path, fname)
         draw_per_meth(scores_per_param, fpath)
-    print_md_scores(scores)
+    res = print_md_scores(scores, do_print=False)
+    readme_path = os.path.join(res_path, "README.md")
+    with open(readme_path, "a") as f:
+        f.write(res)
 
 
 def parse_arguments():
@@ -134,7 +137,7 @@ def parse_arguments():
                         help="Error cutoff value.")
     parser.add_argument('-m', '--sameclass', action="store_true")  # False by default
     parser.add_argument('-f', '--failback', action="store_true")  # False by default
-    parser.add_argument('-p', '--pref', default=["slab"], choices=["slab", "clus"],
+    parser.add_argument('-p', '--pref', choices=["slab", "clus"],
                         help="Whether the preference is for the slab predicted or the clus (most voted in the cluster)")
 
     args = parser.parse_args()
