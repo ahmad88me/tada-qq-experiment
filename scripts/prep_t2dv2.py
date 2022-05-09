@@ -114,10 +114,18 @@ def extract_archive():
     tar.close()
 
 
+def download_typology():
+    url = "https://zenodo.org/record/6334120/files/T2Dv2_typology.csv?download=1"
+    r = requests.get(url)
+    arc_dir = os.path.join(DATA_DIR, "T2Dv2_typology.csv")
+    with open(arc_dir, 'wb') as f:
+        f.write(r.content)
+
+
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         DATA_DIR = sys.argv[1]
-        DEST_DIR = os.path.join(DATA_DIR, "T2Dv2")
+        DEST_DIR = os.path.join(DATA_DIR, "csv")
         export_files_to_csv()
     else:
         print("Specify the destination directory")
