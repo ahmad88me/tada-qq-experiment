@@ -9,7 +9,8 @@ pip install requests unicodecsv chardet
 import sys
 import os
 import json
-import unicodecsv as csv
+# import unicodecsv as csv
+import csv
 import logging
 import chardet
 import requests
