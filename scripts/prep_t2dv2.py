@@ -39,7 +39,7 @@ def json_to_csv(fname, overwrite=False):
         logger.info("%s already exists" % csv_dest)
         return
     json_fdir = os.path.join(DATA_DIR, "tables", fname)
-    f = open(json_fdir)
+    f = open(json_fdir, "rb")
     s = f.read()
     detected_encoding = chardet.detect(s)['encoding']
     logger.debug("detected encoding %s for %s" % (detected_encoding, fname))
