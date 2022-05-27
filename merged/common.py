@@ -23,29 +23,32 @@ def draw_per_meth(scores_dict, fname):
                 row = [m, c, metric, scores_dict[m][c][metric]]
                 rows.append(row)
 
-    df = pd.DataFrame(rows, columns=['err_meth', 'cutoff', 'metric', 'performance'])
-    df = df[df.metric == "f1"]
+    df_all = pd.DataFrame(rows, columns=['err_meth', 'cutoff', 'metric', 'performance'])
 
-    print("df: ")
-    print(df)
-    colors = ["#F26B38", "#2F9599", "#A7226E", "#EC2049", "#F7DB4F"]
-    # colors = ["#F26B38", "#2F9599"]
-    p = sns.color_palette(palette=colors, n_colors=len(colors), desat=None, as_cmap=True)
+    for metric in ["f1", "prec", "rec"]:
 
-    ax = sns.scatterplot(x="cutoff", y="performance", data=df,
-                         style='err_meth', hue="err_meth", palette=colors[:len(scores_dict)])
+        df = df_all[df_all.metric == metric]
 
-    linestyles = ["--", ":", "dashdot", "solid"]
-    for idx, m in enumerate(scores_dict):
-        sns.lineplot(data=df[df.err_meth == m], x='cutoff', y='performance', dashes=True, ax=ax,
-                     linestyle=linestyles[idx], linewidth=2, color=colors[idx%len(colors)])
+        print("df: ")
+        print(df)
+        colors = ["#F26B38", "#2F9599", "#A7226E", "#EC2049", "#F7DB4F"]
+        # colors = ["#F26B38", "#2F9599"]
+        p = sns.color_palette(palette=colors, n_colors=len(colors), desat=None, as_cmap=True)
 
-    # ax.legend(loc=2, fontsize='x-small')
-    ax.legend(fontsize='x-small')
+        ax = sns.scatterplot(x="cutoff", y="performance", data=df,
+                             style='err_meth', hue="err_meth", palette=colors[:len(scores_dict)])
 
-    ax.figure.savefig('%s.svg' % fname, bbox_inches="tight")
-    # plt.show()
-    ax.figure.clf()
+        linestyles = ["--", ":", "dashdot", "solid"]
+        for idx, m in enumerate(scores_dict):
+            sns.lineplot(data=df[df.err_meth == m], x='cutoff', y='performance', dashes=True, ax=ax,
+                         linestyle=linestyles[idx], linewidth=2, color=colors[idx%len(colors)])
+
+        # ax.legend(loc=2, fontsize='x-small')
+        ax.legend(fontsize='x-small')
+
+        ax.figure.savefig('%s-%s.svg' % (fname, metric), bbox_inches="tight")
+        # plt.show()
+        ax.figure.clf()
 
 
 def print_md_scores(scores, do_print=True):

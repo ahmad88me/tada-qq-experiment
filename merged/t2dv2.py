@@ -42,7 +42,6 @@ def update_scores_params_dict(d, score, cutoff, err_meth):
 
 
 def get_fname(remove_outliers, estimate, same_class, candidate_failback):
-
     if estimate:
         est_txt = 'estimate'
     else:
@@ -54,7 +53,7 @@ def get_fname(remove_outliers, estimate, same_class, candidate_failback):
         ro_txt = 'raw'
 
     if same_class:
-        sc_txt = 'sc'
+        sc_txt = 'sc'  # same class
     else:
         sc_txt = 'ca'  # class agnostic
 
@@ -70,7 +69,7 @@ def get_fname(remove_outliers, estimate, same_class, candidate_failback):
 
 
 def annotate_t2dv2(endpoint, data_dir, remove_outliers, err_meths, estimates, err_cutoffs, same_class, fetch_method,
-                   candidate_failback, pref):
+                   candidate_failback, pref, draw=False, append_to_readme=False):
     """
     Annotate T2Dv2
     :param endpoint:
@@ -83,6 +82,7 @@ def annotate_t2dv2(endpoint, data_dir, remove_outliers, err_meths, estimates, er
     :param fetch_method:
     :param candidate_failback:
     :param pref: slab or clus
+    :param draw: bool
     :return:
     """
     if pref == SLabMer.SLAB_PREF:
@@ -116,11 +116,14 @@ def annotate_t2dv2(endpoint, data_dir, remove_outliers, err_meths, estimates, er
         fname = get_fname(remove_outliers=remove_outliers, estimate=estimate, same_class=same_class,
                           candidate_failback=candidate_failback)
         fpath = os.path.join(res_path, fname)
-        draw_per_meth(scores_per_param, fpath)
-    res = print_md_scores(scores, do_print=False)
-    readme_path = os.path.join(res_path, "README.md")
-    with open(readme_path, "a") as f:
-        f.write(res)
+        if draw:
+            draw_per_meth(scores_per_param, fpath)
+
+    if append_to_readme:
+        res = print_md_scores(scores, do_print=False)
+        readme_path = os.path.join(res_path, "README.md")
+        with open(readme_path, "a") as f:
+            f.write(res)
 
 
 def parse_arguments():
@@ -139,16 +142,18 @@ def parse_arguments():
     parser.add_argument('-f', '--failback', action="store_true")  # False by default
     parser.add_argument('-p', '--pref', choices=["slab", "clus"],
                         help="Whether the preference is for the slab predicted or the clus (most voted in the cluster)")
+    parser.add_argument('-d', '--draw', action="store_true")
+    parser.add_argument('-a', '--append-to-readme', action="store_true")
 
     args = parser.parse_args()
     estimates = [e.lower() == "true" for e in args.estimate]
-    if args.pref=="slab":
+    if args.pref == "slab":
         pref = SLabMer.SLAB_PREF
-    elif args.pref=="clus":
+    elif args.pref == "clus":
         pref = SLabMer.CLUS_PREF
 
     return args.err_meths, args.outlier_removal == "true", estimates, [float(co) for co in args.cutoffs], \
-           args.sameclass, args.failback, pref
+           args.sameclass, args.failback, pref, args.draw, args.append_to_readme
 
 
 if __name__ == '__main__':
@@ -160,13 +165,12 @@ if __name__ == '__main__':
     properties_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_properties.csv')
 
     a = datetime.now()
-    err_meths, outlier_removal, estimates, cutoffs, sameclass, candidate_failback, pref = parse_arguments()
+    err_meths, outlier_removal, estimates, cutoffs, sameclass, candidate_failback, pref, draw, append_to_readme = parse_arguments()
 
     # ["mean_err", "mean_sq_err", "mean_sq1_err"]
     annotate_t2dv2(endpoint=SPARQL_ENDPOINT, data_dir=data_dir, remove_outliers=outlier_removal, err_meths=err_meths,
                    fetch_method="max", estimates=estimates, err_cutoffs=cutoffs, same_class=sameclass,
-                   candidate_failback=candidate_failback, pref=pref)
+                   candidate_failback=candidate_failback, pref=pref, draw=draw, append_to_readme=append_to_readme)
     b = datetime.now()
     # print("\n\nTime it took (in seconds): %f.1 seconds\n\n" % (b - a).total_seconds())
     print("\n\nTime it took: %.1f minutes\n\n" % ((b - a).total_seconds() / 60.0))
-

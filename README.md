@@ -232,9 +232,7 @@ mean square root + exact + outlier removed
 Clustering as a way to improve Semantic Labelling
 
 
-
-
-
+*Note: be default the diagrams and readmes are not updated. You can pass`--draw` to generate/update the diagrams and `-a` to append the results to the readme in the results folder*
 
 
 
@@ -242,7 +240,7 @@ Clustering as a way to improve Semantic Labelling
 ### Cluster without class consideration
 1. with outlier removal and candidate fail back
 ```
-python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False --pref slab --failback -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False --pref slab --failback --draw -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
 ```
 
 Estimate
@@ -254,7 +252,7 @@ Exact
 
 2. with outlier removal and without candidate fail back
 ```
-python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False --pref slab -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False --pref slab --draw -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
 ```
 
 Estimate
@@ -265,7 +263,7 @@ Exact
 
 3. with outliers kept and candidate fail back
 ```
-python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False --pref slab --failback -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False --pref slab --failback --draw -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
 ```
 
 Estimate
@@ -277,7 +275,7 @@ Exact
 
 4. with outliers kept and without candidate fail back
 ```
-python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False --pref slab -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False --pref slab --draw -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
 ```
 
 Estimate
@@ -290,7 +288,7 @@ Exact
 ### Force same class clustering
 5. with outlier removal and candidate fail back
 ```
-python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False  --pref slab --failback --sameclass -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False  --pref slab --failback --sameclass --draw -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
 ```
 
 
@@ -302,7 +300,7 @@ Exact
 
 6. with outlier removal and without candidate fail back
 ```
-python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False --pref slab --sameclass -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False --pref slab --sameclass --draw -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
 ```
 
 
@@ -314,7 +312,7 @@ Exact
 
 7. with outliers kept and candidate fail back
 ```
-python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False --pref slab --failback --sameclass -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False --pref slab --failback --sameclass --draw -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
 ```
 
 
@@ -326,7 +324,7 @@ Exact
 
 8. with outliers kept and without candidate fail back
 ```
-python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False --pref slab --sameclass -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False --pref slab --sameclass --draw -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
 ```
 
 Estimate
@@ -357,7 +355,7 @@ Clustering as a way to improve Semantic Labelling
 
 1. with outlier removal
 ```
-python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False -p clus -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False -p clus --draw -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
 ```
 
 Estimate
@@ -369,7 +367,7 @@ Exact
 
 2. with outliers kept
 ```
-python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False -p clus -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False -p clus --draw -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
 ```
 
 Estimate
@@ -383,7 +381,7 @@ Exact
 
 3. with outlier removal 
 ```
-python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False -p clus --sameclass -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False -p clus --sameclass --draw -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
 ```
 
 
@@ -395,7 +393,7 @@ Exact
 
 4. with outliers kept
 ```
-python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False -p clus --sameclass -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
+python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False -p clus --sameclass --draw -c 0.02 0.04 0.06 0.08 0.10 0.12 0.14 0.16 0.18 0.20 0.22 0.24 0.26 0.28 0.30 0.32 0.34 0.36 0.38 0.40 0.42 0.44 0.46 0.48 0.50 0.52 0.54 0.56 0.58 0.60 0.62 0.64 0.66 0.68 0.70 0.72 0.74 0.76 0.78 0.80 0.82 0.84 0.86 0.88 0.90 0.92 0.94 0.96 0.98
 ```
 
 Estimate
