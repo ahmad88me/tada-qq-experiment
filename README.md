@@ -244,10 +244,10 @@ python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimat
 ```
 
 Estimate
-![](results/merged-slab/t2dv2_mer_estimate_reo_ca_cf.svg)
+![](results/merged-slab/t2dv2_mer_estimate_reo_ca_cf-f1.svg)
 
 Exact
-![](results/merged-slab/t2dv2_mer_exact_reo_ca_cf.svg)
+![](results/merged-slab/t2dv2_mer_exact_reo_ca_cf-f1.svg)
 
 
 2. with outlier removal and without candidate fail back
@@ -256,10 +256,10 @@ python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimat
 ```
 
 Estimate
-![](results/merged-slab/t2dv2_mer_estimate_reo_ca_nc.svg)
+![](results/merged-slab/t2dv2_mer_estimate_reo_ca_nc-f1.svg)
 
 Exact
-![](results/merged-slab/t2dv2_mer_exact_reo_ca_nc.svg)
+![](results/merged-slab/t2dv2_mer_exact_reo_ca_nc-f1.svg)
 
 3. with outliers kept and candidate fail back
 ```
@@ -267,10 +267,10 @@ python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estima
 ```
 
 Estimate
-![](results/merged-slab/t2dv2_mer_estimate_raw_ca_cf.svg)
+![](results/merged-slab/t2dv2_mer_estimate_raw_ca_cf-f1.svg)
 
 Exact
-![](results/merged-slab/t2dv2_mer_exact_raw_ca_cf.svg)
+![](results/merged-slab/t2dv2_mer_exact_raw_ca_cf-f1.svg)
 
 
 4. with outliers kept and without candidate fail back
@@ -279,10 +279,10 @@ python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estima
 ```
 
 Estimate
-![](results/merged-slab/t2dv2_mer_estimate_raw_ca_nc.svg)
+![](results/merged-slab/t2dv2_mer_estimate_raw_ca_nc-f1.svg)
 
 Exact
-![](results/merged-slab/t2dv2_mer_exact_raw_ca_nc.svg)
+![](results/merged-slab/t2dv2_mer_exact_raw_ca_nc-f1.svg)
 
 
 ### Force same class clustering
@@ -293,10 +293,10 @@ python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimat
 
 
 Estimate
-![](results/merged-slab/t2dv2_mer_estimate_reo_sc_cf.svg)
+![](results/merged-slab/t2dv2_mer_estimate_reo_sc_cf-f1.svg)
 
 Exact
-![](results/merged-slab/t2dv2_mer_exact_reo_sc_cf.svg)
+![](results/merged-slab/t2dv2_mer_exact_reo_sc_cf-f1.svg)
 
 6. with outlier removal and without candidate fail back
 ```
@@ -305,10 +305,10 @@ python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimat
 
 
 Estimate
-![](results/merged-slab/t2dv2_mer_estimate_reo_sc_nc.svg)
+![](results/merged-slab/t2dv2_mer_estimate_reo_sc_nc-f1.svg)
 
 Exact
-![](results/merged-slab/t2dv2_mer_exact_reo_sc_nc.svg)
+![](results/merged-slab/t2dv2_mer_exact_reo_sc_nc-f1.svg)
 
 7. with outliers kept and candidate fail back
 ```
@@ -317,10 +317,10 @@ python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estima
 
 
 Estimate
-![](results/merged-slab/t2dv2_mer_estimate_raw_sc_cf.svg)
+![](results/merged-slab/t2dv2_mer_estimate_raw_sc_cf-f1.svg)
 
 Exact
-![](results/merged-slab/t2dv2_mer_exact_raw_sc_cf.svg)
+![](results/merged-slab/t2dv2_mer_exact_raw_sc_cf-f1.svg)
 
 8. with outliers kept and without candidate fail back
 ```
@@ -328,10 +328,10 @@ python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estima
 ```
 
 Estimate
-![](results/merged-slab/t2dv2_mer_estimate_raw_sc_nc.svg)
+![](results/merged-slab/t2dv2_mer_estimate_raw_sc_nc-f1.svg)
 
 Exact
-![](results/merged-slab/t2dv2_mer_exact_raw_sc_nc.svg)
+![](results/merged-slab/t2dv2_mer_exact_raw_sc_nc-f1.svg)
 
 ### Results
 
@@ -359,10 +359,10 @@ python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimat
 ```
 
 Estimate
-![](results/merged-clus/t2dv2_mer_estimate_reo_ca_nc.svg)
+![](results/merged-clus/t2dv2_mer_estimate_reo_ca_nc-f1.svg)
 
 Exact
-![](results/merged-clus/t2dv2_mer_exact_reo_ca_nc.svg)
+![](results/merged-clus/t2dv2_mer_exact_reo_ca_nc-f1.svg)
 
 
 2. with outliers kept
@@ -371,10 +371,10 @@ python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estima
 ```
 
 Estimate
-![](results/merged-clus/t2dv2_mer_estimate_raw_ca_nc.svg)
+![](results/merged-clus/t2dv2_mer_estimate_raw_ca_nc-f1.svg)
 
 Exact
-![](results/merged-clus/t2dv2_mer_exact_raw_ca_nc.svg)
+![](results/merged-clus/t2dv2_mer_exact_raw_ca_nc-f1.svg)
 
 
 ### Force same class clustering
@@ -386,10 +386,10 @@ python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimat
 
 
 Estimate
-![](results/merged-clus/t2dv2_mer_estimate_reo_sc_nc.svg)
+![](results/merged-clus/t2dv2_mer_estimate_reo_sc_nc-f1.svg)
 
 Exact
-![](results/merged-clus/t2dv2_mer_exact_reo_sc_nc.svg)
+![](results/merged-clus/t2dv2_mer_exact_reo_sc_nc-f1.svg)
 
 4. with outliers kept
 ```
@@ -397,10 +397,10 @@ python -m merged.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estima
 ```
 
 Estimate
-![](results/merged-clus/t2dv2_mer_estimate_raw_sc_nc.svg)
+![](results/merged-clus/t2dv2_mer_estimate_raw_sc_nc-f1.svg)
 
 Exact
-![](results/merged-clus/t2dv2_mer_exact_raw_sc_nc.svg)
+![](results/merged-clus/t2dv2_mer_exact_raw_sc_nc-f1.svg)
 
 ### Results
 
