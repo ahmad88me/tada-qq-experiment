@@ -8,7 +8,7 @@ from slabelexp.t2dv2 import get_folder_name_from_params
 from tadaqq.slabmer import SLabMer
 from tadaqq.util import create_dir
 from merged.common import print_md_scores, draw_per_meth
-from util.t2dv2 import fetch_t2dv2_data
+from util.t2dv2 import fetch_t2dv2_data, get_dirs
 
 SPARQL_ENDPOINT = "https://en-dbpedia.oeg.fi.upm.es/sparql"
 
@@ -23,14 +23,13 @@ def annotate_t2dv2_single_param_set(endpoint, df, data_dir, remove_outliers, err
 
     if print_pred:
         print(len(clusterer.groups))
-        for g in clusterer.groups:
-            print("=====")
+        for idx, g in enumerate(clusterer.groups):
+            print("\n===== %d ======" % idx)
             for ele in g:
-                # print(ele)
-                print("%s -- %s --\t %s" % (ele['property'], ele['candidate'], ele['fname']))
+                print("%s --\t %s" % (ele['property'], ele['fname']))
 
     score = slabmer.evaluate_labelling(clusterer.groups)
-    return score
+    return score, clusterer
 
 
 def update_scores_params_dict(d, score, cutoff, err_meth):
@@ -99,9 +98,9 @@ def annotate_t2dv2(endpoint, data_dir, remove_outliers, err_meths, estimates, er
     for estimate in estimates:
         scores_per_param = dict()
         for err_meth in err_meths:
-            folder_name = get_folder_name_from_params(err_meth, estimate, remove_outliers, loose=False)
+            # folder_name = get_folder_name_from_params(err_meth, estimate, remove_outliers, loose=False)
             for err_cutoff in err_cutoffs:
-                score = annotate_t2dv2_single_param_set(endpoint=endpoint, data_dir=data_dir, df=fetch_t2dv2_data(),
+                score, _ = annotate_t2dv2_single_param_set(endpoint=endpoint, data_dir=data_dir, df=fetch_t2dv2_data(),
                                                         remove_outliers=remove_outliers, fetch_method=fetch_method,
                                                         err_meth=err_meth, estimate=estimate, same_class=same_class,
                                                         pref=pref, err_cutoff=err_cutoff,
@@ -131,13 +130,11 @@ def parse_arguments():
         Parse command line arguments
     """
     parser = argparse.ArgumentParser(description='Parameters for the experiment')
-    parser.add_argument('-e', '--err-meths', default=["mean_err"], nargs="+",
-                        help="Functions to computer errors.")
+    parser.add_argument('-e', '--err-meths', default=["mean_err"], nargs="+", help="Functions to computer errors.")
     parser.add_argument('-o', '--outlier-removal', default="true", choices=["true", "false"],
                         help="Whether to remove outliers or not.")
     parser.add_argument('-s', '--estimate', default=["True"], nargs="+")
-    parser.add_argument('-c', '--cutoffs', default=[0.1], nargs="+",
-                        help="Error cutoff value.")
+    parser.add_argument('-c', '--cutoffs', default=[0.1], nargs="+", help="Error cutoff value.")
     parser.add_argument('-m', '--sameclass', action="store_true")  # False by default
     parser.add_argument('-f', '--failback', action="store_true")  # False by default
     parser.add_argument('-p', '--pref', choices=["slab", "clus"],
@@ -160,14 +157,11 @@ if __name__ == '__main__':
     if 't2dv2_dir' not in os.environ:
         print("ERROR: t2dv2_dir no in os.environ")
 
-    data_dir = os.path.join(os.environ['t2dv2_dir'], 'csv')
-    meta_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_typology.csv')
-    properties_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_properties.csv')
+    data_dir, _, _ = get_dirs()
 
     a = datetime.now()
     err_meths, outlier_removal, estimates, cutoffs, sameclass, candidate_failback, pref, draw, append_to_readme = parse_arguments()
 
-    # ["mean_err", "mean_sq_err", "mean_sq1_err"]
     annotate_t2dv2(endpoint=SPARQL_ENDPOINT, data_dir=data_dir, remove_outliers=outlier_removal, err_meths=err_meths,
                    fetch_method="max", estimates=estimates, err_cutoffs=cutoffs, same_class=sameclass,
                    candidate_failback=candidate_failback, pref=pref, draw=draw, append_to_readme=append_to_readme)
