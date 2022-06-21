@@ -4,7 +4,7 @@ import pandas as pd
 from clus import common
 from collections import Counter
 from tadaqq.clus import Clusterer
-
+from clus.t2dv2 import get_class_property_groups
 
 class ClusTest(unittest.TestCase):
 
@@ -56,6 +56,25 @@ class ClusTest(unittest.TestCase):
         self.assertEqual(len(groups[0]), 2)
         self.assertEqual(len(groups[1]), 3)
         self.assertEqual(len(groups[2]), 1)
+
+    def test_get_class_property_groups(self):
+        a = [
+            ["A", "p1;p2;p3"],
+            ["A", "p1;p4"],
+            ["A", "p3"],
+            ["B", "p10;p20"],
+            ["B", "p30"]
+        ]
+        df = pd.DataFrame(a, columns=["concept", "property"])
+        d, c = get_class_property_groups(df)
+        most_comm = c.most_common()
+        self.assertEqual(most_comm[0][0], "A/p1")
+        self.assertEqual(most_comm[0][1], 3)
+        self.assertEqual(d["A p1"], "A/p1")
+        self.assertEqual(most_comm[1][1], 1)
+        self.assertEqual(most_comm[2][1], 1)
+        self.assertEqual(d["B p10"], "B/p10")
+        self.assertEqual(d["B p30"], "B/p30")
 
 
 if __name__ == '__main__':
