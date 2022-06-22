@@ -13,11 +13,10 @@ class SLabMerTest(unittest.TestCase):
         meta_dir = os.path.join('tests', 'test_files', 't2dv2', 'meta-2.csv')
         data_dir = os.path.join('tests', 'test_files', 't2dv2', 'csv')
         df = pd.read_csv(meta_dir)
-        scores_single = annotate_t2dv2_single_param_set(SPARQL_ENDPOINT, df, remove_outliers=remove_outliers,
+        scores_single, _ = annotate_t2dv2_single_param_set(SPARQL_ENDPOINT, df, remove_outliers=remove_outliers,
                                                         err_meth=err_meth, estimate=use_estimate, same_class=False,
                                                         candidate_failback=True, fetch_method="max", data_dir=data_dir,
                                                         err_cutoff=0.3, pref=SLabMer.SLAB_PREF)
-        # print(scores_single)
         self.assertEqual(scores_single['prec'], 1.0)
         self.assertEqual(scores_single['rec'], 1.0)
 

@@ -69,10 +69,18 @@ Matching similar columns. The main differences between the clustering and the se
 2. The clustering does not use the knowledge graph.
 3. The clustering does not take into account the subject class/type.
 
-The command used: 
+The commands used: 
 ```
-python -m clus.t2dv2 -c 0.02 0.04 0.06 0.08 0.1 0.12 0.14 0.16 0.18 0.2
+python -m clus.t2dv2 --range 0.01 1.0 --inc 0.02
+python -m clus.t2dv2 --range 0.01 1.0 --inc 0.02 -m
 ```
+
+To show the clusters
+```
+python -m clus.t2dv2 -c 0.02 -m
+python -m clus.t2dv2 -c 0.9 
+```
+*Using a single cutoff value would show the cluster figure (but won't generate a diagram file as it is mainly used for debugging or illustrative purposes)*
 
 ### Clustering Results - T2Dv2
 
@@ -434,4 +442,35 @@ Exact
 ## Known issues
 * Error installing Pillow on ubuntu: `sudo apt-get install libjpeg-dev`
 
-*Note: the failback option turned out to be useless theoritically and also looking at the result, it is useless too. It should be removed in the future versions*
+*Note: the failback option turned out to be useless theoretically and also looking at the result, it is useless too. It should be removed in the future versions*
+
+
+# Analysis
+## Merged
+```
+python -m merged.single -p clus -e mean_err -s true -c 0.8 -o false
+python -m merged.single -p clus -e mean_sq_err -s true -c 0.8 -o false
+python -m merged.single -p clus -e mean_sqroot_err -s true -c 0.8 -o false
+```
+
+```
+python -m merged.single -p clus -e mean_err -s true -c 0.8 -o true -m 
+python -m merged.single -p clus -e mean_sq_err -s true -c 0.8 -o true -m 
+python -m merged.single -p clus -e mean_sqroot_err -s true -c 0.8 -o true -m 
+
+
+
+python -m merged.single -p clus -e mean_err mean_sq_err mean_sqroot_err -s true -c 0.8 -o true -m 
+
+```
+
+    parser = argparse.ArgumentParser(description='Parameters for the experiment')
+    parser.add_argument('-e', '--err-meths', default=["mean_err"], nargs="+", help="Functions to computer errors.")
+    parser.add_argument('-o', '--outlier-removal', default="true", choices=["true", "false"],
+                        help="Whether to remove outliers or not.")
+    parser.add_argument('-s', '--estimate', default=["True"], nargs="+")
+    parser.add_argument('-c', '--cutoffs', default=[0.1], nargs="+", help="Error cutoff value.")
+    parser.add_argument('-m', '--sameclass', action="store_true")  # False by default
+    parser.add_argument('-f', '--failback', action="store_true")  # False by default
+    parser.add_argument('-p', '--pref', choices=["slab", "clus"], required=True,
+                        help="Whether the preference is for the slab predicted or the clus (most voted in the cluster)")

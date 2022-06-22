@@ -26,7 +26,7 @@ err_meth_fname_dict = {
 }
 
 
-def get_folder_name_from_params(err_meth, use_estimate, remove_outliers, loose):
+def get_folder_name_from_params(err_meth, use_estimate, remove_outliers, loose=False):
     if err_meth not in err_meth_fname_dict:
         raise Exception("unknown err method")
     folder_name = err_meth_fname_dict[err_meth]
