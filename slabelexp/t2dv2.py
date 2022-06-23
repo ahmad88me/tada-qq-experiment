@@ -4,7 +4,7 @@ import argparse
 
 import numpy as np
 from slabelexp import common
-from slabelexp.common import compute_scores_per_key
+from slabelexp.common import compute_scores_per_key,generate_summary
 from slabelexp.common import get_num_rows, compute_counts, compute_counts_per_err_meth, print_md_scores
 import pandas as pd
 from tadaqq.slabel import SLabel
@@ -21,12 +21,12 @@ SHOW_LOGS = False
 err_meth_fname_dict = {
     "mean_err": "t2dv2-mean-err",
     "mean_sq_err": "t2dv2-mean-sq-err",
-    "mean_sq1_err": "t2dv2-mean-sq1-err",
+    # "mean_sq1_err": "t2dv2-mean-sq1-err",
     "mean_sqroot_err": "t2dv2-mean-sqroot-err"
 }
 
 
-def get_folder_name_from_params(err_meth, use_estimate, remove_outliers, loose=False):
+def get_folder_name_from_params(err_meth, use_estimate, remove_outliers):
     if err_meth not in err_meth_fname_dict:
         raise Exception("unknown err method")
     folder_name = err_meth_fname_dict[err_meth]
@@ -37,8 +37,6 @@ def get_folder_name_from_params(err_meth, use_estimate, remove_outliers, loose=F
     else:
         folder_name += "-exact"
         est_txt = "exact"
-    if loose:
-        folder_name += "-loose"
     if not remove_outliers:
         folder_name += "-raw"
         remove_outliers_txt = "raw"
@@ -86,13 +84,12 @@ def annotate_t2dv2_single_column(row, sl, files_k, eval_per_prop, eval_per_sub_k
         eval_per_sub_kind[sub_kind].append(res)
 
 
-def annotate_t2dv2_single_param_set(endpoint, df, err_meth_scores, err_meth, use_estimate, remove_outliers, loose,
+def annotate_t2dv2_single_param_set(endpoint, df, err_meth_scores, err_meth, use_estimate, remove_outliers,
                                     data_dir, diffs=None, draw=False):
     sl = SLabel(endpoint=endpoint, min_num_objs=MIN_NUM_OBJ)
     eval_data = []
     scores = []
-    folder_name, est_txt, remove_outliers_txt = get_folder_name_from_params(err_meth, use_estimate,
-                                                                            remove_outliers, loose)
+    folder_name, est_txt, remove_outliers_txt = get_folder_name_from_params(err_meth, use_estimate, remove_outliers)
     files_k = dict()
     eval_per_prop = dict()
     eval_per_sub_kind = dict()
@@ -131,7 +128,7 @@ def annotate_t2dv2_single_param_set(endpoint, df, err_meth_scores, err_meth, use
 
 
 def annotate_t2dv2(endpoint, remove_outliers, err_meths, data_dir, loose=False, estimate=[True], diffs=False,
-                   draw=False):
+                   draw=False, summary=False):
     """
     endpoint:
     remove_outliers: bool
@@ -142,11 +139,12 @@ def annotate_t2dv2(endpoint, remove_outliers, err_meths, data_dir, loose=False, 
     df = fetch_t2dv2_data()
     # df = df.iloc[:10] # only the first 10
     print(df)
-    for use_estimate in estimate:
-        for err_meth in err_meths:
-            scores_single = annotate_t2dv2_single_param_set(endpoint, df, err_meth_scores, err_meth, use_estimate,
-                                                            remove_outliers, loose, data_dir, diffs=diffs, draw=draw)
-            scores += scores_single
+    for ro in remove_outliers:
+        for use_estimate in estimate:
+            for err_meth in err_meths:
+                scores_single = annotate_t2dv2_single_param_set(endpoint, df, err_meth_scores, err_meth, use_estimate,
+                                                                ro, data_dir, diffs=diffs, draw=draw)
+                scores += scores_single
 
     print("err meth scores:")
     print(err_meth_scores)
@@ -159,6 +157,8 @@ def annotate_t2dv2(endpoint, remove_outliers, err_meths, data_dir, loose=False, 
     new_fname = os.path.join('results', 'slabelling', fname)
     if draw:
         compute_counts_per_err_meth(err_meth_scores, new_fname)
+    if summary:
+        generate_summary(scores, os.path.join('results', 'slabelling', 'summary.svg'))
     # print(final_scores_txt)
 
 
@@ -169,17 +169,18 @@ def parse_arguments():
     parser = argparse.ArgumentParser(description='Parameters for the experiment')
     parser.add_argument('-e', '--err-meths', default=["mean_err"], nargs="+",
                         help="Functions to computer errors.")
-    parser.add_argument('-o', '--outlier-removal', default="true", choices=["true", "false"],
+    parser.add_argument('-o', '--outlier-removal', default=["true"], nargs="+",
                         help="Whether to remove outliers or not.")
-    parser.add_argument('-l', '--loose', action='store_true')
     parser.add_argument('-d', '--diff', action='store_true', help="Store the diffs")
     parser.add_argument('-s', '--estimate', default=["True"], nargs="+")
     parser.add_argument('-w', '--draw', action='store_true', help="Whether to generate diagrams")
+    parser.add_argument('-u', '--summary', action="store_true", help="Whether to generate a summary diagram")
     args = parser.parse_args()
+    out_rems = [ro.lower() == "true" for ro in args.outlier_removal]
     # parser.print_help()
     # raise Exception("")
     estimates = [e.lower() == "true" for e in args.estimate]
-    return args.err_meths, args.outlier_removal == "true", args.loose, estimates, args.diff, args.draw
+    return args.err_meths, out_rems, estimates, args.diff, args.draw, args.summary
 
 
 if __name__ == '__main__':
@@ -194,11 +195,11 @@ if __name__ == '__main__':
 
     common.PRINT_DIFF = SHOW_LOGS
     a = datetime.now()
-    err_meths, outlier_removal, loose, estimate, diffs, to_draw = parse_arguments()
+    err_meths, outlier_removal, estimate, diffs, to_draw, summary = parse_arguments()
 
     # ["mean_err", "mean_sq_err", "mean_sq1_err"]
     annotate_t2dv2(endpoint=SPARQL_ENDPOINT, remove_outliers=outlier_removal, err_meths=err_meths,
-                   estimate=estimate, loose=loose, diffs=diffs, data_dir=data_dir, draw=to_draw)
+                   estimate=estimate, diffs=diffs, data_dir=data_dir, draw=to_draw, summary=summary)
     b = datetime.now()
     # print("\n\nTime it took (in seconds): %f.1 seconds\n\n" % (b - a).total_seconds())
     print("\n\nTime it took: %.1f minutes\n\n" % ((b - a).total_seconds() / 60.0))

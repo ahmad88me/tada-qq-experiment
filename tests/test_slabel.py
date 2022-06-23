@@ -16,7 +16,7 @@ class SLabelTest(unittest.TestCase):
         data_dir = os.path.join('tests', 'test_files', 't2dv2', 'csv')
         df = pd.read_csv(meta_dir)
         scores_single = annotate_t2dv2_single_param_set(SPARQL_ENDPOINT, df, err_meth_scores, err_meth, use_estimate,
-                                                        remove_outliers, loose, draw=False, data_dir=data_dir)
+                                                        remove_outliers, draw=False, data_dir=data_dir)
         scores_single = scores_single[0]
         # print(scores_single)
         self.assertEqual(scores_single['prec'], 1.0)

@@ -359,3 +359,92 @@ def print_md_scores(scores):
             est_txt = "exact"
         ro_txt = str(ro)
         print("| %15s | %9s | %15s | %9.2f | %9.2f | %5.2f |" % (ro_txt, est_txt, err_meth, prec, rec, f1))
+
+
+def generate_summary(scores, fpath=None):
+    """
+    :param scores: a list of scores. A single score is a dict with the following keys
+        score = {
+        'ro': remove_outliers,
+        'est': use_estimate,
+        'err_meth': err_meth,
+        'prec': prec,
+        'rec': rec,
+        'f1': f1
+    }
+    :param fpath:
+    :return:
+    """
+    rows = []
+    labels = {
+        'ro': {True: 'ro', False: 'ra'},
+        'est': {True: 'est', False: 'ext'},
+        'err_meth': {
+            'mean_err': 'mean err',
+            'mean_sqroot_err': 'mean sqr',
+            'mean_sq_err': 'mean sq'
+        }
+    }
+    for s in scores:
+        # lab = "%s + %s + %s" % (labels['err_meth'][s['err_meth']], labels['ro'][s['ro']], labels['est'][s['est']])
+        lab = "%s + %s" % (labels['err_meth'][s['err_meth']], labels['est'][s['est']])
+        r = [lab, 'Precision', s['prec']]
+        rows.append(r)
+
+        r = [lab, 'Recall', s['rec']]
+        rows.append(r)
+
+        r = [lab, 'F1', s['f1']]
+        rows.append(r)
+
+        # r = [labels['ro'][s['ro']], labels['est'][s['est']], s['err_meth'], 'Precision', s['prec']]
+        # rows.append(r)
+        # r = [labels['ro'][s['ro']], labels['est'][s['est']], s['err_meth'], 'Recall', s['rec']]
+        # rows.append(r)
+        # r = [labels['ro'][s['ro']], labels['est'][s['est']], s['err_meth'], 'F1', s['f1']]
+        # rows.append(r)
+
+    # colors = ["255,180,14", "44,160,131", "31,119,180"]
+    # colors = ["#2ca083", "#ffb40e", "#1f77b4"]
+    # colors = ["#b32979", "#ffb40e", "#1f77b4"]
+    colors = ["#c72a85", "#ffb40e", "#1f77b4"]
+
+
+
+
+    # Set your custom color palette
+    p = sns.color_palette(colors)
+    df = pd.DataFrame(rows, columns=['settings', 'metric', 'value'])
+    ax = sns.barplot(x="settings", y="value", hue="metric", data=df, palette=p)
+
+    # To add Hatch
+    # # Hatch idea:https://stackoverflow.com/questions/35467188/is-it-possible-to-add-hatches-to-each-individual-bar-in-seaborn-barplot
+    # # Define some hatches
+    # hatches = ['o', '-', 'x', '\\', '*', 'o']
+    # # hatches += ['-', '+', 'x', '\\', '*', 'o']
+    # # hatches += ['-', '+', 'x', '\\', '*', 'o']
+    # # hatches += ['-', '+', 'x', '\\', '*', 'o']
+    # # hatches += ['-', '+', 'x', '\\', '*', 'o']
+    # # hatches += ['-', '+', 'x', '\\', '*', 'o']
+    # # hatches += ['-', '+', 'x', '\\', '*', 'o']
+    #
+    # # Loop over the bars
+    # for i, bar in enumerate(ax.patches):
+    #     # Set a different hatch for each bar
+    #     bar.set_hatch(hatches[i % 3])
+    #     # ax['bars'][i].set(hatch="/", fill=False)
+
+    # num_locations = len(mdf.Location.unique())
+    # hatches = itertools.cycle(['/', '//', '+', '-', 'x', '\\', '*', 'o', 'O', '.'])
+    # for i, bar in enumerate(ax.patches):
+    #     if i % num_locations == 0:
+    #         hatch = next(hatches)
+    #     bar.set_hatch(hatch)
+
+    ax.set(xlabel=None, ylabel=None)
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=-15)
+    # ax.set_xticklabels(ax.get_xticklabels(), rotation=-20, size=8)
+    # ax.legend(fontsize='x-small')
+    ax.legend(loc='lower left')
+    plt.show()
+    # ax.figure.savefig(fpath, bbox_inches="tight")

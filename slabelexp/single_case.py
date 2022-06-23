@@ -1,3 +1,77 @@
+from slabelexp.common import *
+import os
+
+scores = [
+    {
+        'ro': True,
+        'est': True,
+        'err_meth': 'abc',
+        'prec': 0.4,
+        'rec': 0.5,
+        'f1': 0.6
+    },
+    {
+        'ro': True,
+        'est': False,
+        'err_meth': 'abc',
+        'prec': 0.3,
+        'rec': 0.8,
+        'f1': 0.1
+    },
+    {
+        'ro': False,
+        'est': True,
+        'err_meth': 'abc',
+        'prec': 0.4,
+        'rec': 0.5,
+        'f1': 0.6
+    },
+    {
+        'ro': False,
+        'est': False,
+        'err_meth': 'abc',
+        'prec': 0.3,
+        'rec': 0.8,
+        'f1': 0.1
+    },
+
+    {
+        'ro': True,
+        'est': True,
+        'err_meth': 'xyz',
+        'prec': 0.4,
+        'rec': 0.5,
+        'f1': 0.6
+    },
+    {
+        'ro': True,
+        'est': False,
+        'err_meth': 'xyz',
+        'prec': 0.3,
+        'rec': 0.8,
+        'f1': 0.1
+    },
+    {
+        'ro': False,
+        'est': True,
+        'err_meth': 'xyz',
+        'prec': 0.4,
+        'rec': 0.5,
+        'f1': 0.6
+    },
+    {
+        'ro': False,
+        'est': False,
+        'err_meth': 'xyz',
+        'prec': 0.3,
+        'rec': 0.8,
+        'f1': 0.1
+    },
+
+]
+
+generate_summary(scores, os.path.join('results', 'slabelling', 'summary.svg'))
+
 # from slabelexp.t2dv2 import *
 # from slabelexp.common import collect_numeric_data, get_columns_data
 #

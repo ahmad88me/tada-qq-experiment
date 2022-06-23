@@ -130,15 +130,30 @@ optional arguments:
   -o {true,false}, --outlier-removal {true,false}
 ```
 
+
 Used:
-1. with outlier removal
 ```
-python -m slabelexp.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False --draw
+python -m slabelexp.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true false --estimate True False --summary
 ```
-2. with outliers kept
-```
-python -m slabelexp.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False --draw
-```
+
+[//]: # ()
+[//]: # (Used:)
+
+[//]: # (1. with outlier removal)
+
+[//]: # (```)
+
+[//]: # (python -m slabelexp.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False --draw)
+
+[//]: # (```)
+
+[//]: # (2. with outliers kept)
+
+[//]: # (```)
+
+[//]: # (python -m slabelexp.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False --draw)
+
+[//]: # (```)
 
 #### Results
 
