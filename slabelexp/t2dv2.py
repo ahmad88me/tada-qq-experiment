@@ -47,6 +47,22 @@ def get_folder_name_from_params(err_meth, use_estimate, remove_outliers):
 
 def annotate_t2dv2_single_column(row, sl, files_k, eval_per_prop, eval_per_sub_kind, err_meth, use_estimate,
                                  remove_outliers, folder_name, eval_data, data_dir, diffs=None):
+    """
+    Annotate a single column
+    :param row:
+    :param sl:
+    :param files_k:
+    :param eval_per_prop:
+    :param eval_per_sub_kind:
+    :param err_meth:
+    :param use_estimate:
+    :param remove_outliers:
+    :param folder_name:
+    :param eval_data:
+    :param data_dir:
+    :param diffs:
+    :return:
+    """
     class_uri = 'http://dbpedia.org/ontology/' + row['concept']
     col_id = int(row['columnid'])
     uris = row['property'].split(';')
@@ -56,6 +72,7 @@ def annotate_t2dv2_single_column(row, sl, files_k, eval_per_prop, eval_per_sub_k
     # print("TEST class URI: %s" % class_uri)
     preds = sl.annotate_file(fdir=fdir, class_uri=class_uri, remove_outliers=remove_outliers, cols=[col_id],
                              err_meth=err_meth, estimate=use_estimate)
+
     pconcept = row['pconcept']
     sub_kind = row['sub_kind']
     if sub_kind in [None, np.nan, np.NaN]:
@@ -85,7 +102,7 @@ def annotate_t2dv2_single_column(row, sl, files_k, eval_per_prop, eval_per_sub_k
 
 
 def annotate_t2dv2_single_param_set(endpoint, df, err_meth_scores, err_meth, use_estimate, remove_outliers,
-                                    data_dir, diffs=None, draw=False):
+                                    data_dir, diffs=None, draw=False, return_files_k=False):
     sl = SLabel(endpoint=endpoint, min_num_objs=MIN_NUM_OBJ)
     eval_data = []
     scores = []
@@ -96,7 +113,9 @@ def annotate_t2dv2_single_param_set(endpoint, df, err_meth_scores, err_meth, use
     for idx, row in df.iterrows():
         annotate_t2dv2_single_column(row, sl, files_k, eval_per_prop, eval_per_sub_kind, err_meth, use_estimate,
                                      remove_outliers, folder_name, eval_data, data_dir=data_dir, diffs=diffs)
-
+    # print("\n\n\nfiles_k: ")
+    # print(files_k)
+    # print("\n\n\n")
     # print(eval_data)
     prec, rec, f1 = compute_scores(eval_data, k=1)
     score = {
@@ -124,30 +143,93 @@ def annotate_t2dv2_single_param_set(endpoint, df, err_meth_scores, err_meth, use
             err_meth_scores[est_txt] = dict()
 
         err_meth_scores[est_txt][err_meth] = scores_df
+    if return_files_k:
+        return scores, files_k
     return scores
 
 
-def annotate_t2dv2(endpoint, remove_outliers, err_meths, data_dir, loose=False, estimate=[True], diffs=False,
-                   draw=False, summary=False):
+def check_mislabel_files(scores_per_file):
+    """
+    :param scores_per_file:
+    :return:
+    """
+    # print(scores_per_file)
+    # print("==========\n\n")
+    d = dict()
+    for sett in scores_per_file:
+        d[sett] = []
+        for fname_col in scores_per_file[sett]:
+            tr = (fname_col, scores_per_file[sett][fname_col])
+            d[sett].append(tr)
+
+    print(d)
+    print("--------^^^^^^^^^^^^^^^-------------")
+
+    for i, sett1 in enumerate(d):
+        for j, sett2 in enumerate(d):
+            if i >= j:
+                continue
+            diffs1 = list(set(d[sett1]) - set(d[sett2]))
+            print(diffs1)
+            if len(diffs1) == 0:
+                print("skip")
+                print(sett1)
+                print(sett2)
+                continue
+            diffs2 = list(set(d[sett2]) - set(d[sett1]))
+            diffs1.sort()
+            diffs2.sort()
+            print("\n\n\nOptions: %s\t%s\n==========\n" % (sett1, sett2))
+            for d_idx in range(len(diffs1)):
+                print(diffs1[d_idx])
+                print(diffs2[d_idx])
+                print("-----------\n")
+
+
+def annotate_t2dv2(endpoint, remove_outliers, err_meths, data_dir, estimate=[True], diffs=False,
+                   draw=False, summary=False, check_mislabel=False):
     """
     endpoint:
     remove_outliers: bool
     filename,concept,k,column,property,columnid,kind,sub_kind
     """
+
+    def get_settings_key(ro, est, err_meth):
+        s = ""
+        if ro:
+            s += "ro"
+        else:
+            s += "ra"
+        if est:
+            s += "-est-"
+        else:
+            s += "-ext-"
+        s += err_meth
+        return s
+
     err_meth_scores = dict()
     scores = []
     df = fetch_t2dv2_data()
     # df = df.iloc[:10] # only the first 10
-    print(df)
+    # print(df)
+    files_scores_per_settings = dict()
     for ro in remove_outliers:
         for use_estimate in estimate:
             for err_meth in err_meths:
-                scores_single = annotate_t2dv2_single_param_set(endpoint, df, err_meth_scores, err_meth, use_estimate,
-                                                                ro, data_dir, diffs=diffs, draw=draw)
+                scores_single, files_scores = annotate_t2dv2_single_param_set(endpoint, df, err_meth_scores, err_meth, use_estimate,
+                                                                ro, data_dir, diffs=diffs, draw=draw, return_files_k=True)
                 scores += scores_single
+                if check_mislabel:
+                    files_scores_per_settings[get_settings_key(ro, use_estimate, err_meth)] = files_scores
 
     print("err meth scores:")
     print(err_meth_scores)
+
+    if check_mislabel:
+        print("Going to check mislabel")
+        check_mislabel_files(files_scores_per_settings)
+    else:
+        print("No mislabel")
 
     print_md_scores(scores)
 
@@ -175,12 +257,13 @@ def parse_arguments():
     parser.add_argument('-s', '--estimate', default=["True"], nargs="+")
     parser.add_argument('-w', '--draw', action='store_true', help="Whether to generate diagrams")
     parser.add_argument('-u', '--summary', action="store_true", help="Whether to generate a summary diagram")
+    parser.add_argument('-m', '--mislabel', action="store_true", help="Whether to print mislabeled files")
     args = parser.parse_args()
     out_rems = [ro.lower() == "true" for ro in args.outlier_removal]
     # parser.print_help()
     # raise Exception("")
     estimates = [e.lower() == "true" for e in args.estimate]
-    return args.err_meths, out_rems, estimates, args.diff, args.draw, args.summary
+    return args.err_meths, out_rems, estimates, args.diff, args.draw, args.summary, args.mislabel
 
 
 if __name__ == '__main__':
@@ -195,11 +278,15 @@ if __name__ == '__main__':
 
     common.PRINT_DIFF = SHOW_LOGS
     a = datetime.now()
-    err_meths, outlier_removal, estimate, diffs, to_draw, summary = parse_arguments()
-
+    err_meths, outlier_removal, estimate, diffs, to_draw, summary, mislab = parse_arguments()
+    # if mislab:
+    #     print("mislabel is true")
+    # else:
+    #     print("mislabel is false")
     # ["mean_err", "mean_sq_err", "mean_sq1_err"]
     annotate_t2dv2(endpoint=SPARQL_ENDPOINT, remove_outliers=outlier_removal, err_meths=err_meths,
-                   estimate=estimate, diffs=diffs, data_dir=data_dir, draw=to_draw, summary=summary)
+                   estimate=estimate, diffs=diffs, data_dir=data_dir, draw=to_draw, summary=summary,
+                   check_mislabel=mislab)
     b = datetime.now()
     # print("\n\nTime it took (in seconds): %f.1 seconds\n\n" % (b - a).total_seconds())
     print("\n\nTime it took: %.1f minutes\n\n" % ((b - a).total_seconds() / 60.0))

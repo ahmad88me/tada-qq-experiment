@@ -136,24 +136,6 @@ Used:
 python -m slabelexp.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true false --estimate True False --summary
 ```
 
-[//]: # ()
-[//]: # (Used:)
-
-[//]: # (1. with outlier removal)
-
-[//]: # (```)
-
-[//]: # (python -m slabelexp.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False --draw)
-
-[//]: # (```)
-
-[//]: # (2. with outliers kept)
-
-[//]: # (```)
-
-[//]: # (python -m slabelexp.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False --draw)
-
-[//]: # (```)
 
 #### Results
 
@@ -173,6 +155,11 @@ python -m slabelexp.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true false 
 |           False |     exact |        mean_err |      0.53 |      0.85 |  0.65 |
 |           False |     exact |     mean_sq_err |      0.53 |      0.85 |  0.65 |
 |           False |     exact | mean_sqroot_err |      0.50 |      0.84 |  0.63 |
+
+
+![](results/slabelling/t2dv2-slabel-results-ra.svg)
+
+![](results/slabelling/t2dv2-slabel-results-ro.svg)
 
 
 
@@ -238,9 +225,6 @@ mean square root + exact + raw
 mean square root + exact + outlier removed
 
 ![](results/slabelling/datapoints-t2dv2-mean-sqroot-err-exact.svg)
-
-
-
 
 
 
