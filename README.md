@@ -473,3 +473,9 @@ python -m merged.single -p clus -e mean_err mean_sq_err mean_sqroot_err -s true 
     parser.add_argument('-f', '--failback', action="store_true")  # False by default
     parser.add_argument('-p', '--pref', choices=["slab", "clus"], required=True,
                         help="Whether the preference is for the slab predicted or the clus (most voted in the cluster)")
+                        
+                        
+                        
+# Funding                        
+This work was funded partially by EIT Digital under the WOODS project.
+   
