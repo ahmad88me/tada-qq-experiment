@@ -12,7 +12,7 @@ from tadaqq.slabel import SLabel
 from tadaqq.util import uri_to_fname, compute_scores
 from util.t2dv2 import get_dirs, fetch_t2dv2_data
 
-from ks.kslabel import DIST_DIFF, DIST_PVAL, KSLabel
+from ks.kslabel import DIST_SUP, DIST_PVAL, KSLabel
 
 
 SPARQL_ENDPOINT = "https://en-dbpedia.oeg.fi.upm.es/sparql"
@@ -37,7 +37,7 @@ def get_folder_name_from_params(dist, use_estimate, remove_outliers):
     :param remove_outliers:
     :return:
     """
-    if dist not in [DIST_PVAL, DIST_DIFF]:
+    if dist not in [DIST_PVAL, DIST_SUP]:
         raise Exception("unknown distance method: %s" % dist)
     folder_name = "t2dv2-"+dist
 
@@ -125,10 +125,10 @@ def annotate_t2dv2_single_param_set(endpoint, df, dist_scores, dist, use_estimat
         annotate_t2dv2_single_column(row, ksl, files_k, eval_per_prop, eval_per_sub_kind, dist, use_estimate,
                                      remove_outliers, folder_name, eval_data, data_dir=data_dir, diffs=diffs)
 
-        ## TEST
-        if idx > 10:
-            print("NOW STOPING for testing")
-            break
+        # ## TEST
+        # if idx > 25:
+        #     print("NOW STOPING for testing")
+        #     break
 
     if SHOW_LOGS:
         print("\n\n=========================\n\t\teval data\n=========================")
@@ -247,8 +247,8 @@ def annotate_t2dv2(endpoint, remove_outliers, data_dir, dists, estimate=[True], 
                 if check_mislabel:
                     files_scores_per_settings[get_settings_key(ro, use_estimate, dist)] = files_scores
 
-    print("dist scores:")
-    print(dist_scores)
+    # print("dist scores:")
+    # print(dist_scores)
 
     if check_mislabel:
         print("Going to check mislabel")
@@ -280,7 +280,7 @@ def parse_arguments():
     parser.add_argument('-s', '--estimate', default=["true"], nargs="+", help="Whether to show estimates or not.")
     parser.add_argument('-w', '--draw', action='store_true', help="Whether to generate diagrams")
     parser.add_argument('-u', '--summary', action="store_true", help="Whether to generate a summary diagram")
-    parser.add_argument('--dists', nargs="+", help="The distance measure to use (PVAL or DIFF)")
+    parser.add_argument('--dists', nargs="+", help="The distance measure to use (%s or %s)" % (DIST_SUP, DIST_PVAL))
     parser.add_argument('-m', '--mislabel', action="store_true", help="Whether to print mislabeled files")
     parser.print_help()
     args = parser.parse_args()
@@ -288,7 +288,7 @@ def parse_arguments():
     out_rems = [ro.lower() == "true" for ro in args.outlier_removal]
     estimates = [e.lower() == "true" for e in args.estimate]
     for d in args.dists:
-        if d not in [DIST_PVAL, DIST_DIFF]:
+        if d not in [DIST_PVAL, DIST_SUP]:
             raise Exception("Unknown distance measure: %s" % d)
     return out_rems, estimates, args.diff, args.draw, args.summary, args.mislabel, args.dists
 
@@ -296,7 +296,7 @@ def parse_arguments():
 if __name__ == '__main__':
     data_dir, meta_dir, properties_dir = get_dirs()
 
-    common.PRINT_DIFF = SHOW_LOGS
+    # common.PRINT_DIFF = SHOW_LOGS
     a = datetime.now()
     outlier_removal, estimate, diffs, to_draw, summary, mislab, dists = parse_arguments()
     annotate_t2dv2(endpoint=SPARQL_ENDPOINT, remove_outliers=outlier_removal,

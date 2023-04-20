@@ -93,7 +93,8 @@ python -m clus.t2dv2 -c 0.9
 ![](results/clustering/t2dv2_sameclass.svg)
 
 
-## Semantic labelling
+
+## Semantic labelling with QQ
 ### Olympic Games
 Command used:
 ```
@@ -473,3 +474,54 @@ python -m merged.single -p clus -e mean_err mean_sq_err mean_sqroot_err -s true 
     parser.add_argument('-f', '--failback', action="store_true")  # False by default
     parser.add_argument('-p', '--pref', choices=["slab", "clus"], required=True,
                         help="Whether the preference is for the slab predicted or the clus (most voted in the cluster)")
+
+
+
+
+
+
+
+
+
+
+
+## Semantic labelling with KS
+
+
+
+### T2Dv2
+
+Arguments
+```
+
+usage: t2dv2.py [-h] [-o OUTLIER_REMOVAL [OUTLIER_REMOVAL ...]] [-d] [-s ESTIMATE [ESTIMATE ...]] [-w] [-u] [--dists DISTS [DISTS ...]] [-m]
+
+Parameters for the experiment
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -o OUTLIER_REMOVAL [OUTLIER_REMOVAL ...], --outlier-removal OUTLIER_REMOVAL [OUTLIER_REMOVAL ...]
+                        Whether to remove outliers or not.
+  -d, --diff            Store the diffs
+  -s ESTIMATE [ESTIMATE ...], --estimate ESTIMATE [ESTIMATE ...]
+                        Whether to show estimates or not.
+  -w, --draw            Whether to generate diagrams
+  -u, --summary         Whether to generate a summary diagram
+  --dists DISTS [DISTS ...]
+                        The distance measure to use (sup or pva)
+  -m, --mislabel        Whether to print mislabeled files
+
+
+```
+
+
+Used:
+```
+python -m ks.t2dv2 --dist pva sup -o true false --estimate True False --summary --draw
+```
+
+
+#### Results
+
+
+

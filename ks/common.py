@@ -24,8 +24,8 @@ logger = get_logger(__name__, level=logging.INFO)
 # logger = get_logger(__name__, level=logging.DEBUG)
 esparql = easysparqlclass.EasySparql(cache_dir=".cache", logger=logger)
 
-DIST_DIFF = "diff"
-DIST_PVAL = "pval"
+DIST_SUP = "sup"
+DIST_PVAL = "pva"
 
 
 def compute_counts_per_dist(scores_dict, fname):
@@ -172,13 +172,13 @@ def generate_summary(scores, fpath=None):
         'ro': {True: 'ro', False: 'ra'},
         'est': {True: 'est', False: 'ext'},
         'dist': {
-            DIST_PVAL: 'p-value',
-            DIST_DIFF: 'KS statistic',
+            DIST_PVAL: 'pva',
+            DIST_SUP: 'sup',
         }
     }
     for s in scores:
         # lab = "%s + %s + %s" % (labels['err_meth'][s['err_meth']], labels['ro'][s['ro']], labels['est'][s['est']])
-        lab = "%s + %s" % (labels['dist'][s['dist']], labels['est'][s['est']])
+        lab = "%s + %s + %s" % (labels['dist'][s['dist']], labels['ro'][s['ro']], labels['est'][s['est']], )
         r = [lab, 'Precision', s['prec']]
         rows.append(r)
 
@@ -206,7 +206,7 @@ def generate_summary(scores, fpath=None):
     # Set your custom color palette
     p = sns.color_palette(colors)
     df = pd.DataFrame(rows, columns=['settings', 'metric', 'value'])
-    ax = sns.barplot(x="settings", y="value", hue="metric", data=df, palette=p)
+    ax = sns.barplot(x="settings", y="value", hue="metric", data=df, palette=p, ci=None)
 
     # To add Hatch
     # # Hatch idea:https://stackoverflow.com/questions/35467188/is-it-possible-to-add-hatches-to-each-individual-bar-in-seaborn-barplot
@@ -233,9 +233,10 @@ def generate_summary(scores, fpath=None):
     #     bar.set_hatch(hatch)
 
     ax.set(xlabel=None, ylabel=None)
-    ax.set_xticklabels(ax.get_xticklabels(), rotation=-15)
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=-70)
     # ax.set_xticklabels(ax.get_xticklabels(), rotation=-20, size=8)
     # ax.legend(fontsize='x-small')
-    ax.legend(loc='lower left')
-    plt.show()
-    # ax.figure.savefig(fpath, bbox_inches="tight")
+    ax.legend(loc='lower right')
+    #plt.show()
+    ax.figure.savefig(fpath, bbox_inches="tight")
+    ax.figure.clf()

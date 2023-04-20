@@ -12,7 +12,7 @@ from scipy.stats import ks_2samp
 
 import numpy as np
 
-from ks.common import DIST_DIFF, DIST_PVAL
+from ks.common import DIST_SUP, DIST_PVAL
 
 import pcake
 
@@ -140,10 +140,10 @@ class KSLabel(SLabel):
             if remove_outliers:
                 objects = remove_outliers_func(objects)
             res = ks_2samp(col, objects, mode=mode)
-            if dist == DIST_DIFF:
+            if dist == DIST_SUP:
                 err = res.statistic
             elif dist == DIST_PVAL:
-                err = res.pvalue
+                err = 1.0 - res.pvalue
             else:
                 raise Exception("Invalid dist: %s" % dist)
 
