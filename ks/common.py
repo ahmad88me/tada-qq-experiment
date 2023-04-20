@@ -133,15 +133,36 @@ def compute_counts_per_dist(scores_dict, fname):
     ax.figure.clf()
 
 
-def print_md_scores(scores):
-    """
-    This is modified from print_md_scores in slabelexp
-    :param scores:
-    :return:
-    """
-    print("\n\n| %15s | %9s | %15s | %9s | %9s | %5s |" % ("remove outlier", "estimate", "distance", "Precision",
-                                                           "Recall", "F1"))
-    print("|:%s:|:%s:|:%s:|:%s:|:%s:|:%s:|" % ("-" * 15, "-" * 9, "-" * 15, "-" * 9, "-" * 9, "-" * 5))
+# def print_md_scores(scores):
+#     """
+#     This is modified from print_md_scores in slabelexp
+#     :param scores:
+#     :return:
+#     """
+#     print("\n\n| %15s | %9s | %15s | %9s | %9s | %5s |" % ("remove outlier", "estimate", "distance", "Precision",
+#                                                            "Recall", "F1"))
+#     print("|:%s:|:%s:|:%s:|:%s:|:%s:|:%s:|" % ("-" * 15, "-" * 9, "-" * 15, "-" * 9, "-" * 9, "-" * 5))
+#     for sc in scores:
+#         ro, est, dist, prec, rec, f1 = sc['ro'], sc['est'], sc['dist'], sc['prec'], sc['rec'], sc['f1']
+#         if est:
+#             est_txt = "estimate"
+#         else:
+#             est_txt = "exact"
+#         ro_txt = str(ro)
+#         print("| %15s | %9s | %15s | %9.2f | %9.2f | %5.2f |" % (ro_txt, est_txt, dist, prec, rec, f1))
+
+
+def print_md_scores(scores, do_print=True):
+    res = ""
+    s = "\n\n| %9s | %9s | %9s | %10s | %9s | %5s |" % ("Remove Outlier", "Estimate", "Distance",
+                                                                          "Precision", "Recall", "F1")
+    if do_print:
+        print(s)
+    res += s + "\n"
+    s = "|:%s:|:%s:|:%s:|:%s:|:%s:|:%s:|" % ("-" * 9, "-" * 9, "-" * 9, "-" * 10, "-" * 9, "-" * 5)
+    if do_print:
+        print(s)
+    res += s + "\n"
     for sc in scores:
         ro, est, dist, prec, rec, f1 = sc['ro'], sc['est'], sc['dist'], sc['prec'], sc['rec'], sc['f1']
         if est:
@@ -149,8 +170,26 @@ def print_md_scores(scores):
         else:
             est_txt = "exact"
         ro_txt = str(ro)
-        print("| %15s | %9s | %15s | %9.2f | %9.2f | %5.2f |" % (ro_txt, est_txt, dist, prec, rec, f1))
+        s = "| %9s | %9s | %9s | %7.2f | %6.2f | %2.2f |" % (ro_txt, est_txt, dist, prec, rec, f1)
+        if do_print:
+            print(s)
+        res += s + "\n"
+    return res
 
+def scores_for_spreadsheet(scores, sep=","):
+    lines = []
+    line = sep.join(["Remove Outlier", "Estimate", "Distance", "Precision", "Recall", "F1"])
+    lines.append(line)
+    for sc in scores:
+        ro, est, dist, prec, rec, f1 = sc['ro'], sc['est'], sc['dist'], sc['prec'], sc['rec'], sc['f1']
+        if est:
+            est_txt = "estimate"
+        else:
+            est_txt = "exact"
+        ro_txt = str(ro)
+        line = sep.join([ro_txt, est_txt, dist, "%.2f" % prec, "%.2f" % rec , "%.2f" % f1])
+        lines.append(line)
+    return "\n".join(lines)
 
 def generate_summary(scores, fpath=None):
     """

@@ -4,7 +4,7 @@ import argparse
 
 import numpy as np
 from slabelexp import common
-from slabelexp.common import compute_scores_per_key,generate_summary
+from slabelexp.common import compute_scores_per_key,generate_summary, scores_for_spreadsheet
 from slabelexp.common import get_num_rows, compute_counts, compute_counts_per_err_meth, print_md_scores
 import pandas as pd
 from tadaqq.slabel import SLabel
@@ -187,7 +187,7 @@ def check_mislabel_files(scores_per_file):
 
 
 def annotate_t2dv2(endpoint, remove_outliers, err_meths, data_dir, estimate=[True], diffs=False,
-                   draw=False, summary=False, check_mislabel=False):
+                   draw=False, summary=False, check_mislabel=False, append_to_readme=False):
     """
     endpoint:
     remove_outliers: bool
@@ -231,16 +231,28 @@ def annotate_t2dv2(endpoint, remove_outliers, err_meths, data_dir, estimate=[Tru
     else:
         print("No mislabel")
 
-    print_md_scores(scores)
 
     fname = "t2dv2-err-methods"
     if not remove_outliers:
         fname += "-raw"
-    new_fname = os.path.join('results', 'slabelling', fname)
+
+     = os.path.join('results', 'slabelling')
+
+    new_fname = os.path.join(res_path, fname)
     if draw:
         compute_counts_per_err_meth(err_meth_scores, new_fname)
     if summary:
-        generate_summary(scores, os.path.join('results', 'slabelling', 'summary.svg'))
+        generate_summary(scores, os.path.join(res_path, 'summary.svg'))
+
+    if append_to_readme:
+        res = print_md_scores(scores, do_print=False)
+        readme_path = os.path.join(res_path, "README.md")
+        with open(readme_path, "a") as f:
+            f.write(res)
+        res = scores_for_spreadsheet(scores, sep=",")
+        csv_path = os.path.join(res_path, "results.csv")
+        with open(csv_path, "a") as f:
+            f.write(res)
     # print(final_scores_txt)
 
 
@@ -258,12 +270,13 @@ def parse_arguments():
     parser.add_argument('-w', '--draw', action='store_true', help="Whether to generate diagrams")
     parser.add_argument('-u', '--summary', action="store_true", help="Whether to generate a summary diagram")
     parser.add_argument('-m', '--mislabel', action="store_true", help="Whether to print mislabeled files")
+    parser.add_argument('-a', '--append-to-readme', action="store_true")
     args = parser.parse_args()
     out_rems = [ro.lower() == "true" for ro in args.outlier_removal]
     # parser.print_help()
     # raise Exception("")
     estimates = [e.lower() == "true" for e in args.estimate]
-    return args.err_meths, out_rems, estimates, args.diff, args.draw, args.summary, args.mislabel
+    return args.err_meths, out_rems, estimates, args.diff, args.draw, args.summary, args.mislabel, args.append_to_readme
 
 
 if __name__ == '__main__':
@@ -278,7 +291,7 @@ if __name__ == '__main__':
 
     common.PRINT_DIFF = SHOW_LOGS
     a = datetime.now()
-    err_meths, outlier_removal, estimate, diffs, to_draw, summary, mislab = parse_arguments()
+    err_meths, outlier_removal, estimate, diffs, to_draw, summary, mislab, append_to_readme = parse_arguments()
     # if mislab:
     #     print("mislabel is true")
     # else:
@@ -286,7 +299,7 @@ if __name__ == '__main__':
     # ["mean_err", "mean_sq_err", "mean_sq1_err"]
     annotate_t2dv2(endpoint=SPARQL_ENDPOINT, remove_outliers=outlier_removal, err_meths=err_meths,
                    estimate=estimate, diffs=diffs, data_dir=data_dir, draw=to_draw, summary=summary,
-                   check_mislabel=mislab)
+                   check_mislabel=mislab, append_to_readme=append_to_readme)
     b = datetime.now()
     # print("\n\nTime it took (in seconds): %f.1 seconds\n\n" % (b - a).total_seconds())
     print("\n\nTime it took: %.1f minutes\n\n" % ((b - a).total_seconds() / 60.0))

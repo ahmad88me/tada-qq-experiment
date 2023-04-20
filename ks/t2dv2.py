@@ -6,7 +6,7 @@ import numpy as np
 from slabelexp import common
 from slabelexp.common import compute_scores_per_key
 from slabelexp.common import get_num_rows, compute_counts
-from ks.common import print_md_scores, compute_counts_per_dist, generate_summary
+from ks.common import print_md_scores, compute_counts_per_dist, generate_summary, scores_for_spreadsheet
 import pandas as pd
 from tadaqq.slabel import SLabel
 from tadaqq.util import uri_to_fname, compute_scores
@@ -201,7 +201,7 @@ def check_mislabel_files(scores_per_file):
 
 
 def annotate_t2dv2(endpoint, remove_outliers, data_dir, dists, estimate=[True], diffs=False,
-                   draw=False, summary=False, check_mislabel=False):
+                   draw=False, summary=False, check_mislabel=False, append_to_readme=False):
     """
     :param endpoint:
     :param remove_outliers:
@@ -256,17 +256,25 @@ def annotate_t2dv2(endpoint, remove_outliers, data_dir, dists, estimate=[True], 
     else:
         print("No mislabel")
 
-    print_md_scores(scores)
-
     fname = "t2dv2-dist"
     if not remove_outliers:
         fname += "-raw"
-    new_fname = os.path.join('results', 'ks', fname)
+    res_path = os.path.join('results', 'ks')
     if draw:
+        new_fname = os.path.join(res_path, fname)
         compute_counts_per_dist(dist_scores, new_fname)
     if summary:
-        generate_summary(scores, os.path.join('results', 'ks', 'summary.svg'))
+        generate_summary(scores, os.path.join(res_path, 'summary.svg'))
     # print(final_scores_txt)
+    if append_to_readme:
+        res = print_md_scores(scores, do_print=False)
+        readme_path = os.path.join(res_path, "README.md")
+        with open(readme_path, "a") as f:
+            f.write(res)
+        res = scores_for_spreadsheet(scores, sep=",")
+        csv_path = os.path.join(res_path, "results.csv")
+        with open(csv_path, "a") as f:
+            f.write(res)
 
 
 def parse_arguments():
@@ -282,6 +290,8 @@ def parse_arguments():
     parser.add_argument('-u', '--summary', action="store_true", help="Whether to generate a summary diagram")
     parser.add_argument('--dists', nargs="+", help="The distance measure to use (%s or %s)" % (DIST_SUP, DIST_PVAL))
     parser.add_argument('-m', '--mislabel', action="store_true", help="Whether to print mislabeled files")
+    parser.add_argument('-a', '--append-to-readme', action="store_true")
+
     parser.print_help()
     args = parser.parse_args()
 
@@ -290,7 +300,7 @@ def parse_arguments():
     for d in args.dists:
         if d not in [DIST_PVAL, DIST_SUP]:
             raise Exception("Unknown distance measure: %s" % d)
-    return out_rems, estimates, args.diff, args.draw, args.summary, args.mislabel, args.dists
+    return out_rems, estimates, args.diff, args.draw, args.summary, args.mislabel, args.dists, args.append_to_readme
 
 
 if __name__ == '__main__':
@@ -298,10 +308,10 @@ if __name__ == '__main__':
 
     # common.PRINT_DIFF = SHOW_LOGS
     a = datetime.now()
-    outlier_removal, estimate, diffs, to_draw, summary, mislab, dists = parse_arguments()
+    outlier_removal, estimate, diffs, to_draw, summary, mislab, dists, append_to_readme = parse_arguments()
     annotate_t2dv2(endpoint=SPARQL_ENDPOINT, remove_outliers=outlier_removal,
                    estimate=estimate, diffs=diffs, data_dir=data_dir, draw=to_draw, summary=summary,
-                   check_mislabel=mislab, dists=dists)
+                   check_mislabel=mislab, dists=dists, append_to_readme=append_to_readme)
     b = datetime.now()
     print("\n\nTime it took: %.1f minutes\n\n" % ((b - a).total_seconds() / 60.0))
 

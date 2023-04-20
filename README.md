@@ -517,11 +517,14 @@ optional arguments:
 
 Used:
 ```
-python -m ks.t2dv2 --dist pva sup -o true false --estimate True False --summary --draw
+python -m ks.t2dv2 --dist pva sup -o true false --estimate True False --summary --draw -a
 ```
 
 
 #### Results
 
+
+## Semantic Labelling Comparison
+This is based on the data from the README.md. They are manually copied to results.csv.
 
 

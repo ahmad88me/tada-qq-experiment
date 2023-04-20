@@ -346,11 +346,34 @@ def compute_counts_per_err_meth(scores_dict, fname):
     # plt.show()
     ax.figure.clf()
 
+# OLD
+# def print_md_scores(scores):
+#     print("\n\n| %15s | %9s | %15s | %9s | %9s | %5s |" % ("remove outlier", "estimate", "error method", "Precision",
+#                                                            "Recall", "F1"))
+#     print("|:%s:|:%s:|:%s:|:%s:|:%s:|:%s:|" % ("-" * 15, "-" * 9, "-" * 15, "-" * 9, "-" * 9, "-" * 5))
+#     for sc in scores:
+#         ro, est, err_meth, prec, rec, f1 = sc['ro'], sc['est'], sc['err_meth'], sc['prec'], sc['rec'], sc['f1']
+#         if est:
+#             est_txt = "estimate"
+#         else:
+#             est_txt = "exact"
+#         ro_txt = str(ro)
+#         print("| %15s | %9s | %15s | %9.2f | %9.2f | %5.2f |" % (ro_txt, est_txt, err_meth, prec, rec, f1))
 
-def print_md_scores(scores):
-    print("\n\n| %15s | %9s | %15s | %9s | %9s | %5s |" % ("remove outlier", "estimate", "error method", "Precision",
+# NEW
+def print_md_scores(scores, do_print=True):
+    res = ""
+    s = "\n\n| %15s | %9s | %15s | %9s | %9s | %5s |" % ("remove outlier", "estimate", "error method", "Precision",
                                                            "Recall", "F1"))
-    print("|:%s:|:%s:|:%s:|:%s:|:%s:|:%s:|" % ("-" * 15, "-" * 9, "-" * 15, "-" * 9, "-" * 9, "-" * 5))
+    res += "\n"+s
+    if do_print:
+        print(s)
+
+    s = "|:%s:|:%s:|:%s:|:%s:|:%s:|:%s:|" % ("-" * 15, "-" * 9, "-" * 15, "-" * 9, "-" * 9, "-" * 5))
+    res += "\n"+s
+    if do_print:
+        print(s)
+
     for sc in scores:
         ro, est, err_meth, prec, rec, f1 = sc['ro'], sc['est'], sc['err_meth'], sc['prec'], sc['rec'], sc['f1']
         if est:
@@ -358,7 +381,26 @@ def print_md_scores(scores):
         else:
             est_txt = "exact"
         ro_txt = str(ro)
-        print("| %15s | %9s | %15s | %9.2f | %9.2f | %5.2f |" % (ro_txt, est_txt, err_meth, prec, rec, f1))
+        s = "| %15s | %9s | %15s | %9.2f | %9.2f | %5.2f |" % (ro_txt, est_txt, err_meth, prec, rec, f1))
+        res += "\n" + s
+        if do_print:
+            print(s)
+
+def scores_for_spreadsheet(scores, sep=","):
+    lines = []
+    line = sep.join(["Remove Outlier", "Estimate", "Error Method", "Precision", "Recall", "F1"])
+    lines.append(line)
+    for sc in scores:
+        ro, est, err_meth, prec, rec, f1 = sc['ro'], sc['est'], sc['err_meth'], sc['prec'], sc['rec'], sc['f1']
+        if est:
+            est_txt = "estimate"
+        else:
+            est_txt = "exact"
+        ro_txt = str(ro)
+        line = sep.join([ro_txt, est_txt, err_meth, "%.2f" % prec, "%.2f" % rec, "%.2f" % f1])
+        lines.append(line)
+    return "\n".join(lines)
+
 
 
 def generate_summary(scores, fpath=None):
