@@ -59,7 +59,7 @@ def compute_counts_per_dist(scores_dict, fname):
         for m in scores_dict[e]:
             df1 = scores_dict[e][m]
             df1['pred'] = [e] * len(df1.index)
-            df1['method'] = [m] * len(df1.index)
+            df1['dist'] = [m] * len(df1.index)
             print("==============")
             print(e)
             print(m)
@@ -83,7 +83,7 @@ def compute_counts_per_dist(scores_dict, fname):
     ax = sns.scatterplot(x="nrows", y="score", data=df, hue="pred",
                          # size="ncols",
                          palette=p,
-                         style="method")
+                         style="dist")
                          # sizes=(40, 100))
     # legend_labels, leg_oth = ax.get_legend_handles_labels()
     # ax = sns.scatterplot(x="nrows", y="precision", data=df, size="ncols", hue="ncols",
@@ -104,7 +104,7 @@ def compute_counts_per_dist(scores_dict, fname):
     for idx, c in enumerate(scores_dict):
         # print("cat: %s" % c)
         for m in scores_dict[e]:
-            sns.lineplot(data=df[(df.pred == c) & (df.method == m)], x='nrows', y='score', dashes=True, ax=ax,
+            sns.lineplot(data=df[(df.pred == c) & (df.dist == m)], x='nrows', y='score', dashes=True, ax=ax,
                          linestyle=linestyles[idx],
                          color=colors[idx],
                          #palette=p,

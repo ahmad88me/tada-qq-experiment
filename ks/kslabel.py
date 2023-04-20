@@ -17,9 +17,6 @@ from ks.common import DIST_SUP, DIST_PVAL
 import pcake
 
 
-
-
-
 def get_logger(name, level=logging.INFO):
     logger = logging.getLogger(name)
     formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
@@ -32,77 +29,6 @@ def get_logger(name, level=logging.INFO):
 
 
 class KSLabel(SLabel):
-
-    # def __init__(self, endpoint=None, cache_dir=".cache", logger=None, min_num_objs=30,
-    #              offline_data_dir="local_data"):
-    #     self.esparql = easysparqlclass.EasySparql(cache_dir=cache_dir, logger=logger)
-    #     if not logger:
-    #         logger = get_logger(__name__, level=logging.INFO)
-    #     self.logger = logger
-    #     if endpoint:
-    #         self.esparql.endpoint = endpoint
-    #     self.offline_data_dir = offline_data_dir
-    #     self.min_num_objs = min_num_objs
-    #
-    # def set_endpoint(self, endpoint):
-    #     self.esparql.endpoint = endpoint
-    #
-    # def collect_numeric_data(self, class_uri):
-    #     """
-    #     :param class_uri:
-    #     :return:
-    #     """
-    #
-    #     data_dir = self.offline_data_dir
-    #     min_objs = self.min_num_objs
-    #
-    #     prop_query = """select distinct ?p where{
-    #         ?s a <%s>.
-    #         ?s ?p ?o.
-    #     }
-    #     """ % (class_uri)
-    #
-    #     query_template = """select ?o where{
-    #         ?s a <%s>.
-    #         ?s <%s> ?o.
-    #     }
-    #     """
-    #
-    #     util.create_dir(data_dir)
-    #     class_dir = os.path.join(data_dir, util.uri_to_fname(class_uri))
-    #
-    #     if os.path.exists(class_dir):
-    #         return
-    #     util.create_dir(class_dir)
-    #     # print("prop query: ")
-    #     # print(prop_query)
-    #     results = self.esparql.run_query(prop_query)
-    #     properties = [r['p']['value'] for r in results]
-    #
-    #     for prop in properties:
-    #         if util.data_exists(data_dir=data_dir, class_uri=class_uri, property_uri=prop):
-    #             continue
-    #         query = query_template % (class_uri, prop)
-    #         results = self.esparql.run_query(query=query)
-    #
-    #         if results is None:
-    #             self.logger.debug('No results for the query: ' + query)
-    #             continue
-    #
-    #         objects = [r['o']['value'] for r in results]
-    #
-    #         if len(objects) >= min_objs:
-    #             nums = self.esparql.get_numerics_from_list(objects, 0.5)
-    #             if nums is None:
-    #                 self.logger.debug('property is not numeric: ' + prop)
-    #                 continue
-    #             elif len(nums) >= min_objs:
-    #                 self.logger.debug('saving property: ' + prop)
-    #                 util.save_objects(data_dir, class_uri, prop, nums)
-    #             else:
-    #                 self.logger.debug("less than 30 numeric values: " + prop)
-    #         else:
-    #             self.logger.debug('less than 30 objects: ' + prop)
 
     def annotate_column(self, col, dist, class_uri=None, properties_dirs=None, remove_outliers=False, estimate=True):
         """
@@ -198,72 +124,6 @@ class KSLabel(SLabel):
                                    dist=dist, estimate=estimate)
             preds[colid] = errs
         return preds
-
-    # def eval_column(self, p_errs, correct_uris=[], diff_diagram=None, class_uri=None, col_id=None, fdir=None,
-    #                 print_diff=False):
-    #     """
-    #     p_errs: a list of pairs. each pair starts with the error/distance and the filename
-    #         (e.g., <0.1, dbo-Person-abc/dbp-xyz.txt>)
-    #     correct_uris: a list of correct uris (transformed to the form e.g., dbp-height)
-    #     diff_diagram: the name of the output diagram showing the difference between the distributions
-    #     The following parameters are only needed for the diff diagram
-    #     class_uri:
-    #     col_id:
-    #     fdir:
-    #
-    #     """
-    #     k = -1
-    #     if len(correct_uris) == 0:
-    #         print("No correct uris are passed")
-    #         print(p_errs)
-    #         raise Exception("No correct uris are passed")
-    #     for idx, item in enumerate(p_errs):
-    #         trans_uri = item[1].split('/')[-1][:-4]
-    #         trans_uri = util.uri_to_fname(trans_uri)
-    #         if trans_uri in correct_uris:
-    #             k = idx + 1
-    #             if print_diff:
-    #                 print("Match: %.2f - <%s> - <%s>" % (item[0], trans_uri, util.property_dir_to_uri(item[1])[1]))
-    #             if idx > 0:
-    #                 if diff_diagram:
-    #                     data = util.get_columns_data(fdir, [col_id])[0][1]
-    #                     prev_property_uri = util.property_dir_to_uri(p_errs[idx - 1][1])[1]
-    #                     if print_diff:
-    #                         print("property dir to uri:")
-    #                         print(item[1])
-    #                     pcake.compare(class_uri, util.property_dir_to_uri(item[1])[1], prev_property_uri,
-    #                                   label1a=" (correct)",
-    #                                   label2a=" (incorrect)", data=data, data_label="data", outfile=diff_diagram)
-    #             break
-    #         elif idx < 3:
-    #             if idx == 0:
-    #                 if print_diff:
-    #                     print("Correct uris: %s \t" % str(correct_uris))
-    #             if print_diff:
-    #                 print("item: ")
-    #                 print(item)
-    #                 if len(item[1]) > 0:
-    #                     print("%d err: %.2f - <%s> - <%s>" % (idx + 1, item[0], trans_uri, util.property_dir_to_uri(item[1])[1]))
-    #                 else:
-    #                     print('empty diff')
-    #         else:
-    #             k = 999
-    #             base_a = os.sep.join(p_errs[0][1].split(os.sep)[:-1])
-    #             corr_uri = os.path.join(base_a, correct_uris[0] + ".txt")
-    #             if print_diff:
-    #                 print("property dir to uri: ***")
-    #                 print(corr_uri)
-    #             try:
-    #                 if diff_diagram:
-    #                     prev_property_uri = util.property_dir_to_uri(p_errs[0][1])[1]
-    #                     data = util.get_columns_data(fdir, [col_id])[0][1]
-    #                     pcake.compare(class_uri, util.property_dir_to_uri(corr_uri)[1], prev_property_uri,
-    #                                   label1a=" (correct*)",
-    #                                   label2a=" (incorrect)", data=data, data_label="data", outfile=diff_diagram)
-    #             except:
-    #                 pass
-    #             break
-    #     return k
 
 
 # This function is copied from the
