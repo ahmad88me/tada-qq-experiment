@@ -364,12 +364,12 @@ def compute_counts_per_err_meth(scores_dict, fname):
 def print_md_scores(scores, do_print=True):
     res = ""
     s = "\n\n| %15s | %9s | %15s | %9s | %9s | %5s |" % ("remove outlier", "estimate", "error method", "Precision",
-                                                           "Recall", "F1"))
+                                                           "Recall", "F1")
     res += "\n"+s
     if do_print:
         print(s)
 
-    s = "|:%s:|:%s:|:%s:|:%s:|:%s:|:%s:|" % ("-" * 15, "-" * 9, "-" * 15, "-" * 9, "-" * 9, "-" * 5))
+    s = "|:%s:|:%s:|:%s:|:%s:|:%s:|:%s:|" % ("-" * 15, "-" * 9, "-" * 15, "-" * 9, "-" * 9, "-" * 5)
     res += "\n"+s
     if do_print:
         print(s)
@@ -381,10 +381,11 @@ def print_md_scores(scores, do_print=True):
         else:
             est_txt = "exact"
         ro_txt = str(ro)
-        s = "| %15s | %9s | %15s | %9.2f | %9.2f | %5.2f |" % (ro_txt, est_txt, err_meth, prec, rec, f1))
+        s = "| %15s | %9s | %15s | %9.2f | %9.2f | %5.2f |" % (ro_txt, est_txt, err_meth, prec, rec, f1)
         res += "\n" + s
         if do_print:
             print(s)
+    return res
 
 def scores_for_spreadsheet(scores, sep=","):
     lines = []
@@ -457,7 +458,7 @@ def generate_summary(scores, fpath=None):
     # Set your custom color palette
     p = sns.color_palette(colors)
     df = pd.DataFrame(rows, columns=['settings', 'metric', 'value'])
-    ax = sns.barplot(x="settings", y="value", hue="metric", data=df, palette=p)
+    ax = sns.barplot(x="settings", y="value", hue="metric", data=df, palette=p, ci=None)
 
     # To add Hatch
     # # Hatch idea:https://stackoverflow.com/questions/35467188/is-it-possible-to-add-hatches-to-each-individual-bar-in-seaborn-barplot
@@ -488,5 +489,6 @@ def generate_summary(scores, fpath=None):
     # ax.set_xticklabels(ax.get_xticklabels(), rotation=-20, size=8)
     # ax.legend(fontsize='x-small')
     ax.legend(loc='lower left')
-    plt.show()
-    # ax.figure.savefig(fpath, bbox_inches="tight")
+    # plt.show()
+    ax.figure.savefig(fpath, bbox_inches="tight")
+    ax.figure.clf()

@@ -236,7 +236,7 @@ def annotate_t2dv2(endpoint, remove_outliers, err_meths, data_dir, estimate=[Tru
     if not remove_outliers:
         fname += "-raw"
 
-     = os.path.join('results', 'slabelling')
+    res_path = os.path.join('results', 'slabelling')
 
     new_fname = os.path.join(res_path, fname)
     if draw:
@@ -273,7 +273,7 @@ def parse_arguments():
     parser.add_argument('-a', '--append-to-readme', action="store_true")
     args = parser.parse_args()
     out_rems = [ro.lower() == "true" for ro in args.outlier_removal]
-    # parser.print_help()
+    parser.print_help()
     # raise Exception("")
     estimates = [e.lower() == "true" for e in args.estimate]
     return args.err_meths, out_rems, estimates, args.diff, args.draw, args.summary, args.mislabel, args.append_to_readme

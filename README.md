@@ -123,18 +123,31 @@ python -m slabelexp.olympic
 ### T2Dv2
 
 Arguments
-```
+``` 
+ usage: t2dv2.py [-h] [-e ERR_METHS [ERR_METHS ...]]
+                [-o OUTLIER_REMOVAL [OUTLIER_REMOVAL ...]] [-d]
+                [-s ESTIMATE [ESTIMATE ...]] [-w] [-u] [-m] [-a]
+
+Parameters for the experiment
+
 optional arguments:
   -h, --help            show this help message and exit
-  -e {mean_err,mean_sq_err}, --err-meth {mean_err,mean_sq_err}
+  -e ERR_METHS [ERR_METHS ...], --err-meths ERR_METHS [ERR_METHS ...]
                         Functions to computer errors.
-  -o {true,false}, --outlier-removal {true,false}
+  -o OUTLIER_REMOVAL [OUTLIER_REMOVAL ...], --outlier-removal OUTLIER_REMOVAL [OUTLIER_REMOVAL ...]
+                        Whether to remove outliers or not.
+  -d, --diff            Store the diffs
+  -s ESTIMATE [ESTIMATE ...], --estimate ESTIMATE [ESTIMATE ...]
+  -w, --draw            Whether to generate diagrams
+  -u, --summary         Whether to generate a summary diagram
+  -m, --mislabel        Whether to print mislabeled files
+  -a, --append-to-readme
 ```
 
 
 Used:
 ```
-python -m slabelexp.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true false --estimate True False --summary
+python -m slabelexp.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true false --estimate True False --summary -a -w
 ```
 
 
