@@ -1,0 +1,3 @@
+﻿filename,concept,column,property,columnid,kind,sub_kind,pconcept,loose
+28036255_0_5705563063166785494.tar.gz,Mountain,elevation in m,http://dbpedia.org/property/elevationM;http://dbpedia.org/ontology/elevation,1,ratio-interval,other,elevation,
+28993628_1_6072768612274729703.tar.gz,Mountain,elevation in m,http://dbpedia.org/property/elevationM;http://dbpedia.org/ontology/elevation,2,ratio-interval,other,elevation,

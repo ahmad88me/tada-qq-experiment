@@ -123,6 +123,8 @@ def generate_diagram(acc, draw_fname):
     # print(ax.get_yticklabels())
     plt.setp(ax.lines, color='k')
     ax.figure.savefig('%s.svg' % draw_fname, bbox_inches="tight")
+    # ax.figure.clf()
+    ax.figure.savefig('%s.eps' % draw_fname, bbox_inches="tight")
     ax.figure.clf()
 
 
@@ -239,6 +241,9 @@ def compute_counts(files_k, fname):
 
     ax.figure.savefig('%s.svg' % fname, bbox_inches="tight")
     # plt.show()
+    # ax.figure.clf()
+    ax.figure.savefig('%s.eps' % fname, bbox_inches="tight")
+    # plt.show()
     ax.figure.clf()
     return df
 
@@ -344,13 +349,39 @@ def compute_counts_per_err_meth(scores_dict, fname):
 
     ax.figure.savefig('%s.svg' % fname, bbox_inches="tight")
     # plt.show()
+    # ax.figure.clf()
+    ax.figure.savefig('%s.eps' % fname, bbox_inches="tight")
+    # plt.show()
     ax.figure.clf()
 
+# OLD
+# def print_md_scores(scores):
+#     print("\n\n| %15s | %9s | %15s | %9s | %9s | %5s |" % ("remove outlier", "estimate", "error method", "Precision",
+#                                                            "Recall", "F1"))
+#     print("|:%s:|:%s:|:%s:|:%s:|:%s:|:%s:|" % ("-" * 15, "-" * 9, "-" * 15, "-" * 9, "-" * 9, "-" * 5))
+#     for sc in scores:
+#         ro, est, err_meth, prec, rec, f1 = sc['ro'], sc['est'], sc['err_meth'], sc['prec'], sc['rec'], sc['f1']
+#         if est:
+#             est_txt = "estimate"
+#         else:
+#             est_txt = "exact"
+#         ro_txt = str(ro)
+#         print("| %15s | %9s | %15s | %9.2f | %9.2f | %5.2f |" % (ro_txt, est_txt, err_meth, prec, rec, f1))
 
-def print_md_scores(scores):
-    print("\n\n| %15s | %9s | %15s | %9s | %9s | %5s |" % ("remove outlier", "estimate", "error method", "Precision",
-                                                           "Recall", "F1"))
-    print("|:%s:|:%s:|:%s:|:%s:|:%s:|:%s:|" % ("-" * 15, "-" * 9, "-" * 15, "-" * 9, "-" * 9, "-" * 5))
+# NEW
+def print_md_scores(scores, do_print=True):
+    res = ""
+    s = "\n\n| %15s | %9s | %15s | %9s | %9s | %5s |" % ("remove outlier", "estimate", "error method", "Precision",
+                                                           "Recall", "F1")
+    res += "\n"+s
+    if do_print:
+        print(s)
+
+    s = "|:%s:|:%s:|:%s:|:%s:|:%s:|:%s:|" % ("-" * 15, "-" * 9, "-" * 15, "-" * 9, "-" * 9, "-" * 5)
+    res += "\n"+s
+    if do_print:
+        print(s)
+
     for sc in scores:
         ro, est, err_meth, prec, rec, f1 = sc['ro'], sc['est'], sc['err_meth'], sc['prec'], sc['rec'], sc['f1']
         if est:
@@ -358,7 +389,27 @@ def print_md_scores(scores):
         else:
             est_txt = "exact"
         ro_txt = str(ro)
-        print("| %15s | %9s | %15s | %9.2f | %9.2f | %5.2f |" % (ro_txt, est_txt, err_meth, prec, rec, f1))
+        s = "| %15s | %9s | %15s | %9.2f | %9.2f | %5.2f |" % (ro_txt, est_txt, err_meth, prec, rec, f1)
+        res += "\n" + s
+        if do_print:
+            print(s)
+    return res
+
+def scores_for_spreadsheet(scores, sep=","):
+    lines = []
+    line = sep.join(["Remove Outlier", "Estimate", "Error Method", "Precision", "Recall", "F1"])
+    lines.append(line)
+    for sc in scores:
+        ro, est, err_meth, prec, rec, f1 = sc['ro'], sc['est'], sc['err_meth'], sc['prec'], sc['rec'], sc['f1']
+        if est:
+            est_txt = "estimate"
+        else:
+            est_txt = "exact"
+        ro_txt = str(ro)
+        line = sep.join([ro_txt, est_txt, err_meth, "%.2f" % prec, "%.2f" % rec, "%.2f" % f1])
+        lines.append(line)
+    return "\n".join(lines)
+
 
 
 def generate_summary(scores, fpath=None):
@@ -415,7 +466,7 @@ def generate_summary(scores, fpath=None):
     # Set your custom color palette
     p = sns.color_palette(colors)
     df = pd.DataFrame(rows, columns=['settings', 'metric', 'value'])
-    ax = sns.barplot(x="settings", y="value", hue="metric", data=df, palette=p)
+    ax = sns.barplot(x="settings", y="value", hue="metric", data=df, palette=p, ci=None)
 
     # To add Hatch
     # # Hatch idea:https://stackoverflow.com/questions/35467188/is-it-possible-to-add-hatches-to-each-individual-bar-in-seaborn-barplot
@@ -446,5 +497,6 @@ def generate_summary(scores, fpath=None):
     # ax.set_xticklabels(ax.get_xticklabels(), rotation=-20, size=8)
     # ax.legend(fontsize='x-small')
     ax.legend(loc='lower left')
-    plt.show()
-    # ax.figure.savefig(fpath, bbox_inches="tight")
+    # plt.show()
+    ax.figure.savefig(fpath, bbox_inches="tight")
+    ax.figure.clf()
