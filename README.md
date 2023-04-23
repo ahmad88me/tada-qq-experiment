@@ -541,3 +541,10 @@ python -m ks.t2dv2 --dist pva sup -o true false --estimate True False --summary 
 This is based on the data from the README.md. They are manually copied to results.csv.
 
 
+
+                        
+                        
+                        
+# Funding                        
+This work was funded partially by EIT Digital under the WOODS project.
+   
