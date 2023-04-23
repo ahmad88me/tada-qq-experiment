@@ -15,6 +15,88 @@ def tech_max_score(results_path):
     prec, rec, f1 = df['Precision'], df['Recall'], df['F1']
     return prec, rec, f1
 
+
+def tech_max_score_each(results_path):
+    """
+    Get the max precision, recall, and F1 independently
+    :param results_path:
+    :return:
+    """
+    df = pd.read_csv(results_path)
+    dfo = df[df.F1 == df['F1'].max()].iloc[0]
+    f1 = dfo['F1']
+    dfo = df[df.Precision == df['Precision'].max()].iloc[0]
+    prec = dfo['Precision']
+    dfo = df[df.Recall == df['Recall'].max()].iloc[0]
+    rec = dfo['Recall']
+    # prec, rec, f1 = df['Precision'], df['Recall'], df['F1']
+    return prec, rec, f1
+
+def tech_min_score_each(results_path):
+    """
+    Get the min precision, recall, and F1 independently
+    :param results_path:
+    :return:
+    """
+    df = pd.read_csv(results_path)
+    dfo = df[df.F1 == df['F1'].min()].iloc[0]
+    f1 = dfo['F1']
+    dfo = df[df.Precision == df['Precision'].min()].iloc[0]
+    prec = dfo['Precision']
+    dfo = df[df.Recall == df['Recall'].min()].iloc[0]
+    rec = dfo['Recall']
+    # prec, rec, f1 = df['Precision'], df['Recall'], df['F1']
+    return prec, rec, f1
+
+def draw_range(results):
+    """
+
+    :param results:
+    :return:
+    """
+    df = pd.DataFrame(results, columns=['Technique', 'Precision', 'Recall', 'F1'])
+    print(df)
+    df_melted = pd.melt(df, id_vars=['Technique'], value_vars=['Precision', 'Recall', 'F1'], var_name="Measure",
+                        value_name="Value")
+    print(df_melted)
+    colors = ["#c72a85", "#ffb40e", "#1f77b4"]
+    p = sns.color_palette(colors)
+    # ax = sns.boxplot(data=df, x="F1", y="Technique",palette=p)
+
+    #ax = sns.boxplot(data=df_melted, x="Value", y="Technique", hue="Measure", palette=p, whis=100, showfliers=False, dodge=True)
+
+    # ax.legend(loc='lower right')
+    # ax = sns.lineplot(data=df_melted, x="Value", y="Technique", hue="Measure", style="Technique", palette=p, linewidth=10)
+    ax = sns.lineplot(data=df, x="F1", y="Technique", hue="Technique", palette=p, linewidth=20)
+
+    # techs = list(set(df['Technique']))
+    # for t in techs:
+    #     ax = sns.lineplot(data=df_melted[df_melted.Technique==t], x="Value", y="Technique", hue="Measure", palette=p, linewidth=10)
+    # ax = sns.scatterplot(data=df_melted, x="Value", y="Technique", hue="Measure", style="Measure", palette=p)
+
+    plt.show()
+# def draw_range(df):
+#     """
+#
+#     :param df:
+#     :return:
+#     """
+#     df_melted = pd.melt(df, id_vars=['Technique'], value_vars=['Precision', 'Recall', 'F1'], var_name="Measure",
+#                         value_name="Value")
+#     print(df_melted)
+#     colors = ["#c72a85", "#ffb40e", "#1f77b4"]
+#     p = sns.color_palette(colors)
+#     # ax = sns.boxplot(data=df, x="F1", y="Technique",palette=p)
+#     ax = sns.boxplot(data=df_melted, x="Value", y="Technique", hue="Measure", palette=p, whis=100, dodge=True)
+#     # ax.legend(loc='lower right')
+#     # (
+#     #     so.Plot(df_melted, x="Value", y="Technique", color="Measure")
+#     #     .add(so.Dot(), so.Agg(), so.Dodge())
+#     #     .add(so.Range(), so.Est(errorbar="sd"), so.Dodge())
+#     # )
+#     plt.show()
+
+
 def draw(results):
     #df = pd.DataFrame([[]], columns=['Technique', 'Measure' ,'Value'])
     transformed_results = []
@@ -71,7 +153,7 @@ def draw(results):
     # ax.legend(fontsize='x-small')
     ax.legend(loc='lower right')
     plt.show()
-    fpath = os.path.join('results', 'comparison.')
+    fpath = os.path.join('results', 'comparison-optimal.')
     ax.figure.savefig(fpath+"svg", bbox_inches="tight")
     ax.figure.savefig(fpath+"eps", bbox_inches="tight")
     ax.figure.clf()
@@ -81,17 +163,37 @@ def workflow():
     techs_names = {
         'ks': 'KS',
         'slabelling': 'QQ',
-        'merged-clus': 'merged',
-        'merged-slab': 'merged'
+        'merged-clus': 'mered',
+        'merged-slab': 'mered'
+        # 'merged-clus': 'm-clus',
+        # 'merged-slab': 'm-slab'
     }
     results = []
+    results_range = []
+    df = pd.DataFrame([], columns=['Technique', 'Precision', 'Recall', 'F1'])
     for tech in techs_names:
         p = os.path.join('results', tech, 'results.csv')
         prec, rec, f1 = tech_max_score(p)
         res = (techs_names[tech], prec, rec, f1)
         results.append(res)
+
+
+        prec, rec, f1 = tech_max_score_each(p)
+        res = (techs_names[tech], prec, rec, f1)
+        results_range.append(res)
+        prec, rec, f1 = tech_min_score_each(p)
+        res = (techs_names[tech], prec, rec, f1)
+        results_range.append(res)
+
+        # df_raw = pd.read_csv(p)
+        # df_mod = df_raw[['Precision', 'Recall', 'F1']]
+        # df_mod = df_mod.assign(Technique=techs_names[tech])
+        # df = df.append(df_mod)
+
+    # print(df)
+    draw_range(results_range)
     print(results)
-    draw(results)
+    #draw(results)
 
 workflow()
 # p = os.path.join('results', 'ks', 'results.csv')

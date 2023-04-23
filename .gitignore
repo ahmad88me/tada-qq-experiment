@@ -1,3 +1,4 @@
+*.eps
 nohup.out*
 local_*
 .cache

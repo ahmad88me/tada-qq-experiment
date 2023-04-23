@@ -123,6 +123,8 @@ def generate_diagram(acc, draw_fname):
     # print(ax.get_yticklabels())
     plt.setp(ax.lines, color='k')
     ax.figure.savefig('%s.svg' % draw_fname, bbox_inches="tight")
+    # ax.figure.clf()
+    ax.figure.savefig('%s.eps' % draw_fname, bbox_inches="tight")
     ax.figure.clf()
 
 
@@ -239,6 +241,9 @@ def compute_counts(files_k, fname):
 
     ax.figure.savefig('%s.svg' % fname, bbox_inches="tight")
     # plt.show()
+    # ax.figure.clf()
+    ax.figure.savefig('%s.eps' % fname, bbox_inches="tight")
+    # plt.show()
     ax.figure.clf()
     return df
 
@@ -343,6 +348,9 @@ def compute_counts_per_err_meth(scores_dict, fname):
     #     plt.text(nr, row['accuracy'], row['ncols'])
 
     ax.figure.savefig('%s.svg' % fname, bbox_inches="tight")
+    # plt.show()
+    # ax.figure.clf()
+    ax.figure.savefig('%s.eps' % fname, bbox_inches="tight")
     # plt.show()
     ax.figure.clf()
 

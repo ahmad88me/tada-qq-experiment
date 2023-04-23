@@ -8,7 +8,6 @@ from slabelexp.common import compute_scores_per_key
 from slabelexp.common import get_num_rows, compute_counts
 from ks.common import print_md_scores, compute_counts_per_dist, generate_summary, scores_for_spreadsheet
 import pandas as pd
-from tadaqq.slabel import SLabel
 from tadaqq.util import uri_to_fname, compute_scores
 from util.t2dv2 import get_dirs, fetch_t2dv2_data
 
@@ -264,7 +263,7 @@ def annotate_t2dv2(endpoint, remove_outliers, data_dir, dists, estimate=[True], 
         new_fname = os.path.join(res_path, fname)
         compute_counts_per_dist(dist_scores, new_fname)
     if summary:
-        generate_summary(scores, os.path.join(res_path, 'summary.svg'))
+        generate_summary(scores, os.path.join(res_path, 'summary'))
     # print(final_scores_txt)
     if append_to_readme:
         res = print_md_scores(scores, do_print=False)

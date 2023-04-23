@@ -130,6 +130,9 @@ def compute_counts_per_dist(scores_dict, fname):
 
     ax.figure.savefig('%s.svg' % fname, bbox_inches="tight")
     # plt.show()
+    # ax.figure.clf()
+    ax.figure.savefig('%s.eps' % fname, bbox_inches="tight")
+    # plt.show()
     ax.figure.clf()
 
 
@@ -277,5 +280,7 @@ def generate_summary(scores, fpath=None):
     # ax.legend(fontsize='x-small')
     ax.legend(loc='lower right')
     #plt.show()
-    ax.figure.savefig(fpath, bbox_inches="tight")
+    ax.figure.savefig(fpath+".svg", bbox_inches="tight")
+    # ax.figure.clf()
+    ax.figure.savefig(fpath+".eps", bbox_inches="tight")
     ax.figure.clf()
