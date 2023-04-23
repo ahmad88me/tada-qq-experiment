@@ -93,7 +93,8 @@ python -m clus.t2dv2 -c 0.9
 ![](results/clustering/t2dv2_sameclass.svg)
 
 
-## Semantic labelling
+
+## Semantic labelling with QQ
 ### Olympic Games
 Command used:
 ```
@@ -122,18 +123,31 @@ python -m slabelexp.olympic
 ### T2Dv2
 
 Arguments
-```
+``` 
+ usage: t2dv2.py [-h] [-e ERR_METHS [ERR_METHS ...]]
+                [-o OUTLIER_REMOVAL [OUTLIER_REMOVAL ...]] [-d]
+                [-s ESTIMATE [ESTIMATE ...]] [-w] [-u] [-m] [-a]
+
+Parameters for the experiment
+
 optional arguments:
   -h, --help            show this help message and exit
-  -e {mean_err,mean_sq_err}, --err-meth {mean_err,mean_sq_err}
+  -e ERR_METHS [ERR_METHS ...], --err-meths ERR_METHS [ERR_METHS ...]
                         Functions to computer errors.
-  -o {true,false}, --outlier-removal {true,false}
+  -o OUTLIER_REMOVAL [OUTLIER_REMOVAL ...], --outlier-removal OUTLIER_REMOVAL [OUTLIER_REMOVAL ...]
+                        Whether to remove outliers or not.
+  -d, --diff            Store the diffs
+  -s ESTIMATE [ESTIMATE ...], --estimate ESTIMATE [ESTIMATE ...]
+  -w, --draw            Whether to generate diagrams
+  -u, --summary         Whether to generate a summary diagram
+  -m, --mislabel        Whether to print mislabeled files
+  -a, --append-to-readme
 ```
 
 
 Used:
 ```
-python -m slabelexp.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true false --estimate True False --summary
+python -m slabelexp.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true false --estimate True False --summary -a -w
 ```
 
 
@@ -473,3 +487,64 @@ python -m merged.single -p clus -e mean_err mean_sq_err mean_sqroot_err -s true 
     parser.add_argument('-f', '--failback', action="store_true")  # False by default
     parser.add_argument('-p', '--pref', choices=["slab", "clus"], required=True,
                         help="Whether the preference is for the slab predicted or the clus (most voted in the cluster)")
+
+
+
+
+
+
+
+
+
+
+
+## Semantic labelling with KS
+
+
+
+### T2Dv2
+
+Arguments
+```
+
+usage: t2dv2.py [-h] [-o OUTLIER_REMOVAL [OUTLIER_REMOVAL ...]] [-d] [-s ESTIMATE [ESTIMATE ...]] [-w] [-u] [--dists DISTS [DISTS ...]] [-m]
+
+Parameters for the experiment
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -o OUTLIER_REMOVAL [OUTLIER_REMOVAL ...], --outlier-removal OUTLIER_REMOVAL [OUTLIER_REMOVAL ...]
+                        Whether to remove outliers or not.
+  -d, --diff            Store the diffs
+  -s ESTIMATE [ESTIMATE ...], --estimate ESTIMATE [ESTIMATE ...]
+                        Whether to show estimates or not.
+  -w, --draw            Whether to generate diagrams
+  -u, --summary         Whether to generate a summary diagram
+  --dists DISTS [DISTS ...]
+                        The distance measure to use (sup or pva)
+  -m, --mislabel        Whether to print mislabeled files
+
+
+```
+
+
+Used:
+```
+python -m ks.t2dv2 --dist pva sup -o true false --estimate True False --summary --draw -a
+```
+
+
+#### Results
+[ks results](results/ks/README.md)
+
+## Semantic Labelling Comparison
+This is based on the data from the README.md. They are manually copied to results.csv.
+
+
+
+                        
+                        
+                        
+# Funding                        
+This work was funded partially by EIT Digital under the WOODS project.
+   
